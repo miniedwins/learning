@@ -1,6 +1,6 @@
 # 使用者帳號自動登入
 
-首先編輯檔案 `getty@.service`  
+編輯檔案 `getty@.service`  
 
 ~~~shell
 sudo vim /lib/systemd/system/getty@.service
