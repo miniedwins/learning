@@ -2,7 +2,7 @@
 
 
 
-##　初始化前設定
+## 初始化前設定
 
 * git config --global user.name "your name"
 * git config --global user.email "your e-mail"
