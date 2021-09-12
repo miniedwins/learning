@@ -49,6 +49,6 @@ Have got 其實就是更口語版的 have。在正式場合需要用比較正式
 
 He has a sweet family.（他有一個美滿的家庭。）
 →口語上很常見：He has got a sweet family.
-![](https://i.imgur.com/H7fLCub.png)
+![](https://camo.githubusercontent.com/1e9f688d379480d0df8b05c68229639d7ef009bb1cf6bdbdb6d3213fdd139d41/68747470733a2f2f692e696d6775722e636f6d2f4837664c4375622e706e67)
 
 ###### tags: `English`
