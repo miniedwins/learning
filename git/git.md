@@ -2,7 +2,7 @@
 
 
 
-##　初始化前設定
+## 初始化前設定
 
 * git config --global user.name "your name"
 * git config --global user.email "your e-mail"
@@ -55,9 +55,9 @@ cat id_rsa.pub
 
 ### 更新遠端數據庫
 
-`-u`  預設會將資料推送到遠端數據庫
+**-u** : 預設會將資料推送到遠端數據庫
 
-`origin` 遠端數據庫名稱
+**origin** : 遠端數據庫名稱
 
 將本地端的資料推送一份到遠端 `origin`節點，並生成一個 `master`分支
 
