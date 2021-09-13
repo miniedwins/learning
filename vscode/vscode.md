@@ -16,29 +16,29 @@
 
 ~~~shell
  // Window
-"window.zoomLevel": 1, 							// 視窗縮放
+"window.zoomLevel": 1, 					// 視窗縮放
  
  // Editor
- "editor.fontSize": 22,							// 字體大小
+ "editor.fontSize": 22,					// 字體大小
  "editor.fontFamily": "Fira Code Light",		// 設定字型
- "editor.fontWeight": "500",					// 字體寬度
- "editor.fontLigatures": true					// 開啟連字號 (ex: => 變成箭頭)
- "editor.formatOnSave": true, 					// 儲存時，自動排版
- "editor.lineHeight": 26,						// 每個行之間的上下高度
- "editor.renderIndentGuides": true				// 顯示縮排線
+ "editor.fontWeight": "500",				// 字體寬度
+ "editor.fontLigatures": true				// 開啟連字號 (ex: => 變成箭頭)
+ "editor.formatOnSave": true, 				// 儲存時，自動排版
+ "editor.lineHeight": 26,				// 每個行之間的上下高度
+ "editor.renderIndentGuides": true			// 顯示縮排線
 
  // Files
  "files.autoSave": "onFocusChange", 			// 離開視窗焦點時自動儲存
- "files.encoding": "utf8",						// 預設編碼格式
+ "files.encoding": "utf8",				// 預設編碼格式
  "files.trimTrailingWhitespace": true,			// 儲存後，會將多餘的空白去除
- "files.autoGuessEncoding": false, 				// 自動猜測檔案的編碼
+ "files.autoGuessEncoding": false, 			// 自動猜測檔案的編碼
  "files.defaultLanguage": "markdown" 			// 設定預設文件語言類型 ( VS Code 當作預設的 Markdown 編輯器)
  
  // git
- "git.autofetch": true 							// VSCode 在背景自動執行 git fetch
- "git.enableSmartCommit": true					// 如果所有變更都還沒有 git add ( Stage ) 的話
- 												// 預設會自動全部 Commit，不會再先問過。
- "git.confirmSync": false 						// 當要同步 Git 遠端儲存庫時，不需要再提問
+ "git.autofetch": true 					// VSCode 在背景自動執行 git fetch
+ "git.enableSmartCommit": true				// 如果所有變更都還沒有 git add ( Stage ) 的話
+ 							// 預設會自動全部 Commit，不會再先問過。
+ "git.confirmSync": false 				// 當要同步 Git 遠端儲存庫時，不需要再提問
  
  // Terminal
  "terminal.integrated.fontSize": 30, 			// terminal 字體大小
@@ -47,7 +47,7 @@
  "C:\\Windows\\sysnative\\WindowsPowerShell\\v1.0\\powershell.exe",
  
   // SSH Remote (remote ssh package)
- "remote.SSH.remotePlatform": {					// 遠端連線位址
+ "remote.SSH.remotePlatform": {				// 遠端連線位址
         "192.168.88.94": "linux",
         "192.168.88.73": "linux"
  },
@@ -57,8 +57,8 @@
  "extensions.autoCheckUpdates": true,			// 自動確認新的版本
 
  // Theme and Icon
- "workbench.colorTheme": "Cobalt2",				// 主題
- "workbench.iconTheme": "material-icon-theme",	// 圖示
+ "workbench.colorTheme": "Cobalt2",			// 主題
+ "workbench.iconTheme": "material-icon-theme",		// 圖示
  "workbench.welcome.enabled": false, 			// 歡迎的顯示頁面
  "workbench.editor.enablePreview": false,
 ~~~
@@ -69,7 +69,7 @@
 
 ~~~shell
 // VS Code 左下角可以自由調整，會將自動調整這個設定值
-"python.pythonPath": 											// 設定 "env" or "real env" python 執行檔
+"python.pythonPath": 								// 設定 "env" or "real env" python 執行檔
 "C:\\Users\\edwin\\work\\venv\\venv_demo\\Scripts\\python.exe",
 "C:\\Users\\copol\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
 
@@ -79,8 +79,8 @@
 // Auto Import (ImportMagic Package)
 // 需要指定官方、第三方，以及自己的函式庫路徑
 // 指定好路徑儲存後，該套件會自動掃描 (時間會比較久)
-"python.autoComplete.extraPaths" : ["C:\\wrokspace\\python\\"],	// 自動導入套件	
-"python.autoComplete.addBrackets": true,						// 自動補括號
+"python.autoComplete.extraPaths" : ["C:\\wrokspace\\python\\"],			// 自動導入套件	
+"python.autoComplete.addBrackets": true,					// 自動補括號
  
 // pylint
 "python.linting.pylintEnabled": true,  							
@@ -91,22 +91,22 @@
 
 ~~~shell
 "pythonTestExplorer.testFramework": "pytest", 					// 指定測試模組
-"testExplorer.hideEmptyLog": true, 								// 輸出為空字串時，顯示空的日誌
+"testExplorer.hideEmptyLog": true, 						// 輸出為空字串時，顯示空的日誌
 "testExplorer.codeLens": true,
 ~~~
 
 **Python Testing**
 
 ~~~shell
-"python.testing.unittestEnabled": false,						// 不啟用 Unittest
-"python.testing.nosetestsEnabled": false,						// 不啟用 nosetest
-"python.testing.pytestEnabled": true, 							// 啟用 pytest
+"python.testing.unittestEnabled": false,					// 不啟用 Unittest
+"python.testing.nosetestsEnabled": false,					// 不啟用 nosetest
+"python.testing.pytestEnabled": true, 						// 啟用 pytest
 
 // 這個參數可能會覆蓋 pytest.ini，暫時先使用 pytest.ini
 // TestExpoler and PytTesting (Debug mode: 會共用這個參數)
-"python.testing.pytestArgs": ["-s", "-v", "test_script"]	 	// pytest 額外參數設定
+"python.testing.pytestArgs": ["-s", "-v", "test_script"]	 		// pytest 額外參數設定
 
-"python.testing.autoTestDiscoverOnSaveEnabled": false,			// 儲存一個測試檔案後，會自動運行測試項目
+"python.testing.autoTestDiscoverOnSaveEnabled": false,				// 儲存一個測試檔案後，會自動運行測試項目
 ~~~
 
 
@@ -298,43 +298,29 @@
 
   - /home/your-username/your-project
 
-  
-
 - **${workspaceFolderBasename}** - 當前工作資料夾的父目錄
 
   - your-project
-
   
-
 - **${file}** - 當前打開的檔案名稱(完整路徑)
 
-  - /home/your-username/your-project/folder/file.txt
-
-  
+  - /home/your-username/your-project/folder/file.txt 
 
 - **${relativeFile}** - 當前根目錄到當前打開檔案的相對路徑(包括檔案名稱)
 
   - folder/file.txt
-
   
-
 - **${relativeFileDirname}** - 當前根目錄到當前打開檔案的相對路徑(不包括檔案名稱)
 
   - folder
-
   
-
 - **${fileBasename}** - 當前打開的檔案名稱(包括副檔名)
 
   - file.txt
-
   
-
 - **${fileBasenameNoExtension}** - 當前打開的檔案名稱(不包括副檔名)
 
   - file
-
-  
 
 - **${fileDirname}** - 當前打開檔案的目錄名稱
 
