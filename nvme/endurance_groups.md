@@ -5,7 +5,9 @@
 
 Endurance Groups 可以管理 Single NVM Set 或是管理多個 NVM Sets，每一個 Group 都會有一個 ID 編號，標示目前有哪些 NVM Sets 是位在該哪一個 Group，而每一個 NVM Set 的屬性 (Endurance Group Identifier)，描述是屬於哪一個 Endurance Group。
 
+
 >  備註 : Endurance Group Identifier value of 0h is reserved
+
 
 NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果只有一個NVM Set 和 Endurance Group ID關聯，磨損均衡范圍不能跨越該 Set，也就是多個 Sets 只能可以被一個 Group 管理，但是主機端可以選擇跨 Set 進行壽命管理。
 
