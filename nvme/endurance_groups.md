@@ -27,7 +27,7 @@ nvme id-ctrl | grep CTRATT
 說明 : 每個 Groups 都會擁有一組 Id 編號，發送 Identify Controller 來確認該控制器最大支援多少個數量
 
 * 檢查控制器最大支援數量 Endurance Group Identifier Maximum
-  * Bytes 341:340 : Endurance Group Identifier Maximum (ENDGIDMAX)
+  * 341:340 Bytes : Endurance Group Identifier Maximum (ENDGIDMAX)
 
 ![Identifier Maximum](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_Endurance_Group_Identifier_Maximum.png)
 
