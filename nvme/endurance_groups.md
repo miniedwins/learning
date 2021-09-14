@@ -14,6 +14,8 @@
 
 ![endurance_group](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_CTRATT_Bit4_Endurance_Groups.png)
 
+發送命令 : 
+
 ~~~shell
 nvme id-ctrl | grep CTRATT
 ~~~
