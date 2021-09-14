@@ -4,6 +4,10 @@ Endurance 可以管理 Single NVMe Set 或是管理多個 NVMe Sets，每一個 
 
 NVMe Group ID的設置裡面，這個可以讓SSD進行磨損均衡的管理。如果只有一個NVM Set 和 Endurance Group ID關聯，磨損均衡范圍不能跨越該Set，但主機端可以選擇跨 Set 進行壽命管理。
 
+![Endurance Groups](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
+
+
+
 
 
 ## 檢查是否支援
