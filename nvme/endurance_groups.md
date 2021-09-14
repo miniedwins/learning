@@ -8,7 +8,7 @@
 
 * 檢查控制器是否有支援 Endurance Groups
 * Controller Attributes (CTRATT) : 
-  * Bit 4 (Endurance_Groups)
+  * 99:96 Bytes : Bit 4 (Endurance_Groups)
     * 0 : Support
     * 1 : Don't support
 
