@@ -18,7 +18,7 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 
 
 
-## 檢查是否支援功能
+## 檢查控制器是否支援
 
 說明 : 發送 Identify Controller 來確認是否有支援 Endurance Groups
 
