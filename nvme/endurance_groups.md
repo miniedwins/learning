@@ -1,7 +1,6 @@
 # Endurance Groups
 
 
-
 ## 基本介紹
 
 Endurance Groups 可以管理 Single NVM Set 或是管理多個 NVM Sets，每一個 Group 都會有一個 ID 編號，標示目前有哪些 NVM Sets 是位在該哪一個 Group，而每一個 NVM Set 的屬性 (Endurance Group Identifier)，描述是屬於哪一個 Endurance Group。
@@ -22,11 +21,10 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 
 說明 : 發送 Identify Controller 來確認是否有支援 Endurance Groups
 
-* 檢查控制器是否有支援 Endurance Groups
 * Controller Attributes (CTRATT) : 
   * 99:96 Bytes : Bit 4 (Endurance_Groups)
-    * 0 : Support
-    * 1 : Don't support
+    * 0 : Don't Support
+    * 1 : support
 
 ![endurance_group](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_CTRATT_Bit4_Endurance_Groups.png)
 
