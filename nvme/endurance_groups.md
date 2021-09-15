@@ -21,7 +21,7 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 
 ## 檢查控制器是否支援
 
-說明 : 發送 Identify Controller 命令來確認是否有支援 Endurance Groups
+說明 : 發送 Identify Controller 命令來確認是否有支援 Endurance Groups。
 
 * Controller Attributes (CTRATT) : 
   * 99:96 Bytes : Bit 4 (Endurance_Groups)
@@ -40,7 +40,7 @@ nvme id-ctrl | grep CTRATT
 
 ## 確認最大支援數量
 
-說明 : 每個 Groups 都會擁有一組 Id 編號，發送 Identify Controller 命令來確認該控制器最大支援多少個數量
+說明 : 每個 Groups 都會擁有一組 Id 編號，發送 Identify Controller 命令來確認該控制器最大支援多少個數量。
 
 * 341:340 Bytes : Endurance Group Identifier Maximum (ENDGIDMAX)
 
@@ -51,4 +51,27 @@ nvme id-ctrl | grep CTRATT
 ~~~shell
 nvme id-ctrl | grep ENDGIDMAX
 ~~~
+
+
+
+## 查詢日誌資訊內容 (log page)
+
+說明 :  每個 Endurance Groups Information 都有描述該 Group 總共的使用空間、可用空間、或是壽命等等。
+
+發送命令 :  
+
+~~~python
+# 備註: 尚未驗證命令是否有誤 !!!
+
+# for human readable format
+nvme endurance-log /dev/nvme0
+
+# for raw Endurance log to a file
+nvme endurance-log /dev/nvme0 --output=binary > endurance_log.raw
+
+# for get-log command
+nvme get-log /dev/nvme0 -log-id=0x09 --log-len=512 --raw-binary > log_page_2.raw
+~~~
+
+
 
