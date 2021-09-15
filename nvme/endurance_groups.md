@@ -24,7 +24,7 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 說明 : 發送 Identify Controller 命令來確認是否有支援 Endurance Groups
 
 * Controller Attributes (CTRATT) : 
-  * `99:96 Bytes` : Bit 4 (Endurance_Groups)
+  * 99:96 Bytes : Bit 4 (Endurance_Groups)
     * 0 : Don't Support
     * 1 : support
 
@@ -42,7 +42,7 @@ nvme id-ctrl | grep CTRATT
 
 說明 : 每個 Groups 都會擁有一組 Id 編號，發送 Identify Controller 命令來確認該控制器最大支援多少個數量
 
-* `341:340 Bytes` : Endurance Group Identifier Maximum (ENDGIDMAX)
+* 341:340 Bytes : Endurance Group Identifier Maximum (ENDGIDMAX)
 
 ![Identifier Maximum](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_Endurance_Group_Identifier_Maximum.png)
 
