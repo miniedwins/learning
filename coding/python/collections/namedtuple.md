@@ -33,7 +33,7 @@ print(getattr(user, 'name')) # edwin
 print(user.name) # edwin
 ~~~
 
-namedtuple 列出所有的欄位的名稱
+列出所有的欄位的名稱
 
 ~~~python
 print(user._fields)
