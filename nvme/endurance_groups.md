@@ -56,7 +56,9 @@ nvme id-ctrl | grep ENDGIDMAX
 
 ## 查詢日誌資訊內容 (log page)
 
-說明 :  每個 Endurance Groups Information 都有描述該 Group 總共的使用空間、可用空間、或是壽命等等。
+說明 :  每個 Endurance Group 都有會一個 log page (512 Bytes) 描述使用空間、可用空間、或是壽命資訊等等。
+
+![示意圖](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_endurance_group.png)
 
 發送命令 :  
 
