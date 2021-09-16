@@ -9,3 +9,25 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 **NVM Sets and Associated Namespaces**
 
 ![NVM Sets](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
+
+
+
+## 檢查控制器是否支援
+
+說明 : 發送 Identify Controller 命令來確認是否有支援 NVM Sets。
+
+- Controller Attributes (CTRATT) :
+  - 99:96 Bytes : Bit 2 (NVM Sets)
+    - 0 : Don't Support
+    - 1 : Support
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_CTRATT_Bit2_NVM_Sets.png)
+
+發送命令 : 
+
+~~~python
+# 備註: 尚未驗證命令是否有誤 !!!
+
+nvme id-ctrl | grep CTRATT
+~~~
+
