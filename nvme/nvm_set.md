@@ -25,9 +25,25 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 發送命令 : 
 
-~~~python
+~~~shell
 # 備註: 尚未驗證命令是否有誤 !!!
 
 nvme id-ctrl | grep CTRATT
+~~~
+
+
+
+## 確認最大支援數量
+
+說明 : 每個 NVM Set 都會擁有一組 Id 編號，發送 Identify Controller 命令來確認該控制器最大支援多少個數量。
+
+* 339:338 Bytes : NVM Set Identifier Maximum (NSETIDMAX)
+
+發送命令 :
+
+~~~shell
+# 備註: 尚未驗證命令是否有誤 !!!
+
+nvme id-ctrl | grep NSETIDMAX
 ~~~
 
