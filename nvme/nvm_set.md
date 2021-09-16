@@ -8,3 +8,4 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 **NVM Sets and Associated Namespaces**
 
+![NVM Sets](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
