@@ -39,6 +39,8 @@ nvme id-ctrl | grep CTRATT
 
 * 339:338 Bytes : NVM Set Identifier Maximum (NSETIDMAX)
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NSETIDMAX.png)
+
 發送命令 :
 
 ~~~shell
