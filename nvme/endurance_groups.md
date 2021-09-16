@@ -46,7 +46,7 @@ nvme id-ctrl | grep CTRATT
 
 * 341:340 Bytes : Endurance Group Identifier Maximum (ENDGIDMAX)
 
-![Identifier Maximum](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_Endurance_Group_Identifier_Maximum.png)
+![Endurance Group Identifier Maximum](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_ENDGIDMAX.png)
 
 發送命令 : 
 
