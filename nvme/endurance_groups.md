@@ -13,9 +13,9 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 
 由下圖可以得知 : Groups Y 管理了 NVM Set A and Set B，Groups Z 只能管理 NVM Set C。
 
-**Endurance Group and Associated Namespaces**
+**Endurance Group and Associated NVM Sets**
 
-![Endurance Groups](https://github.com/miniedwins/learning/blob/main/nvme/pic/Endurance_Gorup_and_Associated_Namespaces.png)
+![Endurance Groups](https://github.com/miniedwins/learning/blob/main/nvme/pic/Endurance_Gorup_and_Associated_NVM%20Sets.png)
 
 
 
