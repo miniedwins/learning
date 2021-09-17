@@ -71,9 +71,9 @@ nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
 
 ## 列出 NVM Set 
 
-說明 : 執行 Identify NVM Set list 命令，可以列出目前所有有啟用 NVM Set 的 Namespace
+說明 : 執行 Identify NVM Set list 命令，可以列出目前所有啟用的 NVM Set，並且查看每個 NVM Set 當前的屬性。
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_nvm/Identify_NVM_Set_Attributes%20Entry_.png)
 
 發送命令 :
 
