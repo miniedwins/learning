@@ -55,7 +55,7 @@ nvme id-ctrl | grep NSETIDMAX
 
 ## 建立 NVM Set
 
-說明 : 建立 NVM Set 需要透過主機端 (Host) 發送 **Namespace Management** 命令，並且在建立的時候指定 NVM Set Identifier **(NVMSETID)** 屬性值，設定前需要確認控制器最大支援的數量 **(NSETIDMAX)**，以及該屬性值不能超過 `0xFF` 。
+說明 : 建立 NVM Set 需要透過主機端 (Host) 發送 **Namespace Management** 命令，並且在建立 **NS** 的時候指定 NVM Set Identifier **(NVMSETID)** 屬性值，設定前需要確認控制器最大支援的數量 **(NSETIDMAX)**，以及該屬性值不能超過 `0xFF` 。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/namespace_management_host_software_fields.png)
 
