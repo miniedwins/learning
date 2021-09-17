@@ -2,7 +2,7 @@
 
 ## 基本介紹
 
-NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合單一個 namespace 或是多個不同的 namespaces。而一個 namesapce 只允許在一個 NVM Set 裡面，不能同時存在多個 Sets 之中。還有一點必須要注意的是，每一個被建立的 NVM Set 都一定會關聯一個 Enudrance Group
+NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合單一個 namespace 或是多個不同的 namespaces。而一個 namesapce 只允許在一個 NVM Set 裡面，不能同時存在多個 Sets 之中。還有一點必須要注意的是，每一個被建立的 NVM Set 都一定會關聯一個 Enudrance Group。
 
 下圖顯示不同 NVM Set 所包含的 namespaces，NVM Set A 包含了 (NS A1, NS A2, NS A3)，而 NVM Set B 包含了 (NS B1 and NS B2)，最後 NVM Set C 只包含了 (NS C1)。而且每一個 Set 都可以包含未分配的 namespace 空間。
 
@@ -16,7 +16,7 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 ## 檢查控制器是否支援
 
-說明 : 發送 Identify Controller 命令來確認是否有支援 NVM Sets。
+說明 : 發送 **Identify Controller** 命令來確認是否有支援 NVM Set。
 
 - Controller Attributes (CTRATT) :
   - 99:96 Bytes : Bit 2 (NVM Sets)
@@ -37,7 +37,7 @@ nvme id-ctrl | grep CTRATT
 
 ## 確認最大支援數量
 
-說明 : 每個 NVM Set 都會擁有一組 Id 編號，發送 Identify Controller 命令來確認該控制器最大支援多少個數量。
+說明 : 每個 NVM Set 都會擁有一組 Id 編號，發送 **Identify Controller** 命令來確認該控制器最大支援多少個數量。
 
 * 339:338 Bytes : NVM Set Identifier Maximum (NSETIDMAX)
 
@@ -71,7 +71,7 @@ nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
 
 ## 列出 NVM Set 
 
-說明 : 執行 Identify NVM Set list 命令，可以列出目前所有啟用的 NVM Set，並且查看每個 **NVM Set Attributes**。
+說明 : 執行 **Identify NVM Set list** 命令，可以列出目前所有啟用的 NVM Set，並且查看每個 **NVM Set Attributes**。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_nvm/Identify_NVM_Set_Attributes%20Entry_.png)
 
