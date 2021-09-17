@@ -6,6 +6,8 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 下圖顯示不同 NVM Set 所包含的 namespaces，NVM Set A 包含了 (NS A1, NS A2, NS A3)，而 NVM Set B 包含了 (NS B1 and NS B2)，最後 NVM Set C 只包含了 (NS C1)。而且每一個 Set 都可以包含未分配的 namespace 空間。
 
+> 備註 : An NVM Set Identifier value of 0h is reserved and is not a valid NVM Set Identifier
+
 **NVM Sets and Associated Namespaces**
 
 ![NVM Sets](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
@@ -26,7 +28,7 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 發送命令 : 
 
 ~~~shell
-# 備註: 尚未驗證命令是否有誤 !!!
+# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
 
 nvme id-ctrl | grep CTRATT
 ~~~
@@ -44,8 +46,26 @@ nvme id-ctrl | grep CTRATT
 發送命令 :
 
 ~~~shell
-# 備註: 尚未驗證命令是否有誤 !!!
+# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
 
 nvme id-ctrl | grep NSETIDMAX
 ~~~
+
+
+
+## 建立 NVM Set
+
+說明 : 建立 NVM Set 需要透過主機端 (Host) 執行 **Namespace Management** 命令，並且在建立的時候指定 NVM Set Identifier **(NVMSETID)** 屬性值，設定前需要確認控制器最大支援的數量，以及該屬性值不能超過 `0xFF` 。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/namespace_management_host_software_fields.png)
+
+發送命令 : 
+
+~~~shell
+# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+
+nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
+~~~
+
+
 
