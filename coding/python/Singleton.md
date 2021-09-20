@@ -36,6 +36,7 @@ if __name__ == '__main__':
 
 * 透過自訂義 metaclass 可以實現建立 instance 方法
 
+[metaclass_singleton.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/metaclass_singleton.py)
 ~~~python
 class Singleton(type):
     def __init__(self, *args, **kwargs):
