@@ -7,6 +7,8 @@
 * 透過繼承 Singleton 類別，確認該物件是否已經被建立 ? 
 * 若是該物件沒有存在則建立新的物件，否則回傳先前已建立好的物件
 
+![Example: class_singleton.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/class_singleton.py)
+
 ~~~python
 class Singleton:
     __instance = None
