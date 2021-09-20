@@ -10,7 +10,7 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 **NVM Sets and Associated Namespaces**
 
-![NVM Sets](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
 
 
 
@@ -41,7 +41,7 @@ nvme id-ctrl | grep CTRATT
 
 * 339:338 Bytes : NVM Set Identifier Maximum (NSETIDMAX)
 
-![Identify_Controller_NSETIDMAX](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NSETIDMAX.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NSETIDMAX.png)
 
 發送命令 :
 
@@ -57,7 +57,7 @@ nvme id-ctrl | grep NSETIDMAX
 
 說明 : 建立 NVM Set 需要透過主機端 (Host) 發送 **Namespace Management** 命令，並且在建立 **NS** 的時候指定 NVM Set Identifier **(NVMSETID)** 屬性值，設定前需要確認控制器最大支援的數量 **(NSETIDMAX)**，以及該屬性值不能超過 `0xFF` 。
 
-![namespace_management_host_software_fields](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/namespace_management_host_software_fields.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/namespace_management_host_software_fields.png)
 
 發送命令 : 
 
