@@ -2,7 +2,17 @@
 
 ## 基本介紹
 
-NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合單一個 namespace 或是多個不同的 namespaces。而一個 namesapce 只允許在一個 NVM Set 裡面，不能同時存在多個 Set 之中。還有一點必須要注意的是，每一個被建立的 NVM Set 都一定會關聯一個 Enudrance Group。
+NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合單一個 namespace 或是多個不同的 namespaces。而一個 namesapce 只允許在一個 NVM Set 裡面，不能同時存在多個 Set 之中。還有一點必須要注意的是，每一個被建立的 NVM Set 都一定會關聯一個 Enudrance Group (非常重要的知識)。
+
+若是控制器支援該功能。應該要能夠執行下列功能 :
+
+* 
+* Support NVM Sets in the Controller Attributes field in the Identify Controller data structure;
+* Support the NVM Set Identifier in all commands that use the NVM Set Identifier;
+* 支援 Identify 命令發送 CNS=04 (NVM Set list) 
+* Indicate the NVM Set Identifier with which the namespace is associated in the Identify Namespace data structure;
+* Support Endurance Groups; and
+* For each NVM Set, indicate the associated Endurance Group as an attribute.
 
 下圖顯示不同 NVM Set 所包含的 namespaces，NVM Set A 包含了 (NS A1, NS A2, NS A3)，而 NVM Set B 包含了 (NS B1 and NS B2)，最後 NVM Set C 只包含了 (NS C1)。而且每一個 Set 都可以包含未分配的 namespace 空間。
 
@@ -29,7 +39,6 @@ NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合�
 
 ~~~shell
 # 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-
 nvme id-ctrl | grep CTRATT
 ~~~
 
@@ -47,7 +56,6 @@ nvme id-ctrl | grep CTRATT
 
 ~~~shell
 # 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-
 nvme id-ctrl | grep NSETIDMAX
 ~~~
 
@@ -63,7 +71,6 @@ nvme id-ctrl | grep NSETIDMAX
 
 ~~~shell
 # 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-
 nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
 ~~~
 
@@ -86,3 +93,34 @@ nvme id-nvmset /dev/nvme0
 # for binary format to file
 nvme id-nvmset /dev/nvme0 --output-format=binary > id_nvmset.raw
 ~~~
+
+
+
+## 顯示 NVM Set  Identifier
+
+說明 : 執行 **Identify NS** 命令，找出當前的 NS 所屬的 **NVM Set Identifer**。
+
+* 101:100 Bytes : NVM Set Identifier (NVMSETID)
+
+發送命令 :
+
+~~~shell
+# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+nvme id-ns /dev/nvme0 | grep nvmsetid
+~~~
+
+
+
+## 顯示 Endurance Group Identifier
+
+說明 : 執行 **Identify NS** 命令，找出當前的 NS 所屬的 **Endurance Group Identifer**。
+
+* 103:102 Bytes : Endurance Group Identifier (ENDGID)
+
+發送命令 : 
+
+~~~shell
+# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+nvme id-ns /dev/nvme0 | grep endgid
+~~~
+
