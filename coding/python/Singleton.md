@@ -7,6 +7,8 @@
 * 透過繼承 Singleton 類別，確認該物件是否已經被建立 ? 
 * 若是該物件沒有存在則建立新的物件，否則回傳先前已建立好的物件
 
+[class_singleton.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/class_singleton.py)
+
 ~~~python
 class Singleton:
     __instance = None
@@ -34,6 +36,7 @@ if __name__ == '__main__':
 
 * 透過自訂義 metaclass 可以實現建立 instance 方法
 
+[metaclass_singleton.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/metaclass_singleton.py)
 ~~~python
 class Singleton(type):
     def __init__(self, *args, **kwargs):
