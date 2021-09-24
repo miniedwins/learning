@@ -86,25 +86,3 @@ nvme id-nvmset /dev/nvme0
 # for binary format to file
 nvme id-nvmset /dev/nvme0 --output-format=binary > id_nvmset.raw
 ~~~
-
-
-
-## 設定 NVM Set
-
-說明 : 
-
-
-
-發送命令 :
-
-~~~shell
-~~~
-
-
-
-
-
-
-
-
-
