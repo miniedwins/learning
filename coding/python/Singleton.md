@@ -14,7 +14,7 @@ class Singleton:
     __instance = None
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
-            cls.__instance = super().__new__(cls) # 透過 __new__ 產生新的物件
+            cls.__instance = super().__new__(cls, *args, **kwargs) # 透過 __new__ 產生新的物件
             return cls.__instance # 執行後，會呼叫 Foo().__init__ 初始化物件內容
         else:
             return cls.__instance
