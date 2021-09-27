@@ -185,12 +185,12 @@ if __name__ == '__main__':
         fd.write('Hello World!')
 ~~~
 
-如果發生異常，Python會將異常的`type`,`value`和`traceback`傳遞給 `__exit__` 方法。 它讓 `__exit__` 方法來決定如何關閉文件以及是否需要其他步驟。
+如果發生異常，Python會將異常的 `type`,`value` 和 `traceback` 傳遞給 `__exit__` 方法。 它讓 `__exit__` 方法來決定如何關閉文件以及是否需要其他步驟。
 
-**當異常發生時，`with`語句會採取哪些步驟。** 
+**當異常發生時，`with` 語句會採取哪些步驟。** 
 
-* 它把異常的`type`, `value` , `traceback` 傳遞給 `__exit__` 方法 
-* 它讓`__exit__`方法來處理異常 :
+* 它把異常的 `type`, `value` , `traceback` 傳遞給 `__exit__` 方法 
+* 它讓 `__exit__` 方法來處理異常 :
   * 返回值是 `True`，那麼這個異常就被優雅地處理了。 
   * 返回值是 `True` 以外的任何東西，那麼這個異常將被`with`語句拋出。
 
