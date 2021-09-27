@@ -80,6 +80,3 @@ nvme endurance-log /dev/nvme0 --output=binary > endurance_log.raw
 # for get-log command
 nvme get-log /dev/nvme0 -log-id=0x09 --log-len=512 --raw-binary > log_page_2.raw
 ~~~
-
-
-

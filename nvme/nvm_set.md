@@ -100,6 +100,7 @@ nvme id-nvmset /dev/nvme0 --output-format=binary > id_nvmset.raw
 
 ~~~shell
 # 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+
 nvme id-ns /dev/nvme0 | grep nvmsetid
 ~~~
 
@@ -115,6 +116,6 @@ nvme id-ns /dev/nvme0 | grep nvmsetid
 
 ~~~shell
 # 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+
 nvme id-ns /dev/nvme0 | grep endgid
 ~~~
-
