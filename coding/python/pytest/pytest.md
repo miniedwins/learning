@@ -1643,9 +1643,10 @@ def test_username_exception():
 def test_zero_division():
     with pytest.raises(ZeroDivisionError) as exceptionInfo:
         100 / 0
-        
-    assert exceptionInfo.type == ZeroDivisionError 			# 斷言異常型別
-    assert "division by zero" in str(exceptionInfo.value) 	# 斷言異常的值
+    # 斷言異常型別
+    assert exceptionInfo.type == ZeroDivisionError
+    # 斷言異常的值
+    assert "division by zero" in str(exceptionInfo.value)
 ~~~
 
 **match 使用**
@@ -1654,7 +1655,6 @@ def test_zero_division():
 def test_zero_division_match():
     with pytest.raises(ZeroDivisionError, match=".*zero.*") as exceptionInfo:
         100 / 0
-    
     # 也可以這樣
     with pytest.raises(ZeroDivisionError, match="zero") as exceptionInfo:
         100 / 0
