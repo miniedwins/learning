@@ -97,7 +97,7 @@ class B2:
 
 [Example : with_example_timethis.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/contextlib/with_example_timethis.py)
 
-在函數 `timethis()` 中，`yield` 之前的代碼會在上下文管理器中作為 `__enter__()` 方法執行， 所有在 `yield` 之後的代碼會作為 `__exit__()` 方法執行。 如果出現了異常，異常會在yield語句那裡拋出。
+在函數 `time_this()` 中，`yield` 之前的代碼會在上下文管理器中作為 `__enter__()` 方法執行， 所有在 `yield` 之後的代碼會作為 `__exit__()` 方法執行。 如果出現了異常，異常會在yield語句那裡拋出。
 
 ~~~python
 import time
@@ -133,7 +133,7 @@ finally:
 		....
 ~~~
 
-呼叫端需要使用 try catch 語句去捕捉例外訊息
+呼叫端需要使用 try except 語句去捕捉例外訊息
 
 ~~~python
 try:
@@ -145,23 +145,73 @@ except Exception as err: # 這裡捕捉 "contextmanager" 拋出的例外訊息
     print(err)
 ~~~
 
-### 範例 : 使用魔法方法 (enter and exit)
+### 範例 : 魔法方法實現
+
+[Example : with_magic_method.py] ()
+
+1. 執行 with 語句並將參數帶入給 `__init__`
+2. `__enter__` 方法返回的值是 `self.fd`，賦值給呼叫方的變數 `fd`
+3. 完成 with 代碼塊結束後，最後 `__exit__` 方法被調用
+4. `__exit__`方法返回的是 `None` (如果沒有 `return` 語句那麼方法會返回`None`)
 
 ~~~python
-class Demo:
+class OpenFile:
+    def __init__(self, filename, mode='r'):
+        self.fd = open(filename, mode)
+
     def __enter__(self):
-        return self
+        return self.fd
 
     def __exit__(self, type, value, trace):
+        try:
+            if type is None: # 若是沒有發生異常，則為 None 型態
+                return
+            else:
+                self.handle_error(type, value, trace)
+        finally:
+            self.close_fd()
+            return True
+
+    def handle_error(self, type, value, trace):
         print('type:', type)
         print('value:', value)
-        print('trave:', trace)
+        print('trace:', trace)
 
-    def do_something(slef):
-        bar = 1 / 0
-        return bar + 10
+    def close_fd(self):
+        self.fd.close()
 
-with Demo() as demo:
-    demo.do_something()
+if __name__ == '__main__':
+    with OpenFile('demo.txt') as fd:
+        fd.write('Hello World!')
 ~~~
+
+如果發生異常，Python會將異常的`type`,`value`和`traceback`傳遞給`__exit__`方法。 它讓`__exit__`方法來決定如何關閉文件以及是否需要其他步驟。
+
+**當異常發生時，`with`語句會採取哪些步驟。** 
+
+1. 它把異常的`type`,`value`和`traceback`傳遞給`__exit__`方法 
+2. 它讓`__exit__`方法來處理異常 
+3. 如果`__exit__`返回的是 `True`，那麼這個異常就被優雅地處理了。 
+4. 如果`__exit__`返回的是 `True` 以外的任何東西，那麼這個異常將被`with`語句拋出。
+
+**以下是發生異常後的狀態**
+
+~~~python
+type: <class 'io.UnsupportedOperation'>
+value: not writable
+trace: <traceback object at 0x0000022154692A80>
+~~~
+
+若是想要由呼叫端處理異常，則是用 try except 語句捕捉異常，`__exit__` 只要 `return` 返回值 `Fasle`
+
+~~~python
+if __name__ == '__main__':
+    try:
+    	with OpenFile('demo.txt') as fd:
+        	fd.write('Hello World!')
+    except Exception as err:
+        print(err)
+~~~
+
+
 
