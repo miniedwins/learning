@@ -147,7 +147,7 @@ except Exception as err: # 這裡捕捉 "contextmanager" 拋出的例外訊息
 
 ### 範例 : 魔法方法實現
 
-[Example : with_magic_method.py] (https://github.com/miniedwins/learning/blob/main/coding/python/example/with_magic_method.py)
+[Example : with_magic_method.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/with_magic_method.py)
 
 1. 執行 with 語句並將參數帶入給 `__init__`
 2. `__enter__` 方法返回的值是 `self.fd`，賦值給呼叫方的變數 `fd`
