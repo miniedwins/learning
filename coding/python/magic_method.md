@@ -95,7 +95,7 @@ class B2:
 
 ### 範例 : 代碼塊計時功能
 
-[https://github.com/miniedwins/learning/blob/main/coding/python/example/contextlib/with_example_timethis.py]: 
+[example]: https://github.com/miniedwins/learning/blob/main/coding/python/example/contextlib/with_example_timethis.py
 
 在函數 `timethis()` 中，`yield` 之前的代碼會在上下文管理器中作為 `__enter__()` 方法執行， 所有在 `yield` 之後的代碼會作為 `__exit__()` 方法執行。 如果出現了異常，異常會在yield語句那裡拋出。
 
