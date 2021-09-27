@@ -152,7 +152,7 @@ except Exception as err: # 這裡捕捉 "contextmanager" 拋出的例外訊息
 1. 執行 with 語句並將參數帶入給 `__init__`
 2. `__enter__` 方法返回的值是 `self.fd`，賦值給呼叫方的變數 `fd`
 3. 完成 with 代碼塊結束後，最後 `__exit__` 方法會被調用
-4. `__exit__`方法返回的是 `None` (如果沒有 `return` 語句那麼方法會返回`None`)
+4. `__exit__` 方法返回的是 `None` (如果沒有 `return` 語句那麼方法會返回`None`)
 
 ~~~python
 class OpenFile:
@@ -185,11 +185,11 @@ if __name__ == '__main__':
         fd.write('Hello World!')
 ~~~
 
-如果發生異常，Python會將異常的`type`,`value`和`traceback`傳遞給`__exit__`方法。 它讓`__exit__`方法來決定如何關閉文件以及是否需要其他步驟。
+如果發生異常，Python會將異常的`type`,`value`和`traceback`傳遞給 `__exit__` 方法。 它讓 `__exit__` 方法來決定如何關閉文件以及是否需要其他步驟。
 
 **當異常發生時，`with`語句會採取哪些步驟。** 
 
-* 它把異常的`type`,`value`和`traceback`傳遞給`__exit__`方法 
+* 它把異常的`type`, `value` , `traceback` 傳遞給 `__exit__` 方法 
 * 它讓`__exit__`方法來處理異常 :
   * 返回值是 `True`，那麼這個異常就被優雅地處理了。 
   * 返回值是 `True` 以外的任何東西，那麼這個異常將被`with`語句拋出。
