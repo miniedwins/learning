@@ -208,9 +208,9 @@ trace: <traceback object at 0x0000022154692A80>
 if __name__ == '__main__':
     try:
     	with OpenFile('demo.txt') as fd:
-        	fd.write('Hello World!')
+	    fd.write('Hello World!')
     except Exception as err:
-        print(err)
+    	print(err)
 ~~~
 
 
