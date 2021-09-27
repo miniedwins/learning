@@ -4,15 +4,9 @@
 
 NVM Set 就是一組邏輯上與物理上的集合，每一個 Set 可以集合單一個 namespace 或是多個不同的 namespaces。而一個 namesapce 只允許在一個 NVM Set 裡面，不能同時存在多個 Set 之中。還有一點必須要注意的是，每一個被建立的 NVM Set 都一定會關聯一個 Enudrance Group (非常重要的知識)。
 
-若是控制器支援該功能。應該要能夠執行下列功能 :
+**網路上所得到的資料說明 (待確認)**
 
-* 
-* Support NVM Sets in the Controller Attributes field in the Identify Controller data structure;
-* Support the NVM Set Identifier in all commands that use the NVM Set Identifier;
-* 支援 Identify 命令發送 CNS=04 (NVM Set list) 
-* Indicate the NVM Set Identifier with which the namespace is associated in the Identify Namespace data structure;
-* Support Endurance Groups; and
-* For each NVM Set, indicate the associated Endurance Group as an attribute.
+Set是一組Flash LUN的集合，所以稱之為一個Set。比如說我們可以知道我們現在一個固態硬盤有4通道、8通道、10通道，每個通道上還會有4個、8個、10個LUN，這些LUN可以拆分成一個一個Set，在Set上通過協議劃分成不同的Namespace，可以在協議中確定的要求每一個Namespace只屬於一個Set或者多個Set。這樣當用戶訪問其中一個Namespace，這部分空間是必須要落在一個確定的Flash LUN上面，也就是一個確定的Set上面。
 
 下圖顯示不同 NVM Set 所包含的 namespaces，NVM Set A 包含了 (NS A1, NS A2, NS A3)，而 NVM Set B 包含了 (NS B1 and NS B2)，最後 NVM Set C 只包含了 (NS C1)。而且每一個 Set 都可以包含未分配的 namespace 空間。
 
