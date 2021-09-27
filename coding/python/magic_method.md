@@ -133,7 +133,7 @@ finally:
 		....
 ~~~
 
-呼叫端需要使用 try except 語句去捕捉例外訊息
+呼叫端使用 try except 語句去捕捉例外訊息
 
 ~~~python
 try:
@@ -141,7 +141,7 @@ try:
         n = 10000000
         while n > 0:
             n -= 1
-except Exception as err: # 這裡捕捉 "contextmanager" 拋出的例外訊息
+except Exception as err: # 這裡捕捉 "yield" 拋出的例外訊息
     print(err)
 ~~~
 
@@ -194,7 +194,7 @@ if __name__ == '__main__':
   * 返回值是 `True`，那麼這個異常就被優雅地處理了。 
   * 返回值是 `True` 以外的任何東西，那麼這個異常將被 `with` 語句拋出。
 
-**以下是發生異常後的狀態**
+**以下是範例發生異常後，三個參數所顯示的內容**
 
 ~~~python
 type: <class 'io.UnsupportedOperation'>
