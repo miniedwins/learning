@@ -14,7 +14,7 @@
 
 > 備註 : 另外控制器若是沒有自檢，可能會造成效能降低的問題。
 
-下列圖示 Device Self-test Operation (Informative)
+**Example Device Self-test Operation (Informative)**
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/device_self_test_informative.png)
 
@@ -42,9 +42,13 @@
 **中斷自檢操作命令如下 :**
 
 * shall be aborted by **a Format NVM**
+  * 收到 Format NVM 命令
 * shall be aborted when **a sanitize operation is started**
+  * 開始執行 Sanitize 操作已經開始
 * shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
+  * STC 欄位為 device self-test 命令參數，若是被設定成 **0xFh**，代表是停止自檢測試
 * may be aborted if the specified **namespace is removed** from the namespace inventory.
+  * 若是指定的 Namespace 已經被控制器移除
 
 **Format NVM command Aborting a Device Self-Test Operation**
 
@@ -169,22 +173,6 @@ Controller Attributes (CTRATT) :
 # 待確認
 nvme id-ctrl /dev/nvme0 | grep EDSTT
 ~~~
-
-
-
-
-
-二.中斷一個自檢命令的操作有:
-
-1.Controller reset
-
-2.NVMe Format Command
-
-3.一個STC為F的Device self-test命令
-
-4.一個刪除對應的ns的操作
-
-5.Sanitize命令
 
 
 
