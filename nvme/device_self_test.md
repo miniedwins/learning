@@ -116,7 +116,7 @@ Controller Attributes (CTRATT) :
 - 317:316 Bytes :  Extended Device Self-test Time (EDSTT)
   - 欄位需要轉換成 10 進制換算
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_EDSTT.png)
 
 ~~~shell
 # 待確認
