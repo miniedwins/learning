@@ -83,7 +83,7 @@ DRAM 作用是來做資料的緩存，或許會存放了部分代碼和重要的
     - 0 : Don't Support
     - 1 : Support
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_DSTO.png)
 
 ~~~shell
 nvme id-ctrl /dev/nvme0 | grep DSTO
