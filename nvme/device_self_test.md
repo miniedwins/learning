@@ -106,7 +106,7 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/device_self_test_dw_10.png)
 
-備註 :  發送命令前需要了解，**Namespace Test Action** 所描述的說明。
+備註 :  發送命令前需要了解 **Namespace Test Action** 所描述的說明。
 
 **Device Self-test Namespace Test Action**
 
