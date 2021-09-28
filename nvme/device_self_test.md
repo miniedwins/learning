@@ -48,7 +48,7 @@
 
 **Format NVM command Aborting a Device Self-Test Operation**
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/device_self_test_aborting_operation.png)
 
 
 
