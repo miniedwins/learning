@@ -24,11 +24,14 @@
 
 ### short device self-test
 
-* 自檢測試 (short self-test) 必須要在 2分鐘內或是更少的時間完成測試
-* 自檢的進度與測試的情況，可以從 Device self-test 日誌取得資訊內容
+* 一個自檢測試 (short self-test) 必須要在兩分鐘內或是更少的時間完成測試
+* 自檢的進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
 
 ### extended device self-test
 
+* 一個自檢測試 (extended self-test) 會依據 EDSTT 所指定的時間內完成測試
+  * EDSTT : Extended Device Self Test Time (單位 : 分鐘)
+* 檢的進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
 * 
 
 
@@ -76,7 +79,7 @@ DRAM 作用是來做資料的緩存，或許會存放了部分代碼和重要的
 
 ## 檢查控制器支援
 
-說明 : 發送 **Identify Controller** 命令來確認是否有支援 Device self-test。
+說明 : 發送 **Identify Controller** 命令來確認是否有支援 Device Self-Test。
 
 - Controller Attributes (CTRATT) :
   - 318 Bytes : Bit 0
@@ -86,6 +89,7 @@ DRAM 作用是來做資料的緩存，或許會存放了部分代碼和重要的
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_DSTO.png)
 
 ~~~shell
+# 待確認
 nvme id-ctrl /dev/nvme0 | grep DSTO
 ~~~
 
@@ -96,6 +100,27 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 
 
 ~~~shell
+# 待確認
+~~~
+
+
+
+## 查看 (Extended) 指定時間
+
+說明 : 發送 **Identify Controller** 命令來確認 Extended Self-Test 需要多少時間內完成測試。
+
+> 備註 : 如果沒有控制器沒有支援，這個欄位就是保留狀態。
+
+Controller Attributes (CTRATT) :
+
+- 317:316 Bytes :  Extended Device Self-test Time (EDSTT)
+  - 欄位需要轉換成 10 進制換算
+
+
+
+~~~shell
+# 待確認
+nvme id-ctrl /dev/nvme0 | grep EDSTT
 ~~~
 
 
