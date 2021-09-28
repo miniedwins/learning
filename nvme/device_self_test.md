@@ -39,6 +39,17 @@
 * 回到先前自檢未完成的操作項目，這部份可以由廠商定義
 * 未完成的操作項目，應當重新清除，然後再重新測試
 
+**中斷自檢操作命令如下 :**
+
+* shall be aborted by **a Format NVM**
+* shall be aborted when **a sanitize operation is started**
+* shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
+* may be aborted if the specified **namespace is removed** from the namespace inventory.
+
+**Format NVM command Aborting a Device Self-Test Operation**
+
+
+
 
 
 ## 自檢說明
@@ -160,22 +171,6 @@ nvme id-ctrl /dev/nvme0 | grep EDSTT
 ~~~
 
 
-
-一.Device self-test命令在Command DW 10字段中定義了診斷的操作類型，而所有其他命令指定的字段都要保留。
-
-![img](https://files.sekorm.com/opt/fileStore/cms/nps/editor/20210521/1621582300536061353th.png)
-
-
-
-如上圖所示，目前支持的操作類型有4種，
-
-1.開始一個短診斷操作；短診斷的完成時間不能大於2min。
-
-2.開始一個長診斷操作；長診斷的完成時間由Identify Controller的字段EDSTT定義，單位是分鐘。
-
-3.開始一個廠商自定義操作;
-
-4.中斷一個診斷操作;
 
 
 
