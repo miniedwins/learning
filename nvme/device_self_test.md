@@ -105,6 +105,11 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 說明 : 
 
 ~~~shell
+# short self-test
+nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=1
+
+# extended self-test
+nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=2
 ~~~
 
 
