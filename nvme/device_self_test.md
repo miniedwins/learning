@@ -32,7 +32,12 @@
 * 一個自檢測試 (extended self-test) 會依據 EDSTT 所指定的時間內完成測試
   * EDSTT : Extended Device Self Test Time (單位 : 分鐘)
 * 檢的進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
-* 
+
+**當自檢 (Extended Self-Test) 時發生 Controller Level Reset，應當會有下列的運作行為 :**
+
+* 控制器重置或是任何電源重新上斷電執行完成後，需要回到先前自檢的操作
+* 回到先前自檢未完成的操作項目，這部份可以由廠商定義
+* 未完成的操作項目，應當重新清除，然後再重新測試
 
 
 
@@ -95,9 +100,18 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 
 
 
+## 發送自檢測試命令
+
+說明 : 
+
+~~~shell
+~~~
+
+
+
 ## 查看自檢日誌
 
-
+說明 : 
 
 ~~~shell
 # 待確認
