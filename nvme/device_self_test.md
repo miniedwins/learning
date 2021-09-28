@@ -102,14 +102,32 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 
 ## 發送自檢測試命令
 
-說明 : 
+說明 : 指定 Namespace Id 以及 Self-test Code (STC)，發送自檢命令給控制器執行操作。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/device_self_test_dw_10.png)
+
+備註 :  Device Self-test Namespace Test Action
+
+* 需要指定哪個 Namespace Id 做為自檢測試
+* 若是指定無效的 ID 或是當前 NS 是在 inactive 的狀態，控制器會 Abort 命令
+
+
 
 ~~~shell
-# short self-test
+# 待確認
+# Short self-test
 nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=1
 
-# extended self-test
+# Extended self-test
 nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=2
+~~~
+
+說明 : 停止自檢操作命令
+
+~~~shell
+# 待確認
+# Abort the device self-test
+nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 ~~~
 
 
@@ -124,16 +142,16 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=2
 
 
 
-## 查看 (Extended) 指定時間
+## 查看 EDSTT 測試時間
 
-說明 : 發送 **Identify Controller** 命令來確認 Extended Self-Test 需要多少時間內完成測試。
+說明 : 發送 **Identify Controller** 命令來確認 **Extended Self-Test** 需要多少時間內完成測試。
 
 > 備註 : 如果沒有控制器沒有支援，這個欄位就是保留狀態。
 
 Controller Attributes (CTRATT) :
 
 - 317:316 Bytes :  Extended Device Self-test Time (EDSTT)
-  - 欄位需要轉換成 10 進制換算
+  - 欄位需要轉換成 10 進制，取得真正的測試時間
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_EDSTT.png)
 
