@@ -152,6 +152,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 ~~~shell
 # 待確認
+nvme self-test-log /dev/nvme0
 ~~~
 
 
