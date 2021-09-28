@@ -148,11 +148,39 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 ## 查看自檢日誌
 
-說明 : 
+說明 : 日誌格式，可以讓我們知道自檢運行的進度以及結果。
+
+* 一個日誌總共佔 (28 bytes)，控制器可以儲存 20 條日誌訊息，所以總共日誌資料為 563 Bytes
+* 若是超過最大儲存，理應當覆蓋 **(最舊)** 的日誌，並且維持在 **(最新)** 的日誌訊息
+
+日誌內容說明 : 
+
+* Current Device Self-Test Operation : 代表屬於那一種自檢測試
+* Current Device Self-Test Completion : 測試進度百分比
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test.png)
 
 ~~~shell
 # 待確認
 nvme self-test-log /dev/nvme0
+~~~
+
+日誌結果 :
+
+~~~shell
+# 待確認
+~~~
+
+若是要取得更詳細的資訊 (搭配 SPEC 找出相對欄位的描述內容)，需要執行下列命令 : 
+
+~~~shell
+# 待確認
+~~~
+
+日誌結果 :
+
+~~~shell
+# 待確認
 ~~~
 
 
