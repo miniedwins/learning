@@ -111,7 +111,7 @@ nvme id-ctrl /dev/nvme0 | grep DSTO
 * 需要指定哪個 Namespace Id 做為自檢測試
 * 若是指定無效的 ID 或是當前 NS 是在 inactive 的狀態，控制器會 Abort 命令
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/device_self_test_namespace_test_action.png)
 
 ~~~shell
 # 待確認
