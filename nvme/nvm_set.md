@@ -32,8 +32,8 @@ Set是一組Flash LUN的集合，所以稱之為一個Set。比如說我們可�
 發送命令 : 
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-nvme id-ctrl | grep CTRATT
+# 沒有樣品測試，尚未驗證命令是否有誤!
+nvme id-ctrl | grep ctratt
 ~~~
 
 
@@ -49,8 +49,8 @@ nvme id-ctrl | grep CTRATT
 發送命令 :
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-nvme id-ctrl | grep NSETIDMAX
+# 沒有樣品測試，尚未驗證命令是否有誤!
+nvme id-ctrl | grep nestidmax
 ~~~
 
 
@@ -64,7 +64,7 @@ nvme id-ctrl | grep NSETIDMAX
 發送命令 : 
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+# 沒有樣品測試，尚未驗證命令是否有誤!
 nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
 ~~~
 
@@ -79,7 +79,7 @@ nvme create-ns /dev/nvme0 -s 976773168 -c 976773168 -f 0 -d 0 -m 0 -i 1
 發送命令 :
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
+# 沒有樣品測試，尚未驗證命令是否有誤!
 
 # for human readable format
 nvme id-nvmset /dev/nvme0
@@ -99,8 +99,7 @@ nvme id-nvmset /dev/nvme0 --output-format=binary > id_nvmset.raw
 發送命令 :
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-
+# 沒有樣品測試，尚未驗證命令是否有誤!
 nvme id-ns /dev/nvme0 | grep nvmsetid
 ~~~
 
@@ -115,7 +114,6 @@ nvme id-ns /dev/nvme0 | grep nvmsetid
 發送命令 : 
 
 ~~~shell
-# 備註: 沒有樣品測試，尚未驗證命令是否有誤!
-
+# 沒有樣品測試，尚未驗證命令是否有誤!
 nvme id-ns /dev/nvme0 | grep endgid
 ~~~

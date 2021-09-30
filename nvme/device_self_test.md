@@ -109,8 +109,8 @@ DRAM 作用是來做資料的緩存，或許會存放了部分代碼和重要的
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_DSTO.png)
 
 ~~~shell
-# 待確認
-nvme id-ctrl /dev/nvme0 | grep DSTO
+nvme id-ctrl /dev/nvme0 | grep dsto
+# dsto: 1
 ~~~
 
 
@@ -161,26 +161,89 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test.png)
 
 ~~~shell
-# 待確認
-nvme self-test-log /dev/nvme0
+nvme self-test-log /dev/nvme0 -o "normal"
+nvme self-test-log /dev/nvme0 -o "json"
 ~~~
 
 日誌結果 :
 
 ~~~shell
-# 待確認
+Device Self Test Log for NVME device:nvme0
+Current operation  : 0
+Current Completion : 0%
+Self Test Result[0]:
+  Operation Result             : 0
+  Self Test Code               : 2
+  Valid Diagnostic Information : 0
+  Power on hours (POH)         : 0x288
+  Vendor Specific              : 0 0
+Self Test Result[1]:
+  Operation Result             : 0
+  Self Test Code               : 1
+  Valid Diagnostic Information : 0
+  Power on hours (POH)         : 0x288
+  Vendor Specific              : 0 0
+Self Test Result[2]:
+  Operation Result             : 0
+  Self Test Code               : 1
+  Valid Diagnostic Information : 0
+  Power on hours (POH)         : 0x288
+  Vendor Specific              : 0 0
+Self Test Result[3]:
+  Operation Result             : 0xf
+Self Test Result[4]:
+  Operation Result             : 0xf
+Self Test Result[5]:
+  Operation Result             : 0xf
+...
+Self Test Result[20]:
+  Operation Result             : 0xf
 ~~~
 
 若是要取得更詳細的資訊 (搭配 SPEC 找出相對欄位的描述內容)，需要執行下列命令 : 
 
 ~~~shell
-# 待確認
+nvme self-test-log /dev/nvme0 -o "binary" > self_test.log
+
+# show binary log
+hexdump -C -n 512 self_test.log
 ~~~
 
 日誌結果 :
 
 ~~~shell
-# 待確認
+00000000  00 00 00 00 20 00 00 00  88 02 00 00 00 00 00 00  |.... ...........|
+00000010  01 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000020  10 00 00 00 88 02 00 00  00 00 00 00 01 00 00 00  |................|
+00000030  00 00 00 00 00 00 00 00  00 00 00 00 10 00 00 00  |................|
+00000040  88 02 00 00 00 00 00 00  01 00 00 00 00 00 00 00  |................|
+00000050  00 00 00 00 00 00 00 00  0f 00 00 00 00 00 00 00  |................|
+00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000070  00 00 00 00 0f 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000080  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000090  0f 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000000a0  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
+000000b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000000c0  00 00 00 00 00 00 00 00  0f 00 00 00 00 00 00 00  |................|
+000000d0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000000e0  00 00 00 00 0f 00 00 00  00 00 00 00 00 00 00 00  |................|
+000000f0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000100  0f 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000110  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
+00000120  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000130  00 00 00 00 00 00 00 00  0f 00 00 00 00 00 00 00  |................|
+00000140  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000150  00 00 00 00 0f 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000170  0f 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000180  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
+00000190  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001a0  00 00 00 00 00 00 00 00  0f 00 00 00 00 00 00 00  |................|
+000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001c0  00 00 00 00 0f 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001d0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001e0  0f 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001f0  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
 ~~~
 
 
@@ -199,8 +262,8 @@ Controller Attributes (CTRATT) :
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_EDSTT.png)
 
 ~~~shell
-# 待確認
-nvme id-ctrl /dev/nvme0 | grep EDSTT
+nvme id-ctrl /dev/nvme0 | grep edstt
+# edstt: 5
 ~~~
 
 

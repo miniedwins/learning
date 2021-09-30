@@ -51,24 +51,7 @@ class Singleton(type):
             return self.__instance
         else:
             return self.__instance
-~~~
 
-另外一種創建方式
-
-~~~python
-    def __call__(self, *args, **kwargs):
-        if self.__instance is None:
-			obj = object.__new__(self) # object.__new__ 方法會建立 Foo instance
-            obj.__init__(*args, **kwargs) # 得到建立的 instance，然後再進行物件初始化
-            self.__instance = obj # 在物件傳遞給內部屬性 self.__instance
-            return self.__instance
-        else:
-            return self.__instance
-~~~
-
-只要創建 instance，就會呼叫元類別的 `__call__` 方法
-
-~~~python
 class Foo(metaclass=Singleton):
     def __init__(self, name):
         self.name = name
@@ -82,9 +65,15 @@ if __name__ == '__main__':
     print(foo1.__dict__)
 ~~~
 
+另外一種創建方式 : 只要創建 instance，就會呼叫元類別的 `__call__` 方法
 
-
-
-
-
-
+~~~python
+    def __call__(self, *args, **kwargs):
+        if self.__instance is None:
+			obj = object.__new__(self) # object.__new__ 方法會建立 Foo instance
+            obj.__init__(*args, **kwargs) # 得到建立的 instance，然後再進行物件初始化
+            self.__instance = obj # 在物件傳遞給內部屬性 self.__instance
+            return self.__instance
+        else:
+            return self.__instance
+~~~

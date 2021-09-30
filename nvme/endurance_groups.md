@@ -35,7 +35,7 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 ~~~shell
 # 備註: 尚未驗證命令是否有誤 !!!
 
-nvme id-ctrl | grep CTRATT
+nvme id-ctrl | grep ctratt
 ~~~
 
 
@@ -53,7 +53,7 @@ nvme id-ctrl | grep CTRATT
 ~~~shell
 # 備註: 尚未驗證命令是否有誤 !!!
 
-nvme id-ctrl | grep ENDGIDMAX
+nvme id-ctrl | grep endgidmax
 ~~~
 
 

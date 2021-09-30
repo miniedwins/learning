@@ -24,7 +24,7 @@
 
 ~~~shell
 nvme id-ctrl /dev/nvme0 -H | grep vwc
-vwc     : 0x1
+vwc     : 0x7
 ~~~
 
 
@@ -40,21 +40,21 @@ vwc     : 0x1
 
 ~~~shell
 nvme set-feature -f 0x06 -v 0x00 /dev/nvme0
-set-feature:06 (Volatile Write Cache), value:0x000000
+set-feature:0x06 (Volatile Write Cache), value:00000000, cdw12:00000000, save:0
 ~~~
 
 ### 啟用 Write Cache
 
 ~~~shell
 nvme set-feature -f 0x06 -v 0x01 /dev/nvme0
-set-feature:06 (Volatile Write Cache), value:0x000001
+set-feature:0x06 (Volatile Write Cache), value:0x00000001, cdw12:00000000, save:0
 ~~~
 
 ### 查詢當前的狀態
 
 ~~~shell
-# 結果待確認
 nvme get-feature -f 0x06 /dev/nvme0
+get-feature:0x06 (Volatile Write Cache), Current value:0x00000001
 ~~~
 
 
