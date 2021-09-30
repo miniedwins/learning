@@ -180,7 +180,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 說明 : 主要觀察這兩個項目，其它在參考圖示說明
 
 * Device Self-test Status : 自檢測試的類型與結果
-* Segment Number : 哪個測試項目發生錯誤
+* Segment Number : 發生自檢錯誤，是哪個測試項目錯誤
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_01.png)
 
@@ -285,11 +285,13 @@ nvme get-log -i 0x06 -l 563
 
 說明 : 
 
-* 當前因為沒有在運行自檢測試，狀態都為 **0x00**
+* 當前因為沒有在運行自檢測試，狀態均為 **00**
 * 主要觀察日誌的重點 
-  * Device Self-test Status : 測試的結果，成功或者失敗
-  * Segment Number : 若是測試失敗，會是在哪個項目出錯
-  * Namespace Identifier : 若是有指定一個以上的 NS，發生在哪一個 NS Id
+  * Device Self-test Status : 0x20 
+    * 自檢類型 : Extended device self-test
+    * 自檢結果 : 沒有發生錯誤
+  * Segment Number : 0x00 (代表成功)
+  * Namespace Identifier : 0x01 (指定哪一個 NS Id 測試)
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/self_test_log_description.png)
 
