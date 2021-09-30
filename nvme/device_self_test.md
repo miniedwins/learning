@@ -174,7 +174,9 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 **Self-test Result Data Structure**
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_01.png)
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_02.png)
 
 ~~~shell
 # NORMAL 格式輸出
