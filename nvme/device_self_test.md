@@ -267,6 +267,10 @@ hexdump -C -n 512 self_test.log
 000001f0  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
 ~~~
 
+下面截圖使用上面日誌結果說明對應關係，第二個到最後一個日誌以此類推 : 
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/self_test_log_description.png)
+
 
 
 ## 查看 EDSTT 測試時間
