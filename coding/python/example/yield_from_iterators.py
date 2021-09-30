@@ -5,8 +5,8 @@ def gen_opener():
 
 def yield_from_opener(iterators):
     for it in iterators:    	
-        # yield from 語句，它將 yield 操作代理到父生成器上去。 
-        # yield from it 簡單的返回生成器 it 所產生的所有值
+        # 它將 yield 操作代理到父生成器上去
+        # 簡單的返回生成器 it 所產生的所有值
         yield from it 
 
 

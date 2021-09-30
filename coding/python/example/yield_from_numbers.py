@@ -4,7 +4,7 @@ def gen_number():
 
 
 def yield_from_numbers(iterators):    
-    # yield from it 返回生成器 it 所產生的所有值
+    # 返回生成器 it 所產生的所有值
     yield from iterators
 
 
