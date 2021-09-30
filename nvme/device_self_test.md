@@ -10,7 +10,7 @@
 
 * suspend the device self-test operation  (暫停目前的自檢操作)
 * process and complete that command (處理收到的命令，並完成命令執行)
-* resume the device self-test operation (回到剛剛自檢的操作)
+* resume the device self-test operation (回到剛剛自檢的操作項目)
 
 > 備註 : 另外控制器若是沒有自檢，可能會造成效能降低的問題。
 
@@ -31,7 +31,7 @@
 
 * 一個自檢測試 (extended self-test) 會依據 EDSTT 所指定的時間內完成測試
   * EDSTT : Extended Device Self Test Time (單位 : 分鐘)
-* 檢的進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
+* 檢測進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
 
 **當自檢 (Extended Self-Test) 時發生 Controller Level Reset，應當會有下列的運作行為 :**
 
@@ -39,14 +39,15 @@
 * 回到先前自檢未完成的操作項目，這部份可以由廠商定義
 * 未完成的操作項目，應當重新清除，然後再重新測試
 
-**中斷自檢操作命令如下 :**
+**什麼命令會中斷自檢動作 :**
 
 * shall be aborted by **a Format NVM**
   * 收到 Format NVM 命令
 * shall be aborted when **a sanitize operation is started**
   * 開始執行 Sanitize 操作已經開始
 * shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
-  * STC 欄位為 device self-test 命令參數，若是被設定成 **0xFh**，代表是停止自檢測試
+  * 發送 device self-test 命令，需要設定 **STC** 欄位參數，它是用來設定哪個測試類型 (e.g., short, extended, and stop)
+  * 若是被設定成 **0xFh**，代表是停止自檢測試
 * may be aborted if the specified **namespace is removed** from the namespace inventory.
   * 若是指定的 Namespace 已經被控制器移除
 
@@ -150,18 +151,36 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 說明 : 日誌格式，可以讓我們知道自檢運行的進度以及結果。
 
-* 一個日誌總共佔 (28 bytes)，控制器可以儲存 20 條日誌訊息，所以總共日誌資料為 563 Bytes
-* 若是超過最大儲存，理應當覆蓋 **(最舊)** 的日誌，並且維持在 **(最新)** 的日誌訊息
+* 一個日誌總共佔 (28 bytes)，控制器可以儲存 20 條日誌訊息
+  * 1:0 Bytes : **永遠表示**當前自檢的類型與進度 
+  * 3:2 Bytes : 保留位元
+  * 所以 20 條日誌資料 :  28 x 20 = 560 Bytes
+  * 全部日誌總共 560 + 3 = 563 Bytes
+* 若是超過最大儲存，最後一個 (20th) 日誌會被前一個 (19th) 取代，最新自檢的日誌會放在第一個 (1st)
+
+注意事項 : 
+
+* 31:4 Bytes : 表示第一個日誌的內容
+* 563:536 Bytes : 表示最後一個日誌
 
 日誌內容說明 : 
 
 * Current Device Self-Test Operation : 代表屬於那一種自檢測試
 * Current Device Self-Test Completion : 測試進度百分比
 
+**Device Self-test Log**
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test.png)
 
+**Self-test Result Data Structure**
+
+
+
 ~~~shell
+# NORMAL 格式輸出
 nvme self-test-log /dev/nvme0 -o "normal"
+
+# JSON 格式輸出
 nvme self-test-log /dev/nvme0 -o "json"
 ~~~
 
@@ -200,12 +219,14 @@ Self Test Result[20]:
   Operation Result             : 0xf
 ~~~
 
-若是要取得更詳細的資訊 (搭配 SPEC 找出相對欄位的描述內容)，需要執行下列命令 : 
+使用 nvme-cli 所顯示的日誌結果，並不是完整的結果，若是要取得更詳細的資訊，需要執行下列命令 : 
+
+備註 : 觀看16進位的數值，需要搭配 SPEC 找出相對欄位的描述內容
 
 ~~~shell
+# 將日誌以二進位輸出到 "self_test.log" 檔案
 nvme self-test-log /dev/nvme0 -o "binary" > self_test.log
 
-# show binary log
 hexdump -C -n 512 self_test.log
 ~~~
 
