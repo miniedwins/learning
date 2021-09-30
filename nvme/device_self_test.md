@@ -179,7 +179,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 說明 : 主要觀察這兩個項目，其它在參考圖示說明
 
-* Device Self-test Status : 自檢測試的結果
+* Device Self-test Status : 自檢測試的類型與結果
 * Segment Number : 哪個測試項目發生錯誤
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_01.png)
