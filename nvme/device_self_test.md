@@ -44,7 +44,7 @@
 * shall be aborted by **a Format NVM**
   * 收到 Format NVM 命令
 * shall be aborted when **a sanitize operation is started**
-  * 開始執行 Sanitize 操作已經開始
+  * 已經開始執行 Sanitize 操作
 * shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
   * 發送 device self-test 命令，需要設定 **STC** 欄位參數，它是用來設定哪個測試類型 (e.g., short, extended, and stop)
   * 若是被設定成 **0xFh**，代表是停止自檢測試
@@ -69,7 +69,7 @@ DRAM 作用是來做資料的緩存，或許會存放了部分代碼和重要的
 
 ### Volatile Memory Backup (重要) 
 
-為了避免設備掉電影響資料遺失，必須要加入多個電容零件，保護在發生掉電後，在一定的時間內有足夠的電力將所有緩存在 DRAM 的資料刷新到 NAND Flash。
+為了避免設備掉電影響資料遺失，必須要加入多個電容零件，保護在發生掉電後，一定的時間內有足夠的電力將所有緩存在 DRAM 的資料刷新到 NAND Flash。
 
 該測試主要針對電容壽命檢測，以避免電容因為長期使用造成損壞或是容值下降不足，原因如下 : 
 
@@ -128,8 +128,9 @@ nvme id-ctrl /dev/nvme0 | grep dsto
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/device_self_test_namespace_test_action.png)
 
+說明 : 指定哪一個自檢類型。
+
 ~~~shell
-# 待確認
 # Short self-test
 nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=1
 
@@ -137,10 +138,9 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=1
 nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=2
 ~~~
 
-說明 : 停止自檢操作命令
+說明 : 停止自檢操作命令。
 
 ~~~shell
-# 待確認
 # Abort the device self-test
 nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 ~~~
