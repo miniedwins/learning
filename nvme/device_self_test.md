@@ -186,7 +186,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_02.png)
 
-nvme-cli 可以選擇那一種顯示方式，較為方便閱讀日誌。
+執行命令 : nvme-cli 可以選擇那一種顯示方式，較為方便閱讀日誌。
 
 ~~~shell
 # NORMAL 格式輸出
@@ -309,6 +309,8 @@ Controller Attributes (CTRATT) :
   - 欄位需要轉換成 10 進制，取得真正的測試時間
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_EDSTT.png)
+
+執行命令 : 
 
 ~~~shell
 nvme id-ctrl /dev/nvme0 | grep edstt
