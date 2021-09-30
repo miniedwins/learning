@@ -226,8 +226,10 @@ Self Test Result[20]:
 ~~~shell
 # 將日誌以二進位輸出到 "self_test.log" 檔案
 nvme self-test-log /dev/nvme0 -o "binary" > self_test.log
-
 hexdump -C -n 512 self_test.log
+
+# 或是直接使用 get-log
+nvme get-log -i 0x06 -l 563
 ~~~
 
 日誌結果 :
@@ -267,7 +269,9 @@ hexdump -C -n 512 self_test.log
 000001f0  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
 ~~~
 
-下面截圖使用上面日誌結果說明對應關係，第二個到最後一個日誌以此類推 : 
+下面圖示使用上面日誌結果說明對應關係，第二個到最後一個日誌以此類推
+
+說明 : 當前因為沒有在運行自檢測試，狀態都為 **0x00**
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/self_test_log_description.png)
 
