@@ -163,12 +163,12 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 * 31:4 Bytes : 表示第一個日誌的內容
 * 563:536 Bytes : 表示最後一個日誌
 
-日誌內容說明 : 
-
-* Current Device Self-Test Operation : 代表屬於那一種自檢測試
-* Current Device Self-Test Completion : 測試進度百分比
-
 **Device Self-test Log**
+
+說明 (Self-test Log) : 
+
+* Current Device Self-Test Operation : 目前執行那一種自檢測試
+* Current Device Self-Test Completion : 目前測試進度百分比
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test.png)
 
@@ -178,6 +178,8 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_02.png)
 
+nvme-cli 可以選擇那一種顯示方式，較為方便閱讀日誌。
+
 ~~~shell
 # NORMAL 格式輸出
 nvme self-test-log /dev/nvme0 -o "normal"
@@ -186,7 +188,9 @@ nvme self-test-log /dev/nvme0 -o "normal"
 nvme self-test-log /dev/nvme0 -o "json"
 ~~~
 
-日誌結果 :
+日誌結果 : 
+
+注意 : 下列所輸出的結果並非日誌完整的訊息，nvme-cli 簡化了輸出結果，只挑選比較重要的內容顯示
 
 ~~~shell
 Device Self Test Log for NVME device:nvme0
@@ -221,13 +225,13 @@ Self Test Result[20]:
   Operation Result             : 0xf
 ~~~
 
-使用 nvme-cli 所顯示的日誌結果，並不是完整的結果，若是要取得更詳細的資訊，需要執行下列命令 : 
-
-備註 : 觀看16進位的數值，需要搭配 SPEC 找出相對欄位的描述內容
+若是要取得更詳細的資訊，需要執行下列命令 : 
 
 ~~~shell
 # 將日誌以二進位輸出到 "self_test.log" 檔案
 nvme self-test-log /dev/nvme0 -o "binary" > self_test.log
+
+# 使用 hexdump 命令，它會以16進位的方式顯示
 hexdump -C -n 512 self_test.log
 
 # 或是直接使用 get-log
@@ -273,7 +277,13 @@ nvme get-log -i 0x06 -l 563
 
 下面圖示使用上面日誌結果說明對應關係，第二個到最後一個日誌以此類推
 
-說明 : 當前因為沒有在運行自檢測試，狀態都為 **0x00**
+說明 : 
+
+* 當前因為沒有在運行自檢測試，狀態都為 **0x00**
+* 主要觀察日誌的重點 
+  * Device Self-test Status : 測試的結果，成功或者失敗
+  * Segment Number : 若是測試失敗，會是在哪個項目出錯
+  * Namespace Identifier : 若是有指定一個以上的 NS，發生在哪一個 NS Id
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/self_test_log_description.png)
 
@@ -296,17 +306,3 @@ Controller Attributes (CTRATT) :
 nvme id-ctrl /dev/nvme0 | grep edstt
 # edstt: 5
 ~~~
-
-
-
-三.觸發自檢命令之後，FW會按照相應的序列順序執行，命令運行的情況在device self-test log中顯示，這個log可通過get log page命令的LID=6來獲取。
-
-1.Current Device Self-Test Operation 表示當前的診斷操作類型
-
-2.Current Device Self-Test Completion 表示當前的診斷操作進度
-
-3.Self-test Result Data Structure 總共有20條記錄，記錄了歷史的自檢結果，主要關注兩個點：
-
-●Device Self-test Status:這裡顯示了自檢的結果，成功或者失敗。
-
-● Segment Number:這裡顯示了失敗在哪個序列操作。
