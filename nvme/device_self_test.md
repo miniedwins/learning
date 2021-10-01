@@ -128,7 +128,7 @@ nvme id-ctrl /dev/nvme0 | grep dsto
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/device_self_test_namespace_test_action.png)
 
-說明 : 指定哪一個自檢類型。
+說明 : 指定哪一個自檢測試類型，只少會有兩個類型可以設定。
 
 ~~~shell
 # Short self-test
@@ -186,7 +186,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_self_test_result_data_structure_02.png)
 
-執行命令 : nvme-cli 可以選擇那一種顯示方式，較為方便閱讀日誌。
+執行命令 : `nvme-cli` 可以選擇那一種顯示方式，較為方便閱讀日誌。
 
 ~~~shell
 # NORMAL 格式輸出
@@ -196,7 +196,17 @@ nvme self-test-log /dev/nvme0 -o "normal"
 nvme self-test-log /dev/nvme0 -o "json"
 ~~~
 
-日誌結果 :  下列每一條日誌所輸出的結果並非日誌完整的訊息，nvme-cli 只挑選比較重要的內容顯示。
+日誌結果 :  下列每一條日誌所輸出的結果並非日誌完整的訊息，`nvme-cli` 只挑選比較重要的內容顯示。
+
+* 這兩個都數值都為零，代表當前並沒有任何自檢測試在運行
+  * Current operation  : 0
+  * Current Completion : 0%
+* Self Test Result [0] 代表第一條日誌，以此類推
+  * Operation Result : 0  (測試的結果，0 : 代表沒有發生錯誤)
+  * Self Test Code : 2  (Extended Self Test)
+  * Valid Diagnostic Information : 0 (疑問 : 不清楚想表達的意義)
+  * Power on hours (POH)  : 0x288  (執行第一次自檢測試，總共上電多少個小時)
+  * Vendor Specific : 0 0 (未確定 : 應該表示廠商自定義的自檢測試)
 
 ~~~shell
 Device Self Test Log for NVME device:nvme0
@@ -231,7 +241,7 @@ Self Test Result[20]:
   Operation Result             : 0xf
 ~~~
 
-若是要取得更詳細的資訊，需要執行下列命令 : 
+若是要取得完整的資訊，需要輸出二進制檔案，然後再使用 `hexdump` 查看，執行命令如下 : 
 
 ~~~shell
 # 將日誌以二進位輸出到 "self_test.log" 檔案
@@ -281,12 +291,12 @@ nvme get-log -i 0x06 -l 563
 000001f0  00 00 00 00 00 00 00 00  00 00 00 00 0f 00 00 00  |................|
 ~~~
 
-下面圖示使用上面日誌結果說明對應關係，第二個到最後一個日誌以此類推。
+下面圖示使用上面日誌結果說明對應關係，僅描述第一個日誌內容，第二個到最後一個日誌以此類推查看。
 
 說明 : 
 
-* 當前因為沒有在運行自檢測試，狀態均為 **00**
-* 主要觀察日誌的重點 
+* 當前因為沒有在運行自檢測試，狀態均為 **0x00**
+* 主要觀察日誌的重點
   * Device Self-test Status : 0x20 
     * 自檢類型 : Extended device self-test
     * 自檢結果 : 沒有發生錯誤
