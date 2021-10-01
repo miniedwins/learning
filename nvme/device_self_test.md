@@ -205,7 +205,7 @@ nvme self-test-log /dev/nvme0 -o "json"
   * Operation Result : 0  (測試的結果，0 : 代表沒有發生錯誤)
   * Self Test Code : 2  (Extended Self Test)
   * Valid Diagnostic Information : 0 (疑問 : 不清楚想表達的意義)
-  * Power on hours (POH)  : 0x288  (執行第一次自檢測試，總共上電多少個小時)
+  * Power on hours (POH)  : 0x288  (執行第一次自檢測試開始，到現在 `SSD` 總共上電多少個小時)
   * Vendor Specific : 0 0 (未確定 : 應該表示廠商自定義的自檢測試)
 
 ~~~shell
