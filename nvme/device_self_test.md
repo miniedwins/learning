@@ -47,7 +47,7 @@
   * 已經開始執行 Sanitize 操作
 * shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
   * 發送 device self-test 命令，需要設定 **STC** 欄位參數，它是用來設定哪個測試類型 (e.g., short, extended, and stop)
-  * 若是被設定成 **0xFh**，代表是停止自檢測試
+  * 若是被設定成 `0xFh`，代表是停止自檢測試
 * may be aborted if the specified **namespace is removed** from the namespace inventory.
   * 若是指定的 Namespace 已經被控制器移除
 
@@ -152,7 +152,7 @@ nvme device-self-test /dev/nvme0 --namespace-id=1 --self-test-code=0xf
 說明 : 日誌格式，可以讓我們知道自檢運行的進度以及結果。
 
 * 一個日誌總共佔 (28 bytes)，控制器可以儲存 20 條日誌訊息
-  * 1:0 Bytes : **(永遠表示)** 當前自檢的類型與進度 
+  * 1:0 Bytes : 永遠表示當前自檢的類型與進度 
   * 3:2 Bytes : 保留位元
   * 全部日誌資料 :  3 + 560 (28 x 20) = 563 Bytes
 * 若是超過最大儲存，最後一個 (20th) 日誌會被前一個 (19th) 取代，最新自檢的日誌會放在第一個 (1st)
@@ -205,8 +205,8 @@ nvme self-test-log /dev/nvme0 -o "json"
   * Operation Result : 0  (測試的結果，0 : 代表沒有發生錯誤)
   * Self Test Code : 2  (Extended Self Test)
   * Valid Diagnostic Information : 0 (疑問 : 不清楚想表達的意義)
-  * Power on hours (POH)  : 0x288  (執行第一次自檢測試開始，到現在 `SSD` 總共上電多少個小時)
-  * Vendor Specific : 0 0 (未確定 : 應該表示廠商自定義的自檢測試)
+  * Power on hours (POH)  : `0x288`  (執行第一次自檢測試開始，到現在 `SSD` 總共上電多少個小時)
+  * Vendor Specific : `0 0` (未確定 : 應該表示廠商自定義的自檢測試)
 
 ~~~shell
 Device Self Test Log for NVME device:nvme0
@@ -295,13 +295,13 @@ nvme get-log -i 0x06 -l 563
 
 說明 : 
 
-* 當前因為沒有在運行自檢測試，狀態均為 **0x00**
+* 當前因為沒有在運行自檢測試，狀態均為 `0x00`
 * 主要觀察日誌的重點
-  * Device Self-test Status : 0x20 
+  * Device Self-test Status : `0x20`
     * 自檢類型 : Extended device self-test
     * 自檢結果 : 沒有發生錯誤
-  * Segment Number : 0x00 (代表成功)
-  * Namespace Identifier : 0x01 (指定哪一個 NS Id 測試)
+  * Segment Number : `0x00` (代表成功)
+  * Namespace Identifier : `0x01` (指定哪一個 NS Id 測試)
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/self_test_log_description.png)
 
