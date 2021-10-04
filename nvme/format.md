@@ -8,6 +8,11 @@
 
 Secure Erase 是透過 `format NVM` 命令執行操作，是使用低階 (low level) 的方式清除 NVM media，因此它會破壞資料 (data) 以及元數據 (metadata)，我們可以指定所有的 namespaces 或是個別指定 namespace 的資料被清除。
 
+**注意事項 :** 
+
+* 如果某一個 NS 正在執行 I/O ，若是發送 `format NVM` 命令，則該命令可能會被 `aborted`
+* 如果 `format NVM` 命令正在執行中，若是提交 I/O 命令 ，則該命令可能會被 `aborted`
+
 
 
 ### 支援兩種格式化類型 
