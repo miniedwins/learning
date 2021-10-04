@@ -38,7 +38,7 @@ Secure Erase 是透過 `format NVM` 命令執行操作，是使用低階 (low le
 
 Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決定 `format NVM` 操作行為。
 
-如下圖所示，FNA Bit 數值會對應所指定 NSID，執行不同的 format operation，例如 : `FNA=1` 代表可以進行任何 `allocated namespaces` 的一個或是所有 NS 的格式化操作。
+如下圖所示，FNA Bit 數值會對應所指定 NSID，執行不同的 format operation，例如 : `FNA=1` 代表可以進行任何 `allocated namespaces` 的任一個或是所有 NS 的格式化操作。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/format_nvm_operation_scope.png)
 
