@@ -28,8 +28,8 @@ print(position) # 3
 
 `bisect_left` 和 `bisect_right` 函數，若是遇到相同的數值，找到第一個相同的數值，然後以下動作 :
 
-* bisect_left : 返回原先數值的前面
-* bisect_right :  返回原先數值的後面
+* bisect_left : 返回重複數值前面的位置
+* bisect_right :  返回重複數值後面的位置
 
 ~~~python
 # 返回從左邊開始計算插入的位置
