@@ -67,6 +67,8 @@ bisect.insort_right(data, 12) # [5, 6, 12, 12, 12, 25]
 
 ### 查詢最後一次出現的數值
 
+Example : [bisect_binary_search.py](https://github.com/miniedwins/learning/blob/main/coding/python/example/bisect_binary_search.py)
+
 ~~~python
 from bisect import bisect_right
 
