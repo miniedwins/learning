@@ -3,7 +3,7 @@ from bisect import bisect_right
 def binary_search(data, value):
     position = bisect_right(data, value)
     if data[position - 1] == value:
-        return (position - 1) # 有找到後回傳該位置
+        return (position - 1)
     else:
         return False
 
