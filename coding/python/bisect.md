@@ -32,10 +32,7 @@ print(position) # 3
 * bisect_right :  返回重複數值後面的位置
 
 ~~~python
-# 返回從左邊開始計算插入的位置
 bisect.bisect_left(data, 12) # 2
-
-# 返回從右邊開始計算插入的位置
 bisect.bisect_right(data, 12) # 3
 ~~~
 
