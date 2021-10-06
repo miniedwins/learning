@@ -22,6 +22,7 @@ data.sort() # [5, 6, 12, 25]
 它的目的是找出該數值會插入到哪個位置中，並且返回該位置，但是不會真正的將數值插入，這點必須要注意。
 
 ~~~python
+import bisect
 position = bisect.bisect(data, 20)
 print(position) # 3
 ~~~
