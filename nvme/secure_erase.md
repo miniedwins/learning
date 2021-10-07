@@ -20,7 +20,7 @@
 ### 格式化類型 
 
 * `User Data Erase` : 移除使用者所有的資料 (NVM Subsystem)
-* `Cryptographic Erase` : 透過刪除加密的金鑰方式移除使用者的資料 (前提 : 使用者的資料必須要被加密)
+* `Cryptographic Erase` : 透過刪除加密的金鑰方式移除 (前提 : 使用者的資料必須要被加密)
 
 
 
@@ -36,7 +36,18 @@ Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決
 
 ### 如何區別  Sanitize
 
-`sanitize` 是專門在清除資料的一個命令，`format NVM` 除了可以清除資料外，它還可以設定 NS 相關屬性功能。
+說明 : `sanitize` 是專門在清除資料的一個命令，`format NVM` 除了可以清除資料外，它還可以設定 NS 相關屬性功能。
+
+**Format NVM  還可以做什麼設定 :**
+
+* Protection Information Location
+* Protection Information : Type 1/2/3 
+* Metadata Settings
+* LBA Format
+
+> 備註 : 以上設定必須要參考 Protection Information 相關資料
+
+**基本操作的不同點 :** 
 
 * `format NVM` : 可以對多個 NS 或是指定單一個 NS 執行操作
 * `sanitize` : 它是針對所有的 Namespaces 執行操作
