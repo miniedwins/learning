@@ -24,7 +24,7 @@
 
 ## 自檢類型
 
-自檢分成兩個類型，如下說明 : 
+主要分成兩個類型，如下說明 : 
 
 ### short device self-test
 
@@ -36,6 +36,12 @@
 * 一個自檢測試 (extended self-test) 會依據 EDSTT 所指定的時間內完成測試
   * EDSTT : Extended Device Self Test Time (單位 : 分鐘)
 * 檢測進度與測試的情況，可以從 Device Self-Test 日誌取得資訊內容
+
+
+
+## 自檢中斷
+
+自檢是一個在背景執行的動作，若是主機端在自檢過程中執行發出特殊命令給控制器，此時就會造成自檢中斷。
 
 **當自檢 (Extended Self-Test) 時發生 Controller Level Reset，應當會有下列的運作行為 :**
 
@@ -57,11 +63,13 @@
 
 **Format NVM command Aborting a Device Self-Test Operation**
 
+下圖描述當自檢過程中遇到 `format NVM` 命令，是否需要停止自檢測試。
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/device_self_test_aborting_operation.png)
 
 
 
-## 自檢說明
+## 自檢項目說明
 
 ### DRAM Check
 
