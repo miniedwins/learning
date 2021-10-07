@@ -85,7 +85,7 @@ nvme id-ctrl | grep fna
 
 說明 : 這裡只說明 Secure Erase 如何執行，若是沒有指定其他功能設定， `nvme-cli ` 會使用初始設定的方式執行。
 
-![](https://github.com/miniedwins/learning/blob/main/nvme/pic/format_nvm_cmd_dw10.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/format_nvm_cmd_dw10.png)
 
 發送命令 : 
 
