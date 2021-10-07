@@ -24,23 +24,6 @@
 
 
 
-### Format NVM 屬性說明
-
-524 Bytes (FNA) : 
-
-* Bit 2 : 代表是否支援 `cryptographic erase`
-  * 0 : Don't Support
-  * 1 : Support
-* Bit 1 : 代表是否支援 `all namespaces` 或是 `particular namespace`
-  * 0 : Don't support all namespaces
-  * 1 : Supprot all namespaces
-* Bit 0 : 不翻譯，保留原文說明 
-  * 有部分內容暫時無法了解
-
-![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FNA.png)
-
-
-
 ### 格式化操作範圍 (format operation)
 
 Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決定 `format NVM` 操作行為。
@@ -53,16 +36,29 @@ Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決
 
 ### 如何區別  Sanitize
 
-* `format` : 可以對多個 NS 或是指定單一個 NS 執行操作
+`sanitize` 是專門在清除資料的一個命令，`format NVM` 除了可以清除資料外，它還可以設定 NS 相關屬性功能。
+
+* `format NVM` : 可以對多個 NS 或是指定單一個 NS 執行操作
 * `sanitize` : 它是針對所有的 Namespaces 執行操作
 
-> 備註 : Sanitize 以及 Secure Erase 都可以安全地清除 SSD 所有的資料，並且清除後的資料會永久無法恢復。
+> 備註 : Sanitize 以及 Format NVM 都可以安全地清除 SSD 所有的資料，並且清除後的資料會永久無法恢復。
 
 
 
-## 檢查控制器支援
+## 檢查 Format NVM 屬性
 
-說明 : 控制器必須要支援這個 `format NVM`，所以我們要檢查的該 `FNA`屬性功能是否有符合需求。
+說明 : 控制器必須要支援這個 `format NVM`，所以我們應該要檢查的是 `FNA` 屬性功能是否有符合需求。
+
+524 Bytes (FNA) : 
+
+* Bit 2 : 代表是否支援 `cryptographic erase`
+  * 0 : Don't Support
+  * 1 : Support
+* Bit 1 : 代表是否支援 `all namespaces` 或是 `particular namespace`
+  * 0 : Don't support all namespaces
+  * 1 : Supprot all namespaces
+* Bit 0 : 不翻譯，保留原文說明 
+  * 有部分內容暫時無法了解
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FNA.png)
 
