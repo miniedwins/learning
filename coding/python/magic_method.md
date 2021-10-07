@@ -43,7 +43,7 @@ class A2:
 
 ~~~python
 module
-	|--> __init__.py
+    |--> __init__.py
     |--> module_a.py
     |--> module_b.py
 
