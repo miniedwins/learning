@@ -34,7 +34,7 @@ Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決
 
 
 
-### 如何區別  Sanitize
+### 如何區別 Format NVM   and  Sanitize  
 
 說明 : `sanitize` 是專門在清除資料的一個命令，`format NVM` 除了可以清除資料外，它還可以設定 NS 相關屬性功能。
 
