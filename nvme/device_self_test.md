@@ -16,11 +16,15 @@
 
 **Example Device Self-test Operation (Informative)**
 
+下圖是一個自檢的範本，控制器至少需要能夠執行一系列的自我檢驗功能測試
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/device_self_test_informative.png)
 
 
 
 ## 自檢類型
+
+自檢分成兩個類型，如下說明 : 
 
 ### short device self-test
 
