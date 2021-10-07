@@ -15,7 +15,7 @@ NVM Group ID 的設置，這個可以讓SSD進行磨損均衡的管理。如果�
 
 **Endurance Group and Associated NVM Sets**
 
-![Endurance Groups](https://github.com/miniedwins/learning/blob/main/nvme/pic/Endurance_Gorup_and_Associated_NVM%20Sets.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/endurance_gorup_and_associated_nvm_sets.png)
 
 
 
