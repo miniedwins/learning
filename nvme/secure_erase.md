@@ -69,7 +69,6 @@ Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決
 發送命令 : 
 
 ~~~shell
-# 未確定
 nvme id-ctrl | grep fna
 ~~~
 
@@ -79,9 +78,15 @@ nvme id-ctrl | grep fna
 
 說明 : 這裡只說明 Secure Erase 如何執行，若是沒有指定其他功能設定， `nvme-cli ` 會使用初始設定的方式執行。
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/format_nvm_cmd_dw10.png)
+
 發送命令 : 
 
 ~~~shell
+# 使用初始設定值
 nvme format /dev/nvme0n1
+
+# 不使用 nvme-cli 初始設定值
+nvme format /dev/nvme0 --namespace-id=1 --ses=1 --pi=1
 ~~~
 
