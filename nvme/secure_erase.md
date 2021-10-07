@@ -6,7 +6,9 @@
 
 ### 內容說明
 
-`Secure Erase` 是透過 `format NVM` 命令執行操作，是使用低階 (low level) 的方式清除 NVM media，因此它會破壞資料 (data) 以及元數據 (metadata)，我們可以指定所有的 namespaces 或是個別指定 namespace 的資料被清除。不過要注意的是該命令 `format NVM` 不只有安全移除資料，還需要有其它針對 `PIL`, `PI`, `MSET`, `LBAF`屬性設定。
+`Secure Erase` 是透過 `format NVM` 命令執行操作，是使用低階 (low level) 的方式清除 NVM media，因此它會破壞資料 (data) 以及元數據 (metadata)，我們可以指定所有的 namespaces 或是個別指定 namespace 的資料被清除。
+
+不過要注意的是該命令 `format NVM` 不只有安全移除資料，是因為它也需要對 NS 設定屬性 (`PIL`, `PI`, `MSET`, `LBAF`) 。例如 : 可以想像我們必須要建立一個硬碟空間出來，需要清除資料以及設定這個空間有多少容量，還有 Block Size 等等。
 
 **注意事項 :** 
 
@@ -15,7 +17,7 @@
 
 
 
-### 支援兩種格式化類型 
+### 格式化類型 
 
 * `User Data Erase` : 移除使用者所有的資料 (NVM Subsystem)
 * `Cryptographic Erase` : 透過刪除加密的金鑰方式移除使用者的資料 (前提 : 使用者的資料必須要被加密)
@@ -60,22 +62,26 @@ Secure Erase 操作它會根據控制器 `Identify` 所支援的屬性 `FNA` 決
 
 ## 檢查控制器支援
 
-說明 : 
+說明 : 控制器必須要支援這個 `format NVM`，所以我們要檢查的該 `FNA`屬性功能是否有符合需求。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FNA.png)
 
 發送命令 : 
 
 ~~~shell
-
+# 未確定
+nvme id-ctrl | grep fna
 ~~~
 
 
 
-## 如何使用功能 
+## 如何執行 Secure Erase
 
-說明 : 
+說明 : 這裡只說明 Secure Erase 如何執行，若是沒有指定其他功能設定， `nvme-cli ` 會使用初始設定的方式執行。
 
 發送命令 : 
 
 ~~~shell
+nvme format /dev/nvme0n1
 ~~~
 
