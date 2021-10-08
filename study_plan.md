@@ -1,10 +1,12 @@
-# 學習
+# Study
 
 
 
 ## NVMe
 
-* Format and Sanitize
+* Self-Test (2021-10-01)
+* Format  NVM (2021-10-05)
+* Sanitize
 * Zoned_Namespace
 
 
@@ -19,8 +21,15 @@
 
 ## Python
 
-* Socket
+* Network
+  * Socket
+  * Select or Selectors
+  * epoll
 * RPC
+  * Zero RPC
+* Queue
+  * ZeroMQ
+  * RabbitMQ
 * Thread 
 * Process
 
@@ -31,3 +40,12 @@
 * Array
 * Queue
 * Linked list
+
+
+
+## Read Source Code
+
+* TCP SERVER
+* XML RPC 
+* ZERO RPC
+* FLASK
