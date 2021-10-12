@@ -27,8 +27,10 @@
 
 * If controller unsupported Sanitize command
   * (原文) Controller shall abort the command with a status of Invalid Field in Command.
+  * (說明) 控制器若是不支援 Sanitize 命令，當收到命令後，控制器會回覆一個不是有效的命令
 * If any Persistent Memory Region (PMR) is enabled
   * (原文) Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
+  * (說明) 當啟用 PMR 功能，Sanitize 操作會被禁止使用
 * If a firmware activation with reset is pending
   * *備註 : 不太清楚原文表達 reset 的狀態說明*
 * Activation of new firmware is prohibited during a sanitize operation
@@ -65,6 +67,8 @@ nvme id-ctrl /dev/nvme0 | grep sanicap
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/sanitize_cmd_dw10.png)
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/sanitize_cmd_dw11.png)
+
 執行命令 : 
 
 ~~~shell
@@ -76,7 +80,13 @@ nvme sanitize -a 0x02 /dev/nvme0
 
 ## 查看 Sanitize 日誌
 
-說明 : 
+說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌可以清楚的了解執行的狀態。
+
+日誌內容 :
+
+* Sanitize Progress :
+* Sanitize Status :
+* Sanitize Command Dword 10 Information :
 
 執行命令 : 
 
