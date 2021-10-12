@@ -80,7 +80,7 @@ nvme sanitize -a 0x02 /dev/nvme0
 
 ## 查看 Sanitize 日誌
 
-說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌可以清楚的了解執行的狀態。
+說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌清楚了解執行的狀態。
 
 日誌解釋 :
 
