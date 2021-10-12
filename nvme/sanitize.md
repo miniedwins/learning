@@ -82,10 +82,25 @@ nvme sanitize -a 0x02 /dev/nvme0
 
 說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌可以清楚的了解執行的狀態。
 
-日誌內容 :
+日誌解釋 :
 
-* Sanitize Progress :
-* Sanitize Status :
+* Sanitize Progress : 表示執行的進度
+  * 01:00 Bytes
+    * 執行過程中，該值會持續變動到命令執行完成，最後該值為變成 `65535` or `0xFFFFh`
+    * 可以從每次日誌所取得值，計算執行進度，如下計算方法 : 
+      * 第一次執行 : (3761 / 65535) x 100 = `5.7%`
+      * 第二次執行 : (32754 / 65535) x 100 = `49.9%`
+      * 第三次執行 : (65535 / 65535) x 100 = `100%`
+* Sanitize Status : 表示執行狀態
+  * 03:02 Bytes 
+    * 第一次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
+    * 第二次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
+    * 第三次執行 : `0x101`
+      * 7:0 Bits : `0x01` (表示 : Sanitize 操作成功)
+      * 15:8 Bits : `0x01` 
+        * NS 沒有任何資料被寫入，可以解釋資料已被清空
+        * PMR 功能沒有被啟用
+    * 如果該值是 : `0x03` (表示 : Sanitize 操作失敗)
 * Sanitize Command Dword 10 Information :
 
 執行命令 : 
