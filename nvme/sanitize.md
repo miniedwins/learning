@@ -40,7 +40,7 @@
 
 ## 檢查控制器支援
 
-說明 : 發送 **Identify Controller** 命令來確認是否支援 `Sanitize` 模式。
+說明 : 發送 **Identify Controller** 命令來確認支援哪幾種模式。
 
 Controller Attributes (CTRATT) :
 
@@ -49,18 +49,22 @@ Controller Attributes (CTRATT) :
   * `Bit1 (value=1)` : Block Erase Support 
   * `Bit2 (value=1)` : Overwrite Support
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_SANICAP_Bit0_Bit1_Bit2.png)
+
 執行命令 : 
 
 ~~~shell
 nvme id-ctrl /dev/nvme0 | grep sanicap
-# sanicap : 0x3 (代表支援三個 Erase Mode)
+# sanicap : 0x3
 ~~~
 
 
 
 ## 如何執行 Sanitize
 
-說明 : 使用 Block Erase 清除使用者資料
+說明 : 使用 `Block Erase` 模式清除使用者資料。
+
+備註 : 
 
 執行命令 : 
 
@@ -79,6 +83,48 @@ nvme sanitize -a 0x02 /dev/nvme0
 
 ~~~shell
 nvme sanitize-log /dev/nvme0
+~~~
+
+第一次執行的結果
+
+~~~shell
+Sanitize Progress                      (SPROG) :  3761
+Sanitize Status                        (SSTAT) :  0x2
+Sanitize Command Dword 10 Information (SCDW10) :  0x2
+Estimated Time For Overwrite                   :  4294967295 (No time period reported)
+Estimated Time For Block Erase                 :  4294967295 (No time period reported)
+Estimated Time For Crypto Erase                :  4294967295 (No time period reported)
+Estimated Time For Overwrite (No-Deallocate)   :  0
+Estimated Time For Block Erase (No-Deallocate) :  0
+Estimated Time For Crypto Erase (No-Deallocate):  0
+~~~
+
+第二次執行的結果
+
+~~~shell
+Sanitize Progress                      (SPROG) :  32754
+Sanitize Status                        (SSTAT) :  0x2
+Sanitize Command Dword 10 Information (SCDW10) :  0x2
+Estimated Time For Overwrite                   :  4294967295 (No time period reported)
+Estimated Time For Block Erase                 :  4294967295 (No time period reported)
+Estimated Time For Crypto Erase                :  4294967295 (No time period reported)
+Estimated Time For Overwrite (No-Deallocate)   :  0
+Estimated Time For Block Erase (No-Deallocate) :  0
+Estimated Time For Crypto Erase (No-Deallocate):  0
+~~~
+
+第三次執行的結果
+
+~~~shell
+Sanitize Progress                      (SPROG) :  65535
+Sanitize Status                        (SSTAT) :  0x101
+Sanitize Command Dword 10 Information (SCDW10) :  0x2
+Estimated Time For Overwrite                   :  4294967295 (No time period reported)
+Estimated Time For Block Erase                 :  4294967295 (No time period reported)
+Estimated Time For Crypto Erase                :  4294967295 (No time period reported)
+Estimated Time For Overwrite (No-Deallocate)   :  0
+Estimated Time For Block Erase (No-Deallocate) :  0
+Estimated Time For Crypto Erase (No-Deallocate):  0
 ~~~
 
 
