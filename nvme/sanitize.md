@@ -63,7 +63,7 @@ nvme id-ctrl /dev/nvme0 | grep sanicap
 
 備註 : `Sanitize` 是運作在背景下執行，所以執行後必須要取得日誌內容，才可以確認成功或是失敗。
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/sanitize_cmd_dw10.png)
 
 執行命令 : 
 
