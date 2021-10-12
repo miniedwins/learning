@@ -23,12 +23,12 @@
 * 暫時停止 `APST` Management，避免執行過程中進入到省電模式
 * Shall release stream identifiers for any open streams. *(備註 : 目前還不清楚 streams)*
 
-**下列的動作控制器會中止任何一個 Sanitize command** 
+**控制器會中止任何一個 Sanitize command，動作如下** 
 
 * If controller unsupported Sanitize command
-  * Controller shall abort the command with a status of Invalid Field in Command.
+  * (原文) Controller shall abort the command with a status of Invalid Field in Command.
 * If any Persistent Memory Region (PMR) is enabled
-  * Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
+  * (原文) Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
 * If a firmware activation with reset is pending
   * *備註 : 不太清楚原文表達 reset 的狀態說明*
 * Activation of new firmware is prohibited during a sanitize operation
