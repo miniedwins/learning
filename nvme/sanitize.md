@@ -14,16 +14,17 @@
 
 **當命令 (Sanitize) 開始運作的時候，控制器需要有以下動作 :** 
 
-* 清除任何一個事件 *(備註 : 還不太了解事件)*
+* 清除任何一個事件 *(備註 : 還不太了解事件如何處理)*
   * Sanitize Operation Completed asynchronous event
   * Sanitize Operation Completed With Unexpected Deallocation asynchronous event
 * 將目前執行的狀態更新到日誌中
   * *Reference : Sanitize Status log*
 * 忽略任何一個已提交過的命令或是正在執行的時候所收到的命令 
-  * *Reference : Sanitize Command Restrictions*
+  * *Reference : Sanitize Command Restrictions(內容較多，不花時間閱讀)*
 * 終止正在執行的自檢 (self-test) 操作
 * 暫時停止 `APST` Management，避免執行過程中進入到省電模式
-* Shall release stream identifiers for any open streams. *(備註 : 還不清楚內容)*
+* Shall release stream identifiers for any open streams.
+  * *備註 : 暫時還不清楚解原文說明*
 
 **下列的動作控制器會中止任何一個 Sanitize command** 
 
@@ -32,30 +33,55 @@
 * If any Persistent Memory Region (PMR) is enabled
   * Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
 * If a firmware activation with reset is pending
-  * *備註 : 暫時不了解原文的細節*
+  * *備註 : 不是很了解原文所表達的狀態說明 (reset status after commit action?)*
 * Activation of new firmware is prohibited during a sanitize operation
 
 
 
 ## 檢查控制器支援
 
-說明 : 
+說明 : 發送 **Identify Controller** 命令來確認是否支援 `Sanitize` 模式。
+
+Controller Attributes (CTRATT) :
+
+* 331:328 Bytes :  Sanitize Capabilities (SANICAP)
+  * `Bit0 (value=1)` : Crypto Erase Support 
+  * `Bit1 (value=1)` : Block Erase Support 
+  * `Bit2 (value=1)` : Overwrite Support
 
 執行命令 : 
 
 ~~~shell
+nvme id-ctrl /dev/nvme0 | grep sanicap
+# sanicap : 0x3 (代表支援三個 Erase Mode)
 ~~~
 
 
 
 ## 如何執行 Sanitize
 
+說明 : 使用 Block Erase 清除使用者資料
+
+執行命令 : 
+
+~~~shell
+# Block Erase
+nvme sanitize -a 0x02 /dev/nvme0
+~~~
+
+
+
+## 查看 Sanitize 日誌
+
 說明 : 
 
 執行命令 : 
 
 ~~~shell
+nvme sanitize-log /dev/nvme0
 ~~~
+
+
 
 
 
