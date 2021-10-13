@@ -21,9 +21,10 @@
   * *Reference : Sanitize Command Restrictions (備註 : 內容較多，不花時間閱讀)*
 * 終止正在執行的自檢 (self-test) 操作
 * 暫時停止 `APST` Management，避免執行過程中進入到省電模式
-* Shall release stream identifiers for any open streams. *(備註 : 目前還不清楚 streams)*
+* Shall release stream identifiers for any open streams. 
+  * *備註 : 目前還不清楚 streams*
 
-**控制器會中止任何一個 Sanitize command，動作如下** 
+**控制器會中止任何一個 Sanitize command，如以下動作 :**
 
 * If controller unsupported Sanitize command
   * (原文) Controller shall abort the command with a status of Invalid Field in Command.
@@ -32,8 +33,10 @@
   * (原文) Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
   * (說明) 當啟用 PMR 功能，Sanitize 操作會被禁止使用
 * If a firmware activation with reset is pending
-  * *備註 : 不太清楚原文表達 reset 的狀態說明*
+  * (原文) then the controller shall abort any Sanitize command.
+  * (說明) 執行 F/W Commit 完成後，基本上需要執行 Controller Rest，若是狀態還沒有完成，不允許執行 Sanitize 命令
 * Activation of new firmware is prohibited during a sanitize operation
+  * (說明) 禁止在操作期間內，讓新的韌體啟用
 
 
 
@@ -150,8 +153,3 @@ Estimated Time For Overwrite (No-Deallocate)   :  0
 Estimated Time For Block Erase (No-Deallocate) :  0
 Estimated Time For Crypto Erase (No-Deallocate):  0
 ~~~
-
-
-
-
-
