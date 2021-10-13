@@ -18,7 +18,7 @@
 * 將目前執行的狀態更新到日誌中
   * *Reference : Sanitize Status log*
 * 忽略任何一個已提交過的命令或是正在執行的時候所收到的命令 
-  * *Reference : Sanitize Command Restrictions (備註 : 內容較多，不花時間閱讀)*
+  * *Reference : Sanitize Command Restrictions (備註 : 內容較多)*
 * 終止正在執行的自檢 (self-test) 操作
 * 暫時停止 `APST` Management，避免執行過程中進入到省電模式
 * Shall release stream identifiers for any open streams. 
@@ -85,7 +85,7 @@ nvme sanitize -a 0x02 /dev/nvme0
 
 說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌清楚了解執行的狀態。
 
-日誌解釋 :
+日誌執行結果解析 :
 
 * Sanitize Progress : 表示執行的進度
   * 01:00 Bytes
