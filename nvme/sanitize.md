@@ -12,19 +12,22 @@
 
 **當命令 (Sanitize) 開始運作的時候，控制器需要有以下動作 :** 
 
-* 清除任何一個事件
-  * Sanitize Operation Completed asynchronous event
-  * Sanitize Operation Completed With Unexpected Deallocation asynchronous event
-  * *備註 : 還不是很熟悉事件處理的機制*
+* Shall clear any outstanding Sanitize Operation Completed asynchronous event or Sanitize Operation Completed With Unexpected Deallocation asynchronous event
+  * 主旨 : 
+    * 表示無論執行成功或是失敗，都會發出非同步事件通知主機端 *(重要)*，並且控制器會清除已所發出的事件通知
+  * 說明 : 
+    * 執行完成後會發出一個非同步通知事件告訴主機端
+    * 雖然執行完成但是失敗，也會發出一個非同步通知事件告訴主機端
 * 將目前執行的狀態更新到日誌中
   * *Reference : Sanitize Status log*
 * 忽略任何一個已提交過的命令或是正在執行的時候所收到的命令 
-  * *Reference : Sanitize Command Restrictions*
-  * *(內容較多，待續...)* 
+  * 執行過程中會中斷一些不被允許執行的命令
+  * *Reference : Sanitize Command Restrictions (內容較多，待續...)* 
 * 終止正在執行的自檢 (self-test) 操作
+* 若是遇到異常掉電，重新上電後會自動重新完成操作
 * 暫時停止 `APST Management`，避免執行過程中進入到省電模式
 * Shall release stream identifiers for any open streams. 
-  * *備註 : 還不清楚  streams 定義*
+  * *備註 : 尚未了解 streams 定義*
 
 **控制器會中止任何一個 Sanitize command，如以下動作 :**
 
@@ -97,14 +100,14 @@ nvme sanitize --sanact=0x02 /dev/nvme0
       * 第一次執行 : (3761 / 65535) x 100 = `5.7%`
       * 第二次執行 : (32754 / 65535) x 100 = `49.9%`
       * 第三次執行 : (65535 / 65535) x 100 = `100%`
-* `Sanitize Status` : 表示執行狀態
+* `Sanitize Status` : 表示執行狀態 (記錄最近一次完成的狀態)
   * 03:02 Bytes 
-    * 第一次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
-    * 第二次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
+    * 第一次執行 : `0x02` (目前正在操作 Sanitize)
+    * 第二次執行 : `0x02` (目前正在操作 Sanitize)
     * 第三次執行 : `0x101`
       * 7:0 Bits : 
         * `0x00` : 從未執行過 Sanitize 
-        * `0x01` (表示 : Sanitize 操作成功)
+        * `0x01` : Sanitize 操作成功
         * `0x03` : Sanitize 操作失敗
       * 15:8 Bits : `0x01` 
         * NS 沒有任何資料被寫入，可以解釋資料已被清空
