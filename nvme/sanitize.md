@@ -90,7 +90,7 @@ nvme sanitize --sanact=0x02 /dev/nvme0
 
 **日誌解析 (使用執行結果做說明) :**
 
-* `Sanitize Progress` : 表示執行的進度
+* `Sanitize Progress` : 表示執行進度
   * 01:00 Bytes
     * 執行過程中，該值會持續變動到命令執行完成，最後該值為 `65535` or `0xFFFFh`
     * 可以從每次日誌所取得值，計算執行進度，如下計算方法 : 
@@ -102,16 +102,16 @@ nvme sanitize --sanact=0x02 /dev/nvme0
     * 第一次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
     * 第二次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
     * 第三次執行 : `0x101`
-      * 7:0 Bits : `0x01` (表示 : Sanitize 操作成功)
+      * 7:0 Bits : 
+        * `0x00` : 從未執行過 Sanitize 
+        * `0x01` (表示 : Sanitize 操作成功)
+        * `0x03` : Sanitize 操作失敗
       * 15:8 Bits : `0x01` 
         * NS 沒有任何資料被寫入，可以解釋資料已被清空
         * PMR 功能沒有被啟用
-        * 其它值說明
-          * `0x00` : 從未執行過 Sanitize 
-          * `0x03` : Sanitize 操作失敗
 * `Sanitize Command Dword 10 Information` :
   * 07:04 Bytes : 
-    * 該值描述這個日誌，它是執行哪一種 Sanitize 功能
+    * 該值描述這個日誌，它是執行哪一種 Sanitize 功能 (參考命令結構表)
     * `0x02` :  表示執行 Block Erase
 
 執行命令 : 
