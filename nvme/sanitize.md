@@ -12,7 +12,7 @@
 
 **當命令 (Sanitize) 開始運作的時候，控制器需要有以下動作 :** 
 
-* Shall clear any outstanding Sanitize Operation Completed asynchronous event or Sanitize Operation Completed With Unexpected Deallocation asynchronous event
+* (原文) Shall clear any outstanding Sanitize Operation Completed asynchronous event or Sanitize Operation Completed With Unexpected Deallocation asynchronous event
   * 主旨 : 
     * 表示無論執行成功或是失敗，都會發出非同步事件通知主機端 *(重要)*，並且控制器會清除已所發出的事件通知
   * 說明 : 
