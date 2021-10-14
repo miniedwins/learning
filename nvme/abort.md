@@ -25,6 +25,8 @@
 * CID : 指定哪個命令需要被取消 
   * Example : 0x0001
 
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/abort_cmd_dw10.png)
+
 執行命令 : 
 
 ~~~shell
@@ -33,11 +35,11 @@ nvme admin-passthru --opcode=0x08 --cdw10=0x00010000 /dev/nvme0
 
 
 
-## 取得控制器支援取消命令數量
+## 取得控制器最大支援取消數量
 
-說明 : 取得控制器最大可以支援取消命令的數量
+說明 : 發送 `Identify Controller` 取得該支援最大取消數量
 
-執行 : 發送 `Identify Controller` 取得該支援數量
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_ACL.png)
 
 執行命令 : 
 
