@@ -12,17 +12,19 @@
 
 **當命令 (Sanitize) 開始運作的時候，控制器需要有以下動作 :** 
 
-* 清除任何一個事件 *(備註 : 目前還不是很熟悉事件處理的機制)*
+* 清除任何一個事件
   * Sanitize Operation Completed asynchronous event
   * Sanitize Operation Completed With Unexpected Deallocation asynchronous event
+  * *備註 : 還不是很熟悉事件處理的機制*
 * 將目前執行的狀態更新到日誌中
   * *Reference : Sanitize Status log*
 * 忽略任何一個已提交過的命令或是正在執行的時候所收到的命令 
-  * *Reference : Sanitize Command Restrictions (備註 : 內容較多)*
+  * *Reference : Sanitize Command Restrictions*
+  * *(內容較多，待續...)* 
 * 終止正在執行的自檢 (self-test) 操作
-* 暫時停止 `APST` Management，避免執行過程中進入到省電模式
+* 暫時停止 `APST Management`，避免執行過程中進入到省電模式
 * Shall release stream identifiers for any open streams. 
-  * *備註 : 目前還不清楚 streams*
+  * *備註 : 還不清楚  streams 定義*
 
 **控制器會中止任何一個 Sanitize command，如以下動作 :**
 
@@ -36,7 +38,7 @@
   * (原文) then the controller shall abort any Sanitize command.
   * (說明) 執行 F/W Commit 完成後，基本上需要執行 Controller Rest，若是狀態還沒有完成，不允許執行 Sanitize 命令
 * Activation of new firmware is prohibited during a sanitize operation
-  * (說明) 禁止在操作期間內，讓新的韌體啟用
+  * (說明) 若是先前有執行 `F/W Download`，禁止在操作期間內 `Active F/W`
 
 
 
@@ -64,9 +66,11 @@ nvme id-ctrl /dev/nvme0 | grep sanicap
 
 ## 如何執行 Sanitize
 
-說明 : 使用 `Block Erase` 模式清除使用者資料。
+### 範例 : Block Erase
 
-備註 : `Sanitize` 是運作在背景下執行，所以執行後必須要取得日誌內容，才可以確認成功或是失敗。
+說明 : 設定模式 `SANACT=0x02` 清除資料。
+
+重要 : `Sanitize` 是運作在背景下，所以執行後需要使用取得日誌內容，才可以確認成功或是失敗。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/sanitize_cmd_dw10.png)
 
@@ -75,26 +79,25 @@ nvme id-ctrl /dev/nvme0 | grep sanicap
 執行命令 : 
 
 ~~~shell
-# Block Erase
-nvme sanitize -a 0x02 /dev/nvme0
+nvme sanitize --sanact=0x02 /dev/nvme0
 ~~~
 
 
 
-## 查看 Sanitize 日誌
+## 查看執行結果 (日誌)
 
-說明 : 當控制器執行 `Sanitize` 命令後 ，就可以透過日誌清楚了解執行的狀態。
+說明 : 當控制器執行 Sanitize 命令後 ，就可以透過日誌清楚了解執行的狀態。
 
-日誌執行結果解析 :
+**日誌解析 (使用執行結果做說明) :**
 
-* Sanitize Progress : 表示執行的進度
+* `Sanitize Progress` : 表示執行的進度
   * 01:00 Bytes
     * 執行過程中，該值會持續變動到命令執行完成，最後該值為 `65535` or `0xFFFFh`
     * 可以從每次日誌所取得值，計算執行進度，如下計算方法 : 
       * 第一次執行 : (3761 / 65535) x 100 = `5.7%`
       * 第二次執行 : (32754 / 65535) x 100 = `49.9%`
       * 第三次執行 : (65535 / 65535) x 100 = `100%`
-* Sanitize Status : 表示執行狀態
+* `Sanitize Status` : 表示執行狀態
   * 03:02 Bytes 
     * 第一次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
     * 第二次執行 : `0x02` (表示 : 目前正在操作 Sanitize)
@@ -103,8 +106,13 @@ nvme sanitize -a 0x02 /dev/nvme0
       * 15:8 Bits : `0x01` 
         * NS 沒有任何資料被寫入，可以解釋資料已被清空
         * PMR 功能沒有被啟用
-    * 如果該值是 : `0x03` (表示 : Sanitize 操作失敗)
-* Sanitize Command Dword 10 Information :
+        * 其它值說明
+          * `0x00` : 從未執行過 Sanitize 
+          * `0x03` : Sanitize 操作失敗
+* `Sanitize Command Dword 10 Information` :
+  * 07:04 Bytes : 
+    * 該值描述這個日誌，它是執行哪一種 Sanitize 功能
+    * `0x02` :  表示執行 Block Erase
 
 執行命令 : 
 
