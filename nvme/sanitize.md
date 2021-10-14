@@ -111,12 +111,13 @@ nvme sanitize --sanact=0x02 /dev/nvme0
       * 15:8 Bits : `0x01` 
         * NS 沒有任何資料被寫入，可以解釋資料已被清空
         * PMR 功能沒有被啟用
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_sanitize_status_SSTAT.png)
+
 * `Sanitize Command Dword 10 Information` :
   * 07:04 Bytes : 
     * 該值描述這個日誌，它是執行哪一種 Sanitize 功能 (參考命令結構表)
     * `0x02` :  表示執行 Block Erase
-
-![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_sanitize_status_SSTAT.png)
 
 執行命令 : 
 
