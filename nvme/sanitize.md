@@ -101,7 +101,7 @@ nvme sanitize --sanact=0x02 /dev/nvme0
     * 第一次執行 : `0x02` (目前正在操作 Sanitize)
     * 第二次執行 : `0x02` (目前正在操作 Sanitize)
     * 第三次執行 : `0x101`
-      * 7:0 Bits : 
+      * 7:0 Bits : `0x01`
         * `0x00` : 從未執行過 Sanitize 
         * `0x01` : Sanitize 操作成功
         * `0x03` : Sanitize 操作失敗
