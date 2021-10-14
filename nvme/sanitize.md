@@ -96,6 +96,9 @@ nvme sanitize --sanact=0x02 /dev/nvme0
       * 第一次執行 : (3761 / 65535) x 100 = `5.7%`
       * 第二次執行 : (32754 / 65535) x 100 = `49.9%`
       * 第三次執行 : (65535 / 65535) x 100 = `100%`
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_sanitize_status_SPROG.png)
+
 * `Sanitize Status` : 表示執行狀態 (記錄最近一次完成的狀態)
   * 03:02 Bytes 
     * 第一次執行 : `0x02` (目前正在操作 Sanitize)
@@ -112,6 +115,8 @@ nvme sanitize --sanact=0x02 /dev/nvme0
   * 07:04 Bytes : 
     * 該值描述這個日誌，它是執行哪一種 Sanitize 功能 (參考命令結構表)
     * `0x02` :  表示執行 Block Erase
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_sanitize_status_SSTAT.png)
 
 執行命令 : 
 
