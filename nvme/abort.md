@@ -8,7 +8,7 @@
 
 若是要取消很大量的 I/O 命令 (例如: 刪除的數量比 ACL 還要來的大)，就需要透過 Delete IO Submission Queue 命令刪除目前的 I/O SQ，然後再使用 Create I/O Submission 命令重新建立 I/O SQ。**(註 : 詳細的說明需要參考 Queue level and Queue Management)**
 
-> 小叮嚀 : Admin Queue 無法被刪除，因為只會有一組 Admin SQ / CQ，
+> 小叮嚀 : Admin Queue 無法被刪除，因為只會有一組 Admin SQ / CQ。
 
 
 
@@ -37,7 +37,7 @@ nvme admin-passthru --opcode=0x08 --cdw10=0x00010000 /dev/nvme0
 
 ## 取得控制器最大支援取消數量
 
-說明 : 發送 `Identify Controller` 取得該支援最大取消數量
+說明 : 發送 `Identify Controller` 命令，取得該支援最大取消數量。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_ACL.png)
 
