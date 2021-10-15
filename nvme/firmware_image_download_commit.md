@@ -55,7 +55,7 @@ host 檢查下列表格就可以得知，下一次控制器重置後，是否需
 1. Commit Action (CA)
 2. firmware slot (FS)
 
-<img src="../../res/Firmware_Commit_Action.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_commit_dw10.png)
 
 
 
