@@ -10,9 +10,9 @@ NVMe Firmware Command 分為以下兩種命令 :
 
 此功能主要是用來更新全部或是部份的資料 (image) 到控制器上(controller)，也就是可以將新的韌體資料上傳到控制器上，由此方式更新韌體。更新的過程中需要將該更新的資料分成一小部份的方式作為傳遞，每一份傳遞資料都包含了 NUMD and OFST，所以 host 必須要確保資料傳遞的 NUMD and OFST是否有符合 FWUG，可以透過  identify-ctrl 取得，若是沒有符合 FWUG 就會造成韌體更新錯誤。
 
-當所有的資料傳遞完成後，並不會馬上被啟用 active，host 還需要發送 firmware commit commad，並且在其它  downloading image 之前發送該命令，這個時候控制器就會處理第一次 firmware commit 之前的 firmware image。
+當所有的資料傳遞完成後，並不會馬上被啟用 (active)，Host 還需要發送 firmware commit，並且在其它  downloading image 之前發送該命令，這個時候控制器就會處理第一次 firmware commit 之前的 firmware image。
 
-如果在執行 firmware image download or commit 的期間，發生系統斷電或式控制器被重置等突發事件後，先前傳遞的資料都會被控制器給移除。
+(重要) 如果在執行 firmware image download or commit 的期間，發生系統斷電或式控制器被重置等突發事件後，先前傳遞的資料都會被控制器給移除。
 
 *備註 : 建議要越小越好，目前  FADU Sample 所提供的  FWUG value = 1。*
 
@@ -36,8 +36,8 @@ NVMe Firmware Command 分為以下兩種命令 :
 
 host 會在下一次 Controller Level Rest 去檢查兩件事情， 如下 :
 
-1. 檢查目前所使用的 firmware revsion (FR)
-2. 檢查 firmware slot information 
+1. 檢查目前所使用的 Firmware Revsion (FR)
+2. 檢查 Firmware Slot Information (Log Page : AFI)
 
 host 檢查下列表格就可以得知，下一次控制器重置後，是否需要 active firmware slot
 
@@ -45,12 +45,12 @@ host 檢查下列表格就可以得知，下一次控制器重置後，是否需
 
 #### Commit Action (CA)
 
-當然 firmware commit 的功能，不只有以上基礎使用方法，例如 : 
+當然 Firmware Commit 的功能，不只有以上基礎使用方法，例如 : 
 
 1. 更新韌體後，下一次控制器重置，不啟用先前更新的韌體。
-2. 不更新韌體，下一次控制器重置，指定啟用當前已存在的 firmware slot。
+2. 不更新韌體，下一次控制器重置，指定啟用當前已存在的 Firmware Slot。
 
-下列表格代表者執行 firmware commit 命令所需要指定的參數 :
+下列表格代表者執行 Firmware Commit 命令所需要指定的參數 :
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_commit_dw10.png)
 
@@ -87,8 +87,8 @@ nvme iden-ctrl /dev/nvme0 | grep oacs
 * Controller Attributes (CTRATT) :
   * 260 Bytes :
     * Bit 4 : 
-      * 1 : 控制器支援韌體，不需要再執行 Controller reset
-      * 0 : 控制器不支援韌體，需要執行 Controller reset
+      * 1 : 控制器支援韌體，不需要再執行 Controller Reset
+      * 0 : 控制器不支援韌體，需要執行 Controller Reset
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FRMW.png)
 
@@ -125,7 +125,7 @@ nvme iden-ctrl /dev/nvme | grep FRMW
 
 ### (1) Firmware Image Download
 
-說明 : 首先準備好韌體的路徑，並且透過 nvme-cli 執行 firmware image download 命令
+說明 : 首先準備好韌體的路徑，並且透過 nvme-cli 執行 Firmware Image Download 命令
 
 執行命令 : 
 
@@ -137,12 +137,12 @@ nvme fw-download /dev/nvme0 -f firmware/fw_file_name.bin
 
 ### (2) Firmware Commit
 
-說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 firmware slot ，並且下一次 controller reset 生效。
+說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 Firmware Slot ，並且下一次 Controller Reset 生效。
 
 **參數 :** 
 
 * slot = 0 (代表韌體要放在哪個 slot 地方)
-* action = 1 (覆蓋現有韌體版本，並在下一次的 controller level reset 生效)
+* action = 1 (覆蓋現有韌體版本，並在下一次的 Controller Level Reset 生效)
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_commit_dw10.png)
 
@@ -156,7 +156,7 @@ nvme fw-commit /dev/nvme0 --slot=0 --action=1
 
 ### (3) Firmware Reset
 
-說明 : 根據剛剛的 CA 設定，要求要執行 reset 命令，才能真正啟用新的韌體，所以要再執行 controller reset 命令
+說明 : 根據剛剛的 CA 設定，要求要執行 reset 命令，才能真正啟用新的韌體，所以要再執行 Controller Reset 命令
 
 執行命令 : 
 
