@@ -41,9 +41,7 @@ host 會在下一次 Controller Level Rest 去檢查兩件事情， 如下 :
 
 host 檢查下列表格就可以得知，下一次控制器重置後，是否需要 active firmware slot
 
-<img src="../../res/Firmware_Slot_Information_log_page.png" style="zoom:80%;" align="left"/>
-
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_firmware_slot_information_AFI.png)
 
 #### Commit Action (CA)
 
