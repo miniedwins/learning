@@ -131,7 +131,7 @@ nvme iden-ctrl /dev/nvme | grep FRMW
 
 ## 如何將新的韌體更新到控制器
 
-### Firmware Image Download
+### (1) Firmware Image Download
 
 說明 : 首先準備好韌體的路徑，並且透過 nvme-cli 執行 firmware image download 命令
 
@@ -143,7 +143,7 @@ nvme fw-download /dev/nvme0 -f firmware/fw_file_name.bin
 
 
 
-### Firmware Commit
+### (2) Firmware Commit
 
 說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 firmware slot ，並且下一次 controller level reset 生效。
 
@@ -162,7 +162,7 @@ nvme fw-commit /dev/nvme0 --slot=0 --action=1
 
 
 
-### Firmware Reset
+### (3) Firmware Reset
 
 說明 : 根據剛剛的 CA 設定，要求要執行 reset 命令，才能真正啟用新的韌體，所以要再執行 controller reset 命令
 
