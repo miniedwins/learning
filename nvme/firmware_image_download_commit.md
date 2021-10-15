@@ -60,6 +60,13 @@ host 檢查下列表格就可以得知，下一次控制器重置後，是否需
 
 說明 : 確認控制器是否有支援 `Firmware Image Download` and `Firmware Commit`，沒有支援代表控制器無法執行韌體更新。
 
+Controller Attributes (CTRATT) :
+
+* 257:256 Bytes :
+  * Bit 2 : 
+    * 1 : 支援韌體更新
+    * 0 : 不支援韌體更新
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_OASC_Bit2.png)
 
 執行命令 : 
@@ -79,7 +86,7 @@ nvme iden-ctrl /dev/nvme0 | grep oacs
 
 * Controller Attributes (CTRATT) :
   * 260 Bytes :
-    * 4 Bit : 
+    * Bit 4 : 
       * 1 : 控制器支援韌體，不需要再執行 Controller reset
       * 0 : 控制器不支援韌體，需要執行 Controller reset
 
