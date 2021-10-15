@@ -79,7 +79,7 @@ nvme iden-ctrl /dev/nvme0 | grep oacs
 
 * Controller Attributes (CTRATT) :
   * 260 Bytes :
-    * 4 Bits : 
+    * 4 Bit : 
       * 1 : 控制器支援韌體，不需要再執行 Controller reset
       * 0 : 控制器不支援韌體，需要執行 Controller reset
 
