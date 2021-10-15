@@ -52,9 +52,6 @@ host 檢查下列表格就可以得知，下一次控制器重置後，是否需
 
 下列表格代表者執行 firmware commit 命令所需要指定的參數 :
 
-1. Commit Action (CA)
-2. firmware slot (FS)
-
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_commit_dw10.png)
 
 
