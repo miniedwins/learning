@@ -87,8 +87,8 @@ nvme iden-ctrl /dev/nvme0 | grep oacs
 * Controller Attributes (CTRATT) :
   * 260 Bytes :
     * Bit 4 : 
-      * 1 : 控制器支援韌體，不需要再執行 Controller Reset
-      * 0 : 控制器不支援韌體，需要執行 Controller Reset
+      * 1 : 控制器支援 without reset，不需要再執行 Controller Reset
+      * 0 : 控制器不支援 without reset，需要執行 Controller Reset
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FRMW.png)
 
