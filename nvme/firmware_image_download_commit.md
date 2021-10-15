@@ -73,7 +73,7 @@ host 檢查下列表格就可以得知，下一次控制器重置後，是否需
 
 ## 檢查控制器是否支援更新
 
-說明 : 確認控制器是否有支援 `Firmware Download Image` and `Firmware Commit`，若是沒有支援代表目前的控制器無法做韌體更新。
+說明 : 確認控制器是否有支援 `Firmware Image Download` and `Firmware Commit`，沒有支援代表控制器無法執行韌體更新。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_OASC_Bit2.png)
 
@@ -109,15 +109,6 @@ nvme iden-ctrl /dev/nvme | grep FRMW
 
 
 
-## 如何將新的韌體更新到控制器
-
-說明 : 
-
-~~~shell
-~~~
-
-
-
 ## 檢查任韌體支援插槽數量
 
 說明 : 確認控制器支援多少個 `firmware slot` (代表總共可以放多少個韌體)。
@@ -135,6 +126,61 @@ Controller Attributes (CTRATT) :
 nvme iden-ctrl /dev/nvme | grep FRMW
 # FRMW : 0x16 (支援 3 slots)
 ~~~
+
+
+
+## 如何將新的韌體更新到控制器
+
+### Firmware Image Download
+
+說明 : 首先準備好韌體的路徑，並且透過 nvme-cli 執行 firmware image download 命令
+
+執行命令 : 
+
+~~~shell
+nvme fw-download /dev/nvme0 -f firmware/fw_file_name.bin
+~~~
+
+
+
+### Firmware Commit
+
+說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 firmware slot ，並且下一次 controller level reset 生效。
+
+**參數 :** 
+
+* slot = 0 (代表韌體要放在哪個 slot 地方)
+* action = 1 (覆蓋現有韌體版本，並在下一次的 controller level reset 生效)
+
+*備註 : action 有許多不同的功能，需要看 CA (Commit Action) 說明*
+
+執行命令 : 
+
+~~~shell
+nvme fw-commit /dev/nvme0 --slot=0 --action=1
+~~~
+
+
+
+### Firmware Reset
+
+說明 : 根據剛剛的 CA 設定，要求要執行 reset 命令，才能真正啟用新的韌體，所以要再執行 controller reset 命令
+
+執行命令 : 
+
+~~~shell
+nvme reset /dev/nvme0
+~~~
+
+取得 Identify Controller Firmware Revision (FR)，確認是否為最新的韌體版本
+
+執行命令 : 
+
+~~~shell
+nvme iden-ctrl /dev/nvme0 | grep fr
+~~~
+
+
 
 
 
