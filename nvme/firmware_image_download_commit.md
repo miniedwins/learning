@@ -16,19 +16,19 @@ NVMe Firmware Command 分為以下兩種命令 :
 
 *備註 : 建議要越小越好，目前  FADU Sample 所提供的  FWUG value = 1。*
 
-<img src="../../res/Identify_Controller_FWUG.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FWUG.png)
 
 #### NUMD (Number of  Dwords)
 
 這裡是設定傳遞資料的大小，可以由 NUMD 設定較大的傳輸資料 128k bytes，最小要設定成 4k bytes 大小，不過最後都要符合 FWUG 所要求的規範。
 
-<img src="../../res/Firmware_Image_Download_NUMD.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_image_download_dw10.png)
 
 #### OFST (Offset)
 
 開始傳遞的資料都會是由 OFST=0h 開始，它必需要隨者傳遞的資料做偏移。也就是每次傳遞的 OFST 位置會不同。例如 : 傳遞資料大小每次為 4k bytes，第一次 OFST 位置就會是 0h，第二次傳遞的資料 OFST 位置就會是從 `0x1000h` 開始，這個數值就是 4096  Bytes，以此方式遞增到傳遞資料結束。
 
-<img src="../../res/Firmware_Image_Download_Offset.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_image_download_dw11.png)
 
 ###  Firmware Commit 
 
