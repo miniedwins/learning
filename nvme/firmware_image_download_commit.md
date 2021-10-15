@@ -1,0 +1,140 @@
+# Firmware Download
+
+
+
+## 基本介紹
+
+Firmware Command 分為以下兩種命令 : 
+
+* Firmware Image Download
+
+* Firmware Commit : 
+
+
+
+## 韌體更新命令說明
+
+### Firmware  Image Download 
+
+此功能主要是用來更新全部或是部份的資料 (image) 到控制器上(controller)，也就是可以將新的韌體資料上傳到控制器上，由此方式更新韌體。更新的過程中需要將該更新的資料分成一小部份的方式作為傳遞，每一份傳遞資料都包含了 NUMD and OFST，所以 host 必須要確保資料傳遞的 NUMD and OFST是否有符合 FWUG，可以透過  identify-ctrl 取得，若是沒有符合 FWUG 就會造成韌體更新錯誤。
+
+當所有的資料傳遞完成後，並不會馬上被啟用 active，host 還需要發送 firmware commit commad，並且在其它  downloading image 之前發送該命令，這個時候控制器就會處理第一次 firmware commit 之前的 firmware image。
+
+如果在執行 firmware image download or commit 的期間，發生系統斷電或式控制器被重置等突發事件後，先前傳遞的資料都會被控制器給移除。
+
+*備註 : 建議要越小越好，目前  FADU Sample 所提供的  FWUG value = 1。*
+
+<img src="../../res/Identify_Controller_FWUG.png" style="zoom:80%;" align="left"/>
+
+#### NUMD (Number of  Dwords)
+
+這裡是設定傳遞資料的大小，可以由 NUMD 設定較大的傳輸資料 128k bytes，最小要設定成 4k bytes 大小，不過最後都要符合 FWUG 所要求的規範。
+
+<img src="../../res/Firmware_Image_Download_NUMD.png" style="zoom:80%;" align="left"/>
+
+#### OFST (Offset)
+
+開始傳遞的資料都會是由 OFST=0h 開始，它必需要隨者傳遞的資料做偏移。也就是每次傳遞的 OFST 位置會不同。例如 : 傳遞資料大小每次為 4k bytes，第一次 OFST 位置就會是 0h，第二次傳遞的資料 OFST 位置就會是從 `0x1000h` 開始，這個數值就是 4096  Bytes，以此方式遞增到傳遞資料結束。
+
+<img src="../../res/Firmware_Image_Download_Offset.png" style="zoom:80%;" align="left"/>
+
+
+
+### Firmware Commit 
+
+主要功能是用來更動 Firmware image or Boot Partitions。當韌體被更動後，firmware commit 會去驗證剛剛  download image 並且修訂所指定的 firmware slot。此時還無法使用當前下載 firmware image，需要等下一次 Controller Level Rest 完成後，指定的 firmware slot 才會被啟動。 
+
+host 會在下一次 Controller Level Rest 去檢查兩件事情， 如下 :
+
+1. 檢查目前所使用的 firmware revsion (FR)
+2. 檢查 firmware slot information 
+
+host 檢查下列表格就可以得知，下一次控制器重置後，是否需要 active firmware slot
+
+<img src="../../res/Firmware_Slot_Information_log_page.png" style="zoom:80%;" align="left"/>
+
+
+
+#### Commit Action (CA)
+
+當然 firmware commit 的功能，不只有以上基礎使用方法，例如 : 
+
+1. 更新韌體後，下一次控制器重置，不啟用先前更新的韌體。
+2. 不更新韌體，下一次控制器重置，指定啟用當前已存在的 firmware slot。
+
+下列表格代表者執行 firmware commit 命令所需要指定的參數 :
+
+1. Commit Action (CA)
+2. firmware slot (FS)
+
+<img src="../../res/Firmware_Commit_Action.png" style="zoom:80%;" align="left"/>
+
+
+
+## 檢查控制器是否支援更新
+
+說明 : 確認控制器是否有支援 `Firmware Download Image` and `Firmware Commit`，若是沒有支援代表目前的控制器無法做韌體更新。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_OASC_Bit2.png)
+
+執行命令 : 
+
+~~~shell
+nvme iden-ctrl /dev/nvme0 | grep oacs
+# oacs : 0xf
+~~~
+
+
+
+## 檢查更新後控制器是否支援重置
+
+說明 : 確認控制器有沒有支援 `without reset`  or  `with reset`。
+
+目的 : 主要是為了確認韌體更新後，是否可以直接可以使用韌體而不需要控制器重置 (Controller Reset)。
+
+* Controller Attributes (CTRATT) :
+  * 260 Bytes :
+    * 4 Bits : 
+      * 1 : 控制器支援韌體，不需要再執行 Controller reset
+      * 0 : 控制器不支援韌體，需要執行 Controller reset
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FRMW.png)
+
+執行命令 : 
+
+~~~shell
+nvme iden-ctrl /dev/nvme | grep FRMW
+# FRMW : 0x16 (沒有支援 without reset)
+~~~
+
+
+
+## 如何將新的韌體更新到控制器
+
+說明 : 
+
+~~~shell
+~~~
+
+
+
+## 檢查任韌體支援插槽數量
+
+說明 : 確認控制器支援多少個 `firmware slot` (代表總共可以放多少個韌體)。
+
+Controller Attributes (CTRATT) :
+
+* 260 Bytes :
+  * 3:1 Bits : 控制器支援多少個 slots，最少一定有一個，最大支援到七個
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_FRMW.png)
+
+執行命令 : 
+
+~~~shell
+nvme iden-ctrl /dev/nvme | grep FRMW
+# FRMW : 0x16 (支援 3 slots)
+~~~
+
+
+
