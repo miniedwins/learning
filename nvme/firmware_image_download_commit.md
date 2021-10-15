@@ -4,11 +4,11 @@
 
 ## 基本介紹
 
-Firmware Command 分為以下兩種命令 : 
+NVMe Firmware Command 分為以下兩種命令 : 
 
 * Firmware Image Download
 
-* Firmware Commit : 
+* Firmware Commit 
 
 
 
@@ -145,7 +145,7 @@ nvme fw-download /dev/nvme0 -f firmware/fw_file_name.bin
 
 ### (2) Firmware Commit
 
-說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 firmware slot ，並且下一次 controller level reset 生效。
+說明 : 剛剛下載完成的韌體，還不算完成，接下來我們需要指定將韌體放在哪個 firmware slot ，並且下一次 controller reset 生效。
 
 **參數 :** 
 
