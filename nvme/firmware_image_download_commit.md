@@ -6,14 +6,6 @@
 
 NVMe Firmware Command 分為以下兩種命令 : 
 
-* Firmware Image Download
-
-* Firmware Commit 
-
-
-
-## 韌體更新命令說明
-
 ### Firmware  Image Download 
 
 此功能主要是用來更新全部或是部份的資料 (image) 到控制器上(controller)，也就是可以將新的韌體資料上傳到控制器上，由此方式更新韌體。更新的過程中需要將該更新的資料分成一小部份的方式作為傳遞，每一份傳遞資料都包含了 NUMD and OFST，所以 host 必須要確保資料傳遞的 NUMD and OFST是否有符合 FWUG，可以透過  identify-ctrl 取得，若是沒有符合 FWUG 就會造成韌體更新錯誤。
@@ -38,9 +30,7 @@ NVMe Firmware Command 分為以下兩種命令 :
 
 <img src="../../res/Firmware_Image_Download_Offset.png" style="zoom:80%;" align="left"/>
 
-
-
-### Firmware Commit 
+###  Firmware Commit 
 
 主要功能是用來更動 Firmware image or Boot Partitions。當韌體被更動後，firmware commit 會去驗證剛剛  download image 並且修訂所指定的 firmware slot。此時還無法使用當前下載 firmware image，需要等下一次 Controller Level Rest 完成後，指定的 firmware slot 才會被啟動。 
 
@@ -152,7 +142,7 @@ nvme fw-download /dev/nvme0 -f firmware/fw_file_name.bin
 * slot = 0 (代表韌體要放在哪個 slot 地方)
 * action = 1 (覆蓋現有韌體版本，並在下一次的 controller level reset 生效)
 
-*備註 : action 有許多不同的功能，需要看 CA (Commit Action) 說明*
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_commit_dw10.png)
 
 執行命令 : 
 
