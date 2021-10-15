@@ -26,7 +26,7 @@ NVMe Firmware Command 分為以下兩種命令 :
 
 #### OFST (Offset)
 
-開始傳遞的資料都會是由 OFST=0h 開始，它必需要隨者傳遞的資料做偏移。也就是每次傳遞的 OFST 位置會不同。例如 : 傳遞資料大小每次為 4k bytes，第一次 OFST 位置就會是 0h，第二次傳遞的資料 OFST 位置就會是從 `0x1000h` 開始，這個數值就是 4096  Bytes，以此方式遞增到傳遞資料結束。
+開始傳遞的資料都會是由 OFST=0h 開始，它必需要隨者傳遞的資料做偏移。也就是每次傳遞的 OFST 位置會不同。例如 : 傳遞資料大小每次為 4k bytes，第一次 OFST 位置就會是 0h，第二次傳遞的資料 OFST 位置就會是從 `0x1000h` 開始，以此方式遞增到傳遞資料結束。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/admin_command_set/firmware_image_download_dw11.png)
 
