@@ -4,7 +4,7 @@
 
 ## 電源管理介紹
 
-主要功能是允許主機 (Host) 可以靜態或是動態管理 NVM subsystem power。
+主要功能是允許主機 (Host) 可以靜態或是動態管理 NVM Subsystem Power。
 
 下列說明靜態與動態之間的不同 : 
 
@@ -52,7 +52,7 @@
 
 Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命令需要處理，並且閒置了一段時間後，就會進入到非操作電源模式。因為是主機 (Host) 自動切換電源狀態，前提條件下必須要啟用 `APST Feature`。
 
-從主機 (Host) 的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 `Set Features Cmd` 切換目前的 power state to non-operational power state，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
+從主機的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 `Set Features Cmd` 切換目前的 power state to non-operational power state，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
 
 值得注意的一點，無論 `APST`是否有被啟用， 一旦電源狀態位在 `NOPS` 狀態下，當有任何的 I/O 命令被提交，控制器必須要切換到最近的 `operational power state`。
 
