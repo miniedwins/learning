@@ -16,8 +16,6 @@ Telemetry data 定義兩個資料結構，`Host-Initiated` 以及 `Controller-In
 
 
 
-
-
 ## 檢查控制器支援 
 
 說明 : 確認控制器是否有支援 telemetry feature。
@@ -80,27 +78,57 @@ hexdump -C -n 512 telemetry_ctrl_header_log
 
 ## 取得 Ctrl Initialed  Log Page
 
-說明 : 接下來我們以下載 Host-Initialed & Ctrl-Initialed : Data Area 3 log 為範例，有兩種下載方法，如下所述 :
+接下來我們以下載 Host-Initialed & Ctrl-Initialed : Data Area 3 log 為範例，有兩種下載方法，如下所述 :
 
-**方法 1 :**
 
-使用 nvme-cli 命令取得 telemetry-log  **(nvme-cli version >= 1.6)**
 
-*備註 : 此方法僅使用在下載  Host-Initialed log，無法下載  Ctrl-Initialed log*
+**下載方法 1 :**
+
+執行方式 : 使用 telemetry-log 命令取得 telemetry-log  **(nvme-cli version >= 1.6)**
+
+說明 : 該方法 nvme-cli 已經幫我們處理好偏移量以及下載大小的問題，所以很簡單就可以拿到
+
+注意 : 此方法僅使用在下載  Host-Initialed log，無法下載  Ctrl-Initialed log
+
+*備註 : 前面說該內容是廠商定義，所以無法了解內容說明*
 
 ~~~shell
 nvme telemetry-log /dev/nvme0 --data-area=3 --output-file=telemetry_log.bin
 ~~~
 
-**方法 2 :**
 
-從標頭檔得知該 Block size : 0x339f (13215 Decimal) 只要將該值換算成多少個 Bytes 即可得知需要取得 log 容量大小。
+
+**下載方法 2 :**
+
+執行方式 : 撰寫 Shell 腳本，並使用 get-log 命令取得 telemetry-log
+
+說明 : 該方法是透過 get-log 命令來執行，因此我們需要自己調整偏移量以及下載大小才能夠將所有的資料取得
+
+從標頭檔得知該 Block size : `0x339f` (13215 Decimal) 只要將該值換算成多少個 Bytes 即可得知需要取得 log 容量大小
+
+~~~shell
+00000000  08 00 00 00 00 0b 6f ec  9f 33 9f 33 9f 33 00 00  |......o..3.3.3..|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00000170  00 00 00 00 00 00 00 00  00 00 00 00 00 00 01 01  |................|
+00000180  50 61 39 34 46 46 42 43  41 32 33 42 37 38 30 31  |Pa94FFBCA23B7801|
+00000190  36 31 34 32 37 31 43 4d  5a 30 43 38 56 51 fa 00  |614271CMZ0C8VQ..|
+000001a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001b0  00 00 00 00 00 00 00 00  d8 d6 00 00 d0 84 00 00  |................|
+000001c0  00 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001d0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+000001e0  00 00 00 00 00 00 00 00  c0 03 00 00 01 00 00 00  |................|
+000001f0  20 00 08 0b 00 00 00 00  31 30 39 31 61 66 36 63  | .......1091af6c|
+00000200
+~~~
 
 每個 data block 單位是 512 Byes，所以總 log page 大小容量為 : (13215 * 512 ) + 512 = 6,766,592 Bytes
 
 因為需要下載較大資料量，所以需要將資料分成一段一段的方式取得，這邊我們定義最大下載資料量為 4096 bytes，然後透過 offset 的方式偏移起始位置，以遞增偏移量的方式將所有資料下載完畢。
 
 *備註 : 該方法可以下載 Host-Initialed & Ctrl-Initialed*
+
+**Sample Code**
 
 ~~~shell
 DEVICE_NAME="/dev/nvme0"
@@ -132,8 +160,6 @@ do
 	echo -en "Trans_bytes = $trans_offset\r"
 done
 ~~~
-
-程式碼偏移量說明 : 
 
 以下是描述偏移量 (offset) 動作行為 :  offset 會一直遞增然後到最後，直到 remain_bytes < MAX_TRANSFER_SIZE
 
