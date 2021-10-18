@@ -138,18 +138,14 @@ ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/power_management_id_02.png)
 
-#### 設定電源狀態
-
-執行命令 : 
+**設定電源狀態**
 
 ~~~shell
 nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
 # set-feature:02 (Power Management), value:0x000004
 ~~~
 
-#### 取得目前電源狀態
-
-執行命令 : 
+**取得目前電源狀態**
 
 ~~~shell
 nvme get-feature /dev/nvme0 --feature-id=0x02
@@ -160,12 +156,12 @@ nvme get-feature /dev/nvme0 --feature-id=0x02
 
 ### 設定與查看 APST 屬性
 
-#### 顯示所有的資料格式 (RAW)
+#### 取得目前狀態
 
-說明 : 
+說明 : 這邊會將所有的資料顯示出來，不過可以從回傳值 `Current value:0x000001` 取得目前的狀態是被啟用的。
 
-* 回傳值為 `value=0x01` 代表目前有被啟用 (Enable)，後面帶一連串的資料 (256 Bytes)，表示它們是 **APST Data Structure Entry**。
-* 每個電源狀態會有一個 Entry，總共 64 Bits (8 Bytes) ，因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
+* 每個電源狀態會有一個 `Entry`，總共 64 Bits (8 Bytes)
+* 因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/autonomous_power_state_transition_data_structure.png)
 
@@ -201,7 +197,7 @@ get-feature:0xc (Autonomous Power State Transition), Current value:0x000001
 
 
 
-#### 設定 APST 屬性
+#### 設定屬性值
 
 說明 : nvme-cli set-feature and get-feature
 
@@ -211,18 +207,14 @@ get-feature:0xc (Autonomous Power State Transition), Current value:0x000001
   * APSTE=1 (Enable) 
   * APSTE=0 (Disable)
 
-##### 啟用 APST
-
-執行命令 : 
+**啟用 APST**
 
 ~~~shell
 nvme set-feature -f 0x0c /dev/nvme0 -v 0x01
 # set-feature:0c (Autonomous Power State Transition), value:00000001
 ~~~
 
-##### 停用 APST
-
-執行命令 : 
+**停用 APST**
 
 ~~~shell
 nvme set-feature -f 0x0c /dev/nvme0 -v 0x00
