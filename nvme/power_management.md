@@ -4,7 +4,7 @@
 
 ## 電源管理介紹
 
-主要功能是允許主機 (Host) 可以靜態或是動態管理 NVM Subsystem Power。
+主要功能是允許主機 (Host) 可以靜態或是動態管理 **NVM Subsystem Power**。
 
 下列說明靜態與動態之間的不同 : 
 
@@ -52,11 +52,11 @@
 
 Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命令需要處理，並且閒置了一段時間後，就會進入到非操作電源模式。因為是主機 (Host) 自動切換電源狀態，前提條件下必須要啟用 `APST Feature`。
 
-從主機的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 `Set Features Cmd` 切換目前的 power state to non-operational power state，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
+從主機的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 `Set Features Cmd` 切換目前的 **power state to non-operational power state**，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
 
-值得注意的一點，無論 `APST`是否有被啟用， 一旦電源狀態位在 `NOPS` 狀態下，當有任何的 I/O 命令被提交，控制器必須要切換到最近的 `operational power state`。
+值得注意的一點，無論 `APST`是否有被啟用， 一旦電源狀態位在 `NOPS` 狀態下，當有任何的 I/O 命令被提交，控制器必須要切換到最近的 **operational power state**。
 
-例如 : 電源狀態位在 `PS4` 的時候，若是控制器有收到 I/O 命令，就可能會將目前的電源狀態切換到 `PS0` 或其它能夠運行 I/O 命令的電源狀態，因為`NOPS` 狀態是不允許處理 I/O 命令 。比較正確的說法，當有一個 I/O Submission Queue Tail Doorbell 暫存器的值被主機寫入，代表有 I/O 命令需要被控制器提取以及處理。
+例如 : 電源狀態位在 `PS4` 的時候，若是控制器有收到 I/O 命令，就可能會將目前的電源狀態切換到 `PS0` 或其它能夠運行 I/O 命令的電源狀態，因為`NOPS` 狀態是不允許處理 I/O 命令 。比較正確的說法，當有一個 **I/O Submission Queue Tail Doorbell** 暫存器的值被主機寫入，代表有 I/O 命令需要被控制器提取以及處理。
 
 當位在 NOPS 狀態，控制器還是可以運行其它非 I/O 命令，例如 : 閒置時候的背景操作，這個時候可能會超過控制器宣告該電源狀態的最大功耗(MP)，以下的操作是可以在 NOPS 狀態中運行 :
 
@@ -64,7 +64,7 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 - configuration register access
 - processing a command submitted to the Admin Submission Queue 
 
-根據上述的結論，若是控制器有支援 `Non-Operational Power State Permissive Mode`，是可以允許控制器暫時超過該電源階段所宣告的最大功耗 (MP)。它的條件是在 `NOPS` 狀態下，允許背景執行以上所說的非 I/O 操作。
+根據上述的結論，若是控制器有支援 **Non-Operational Power State Permissive Mode**，是可以允許控制器暫時超過該電源階段所宣告的最大功耗 (MP)。它的條件是在 `NOPS` 狀態下，允許背景執行以上所說的非 I/O 操作。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/non_operational_power_state_config.png)
 
@@ -74,9 +74,9 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 ## 自動電源狀態切換 (APST)
 
-Autonomous Power State Transitions (APST) 提供主機一個電源狀態自動切換的機制，能讓主機可以切換電源階段 (a non-operational power state may autonomously transition to another non-operational power state)。它的進入的條件是當控制器連續閒置 (Idle) 一段時間，並且超過所指定的閒置時間，主機就會轉換電源狀態到 `NOPS`。
+**Autonomous Power State Transitions (APST)** 提供主機一個電源狀態自動切換的機制，能讓主機可以切換電源階段 (a non-operational power state may autonomously transition to another non-operational power state)。它的進入的條件是當控制器連續閒置 (Idle) 一段時間，並且超過所指定的閒置時間，主機就會轉換電源狀態到 `NOPS`。
 
-這邊要注意的是，如果電源階段是在 Non-Operational States (NOPS)，這個時候控制器可能會去運行像是 Device Self-Test (DST) 操作，那就可能會超過控制器所宣告該電源階段的最大功耗值 (MP)，此時控制器不應該切換到 NOPS。
+注意 : 如果電源階段是在 **Non-Operational States (NOPS)**，這個時候控制器可能會去運行像是 **Device Self-Test (DST)** 操作，那就可能會超過控制器所宣告該電源階段的最大功耗值 (MP)，此時控制器不應該切換到 NOPS。
 
 *Controller Idle : There are no commands outstanding to any I/O Submission Queue*
 
