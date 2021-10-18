@@ -20,7 +20,7 @@
 
   
 
-  <img src="../../res/Dynamic Power Management.png" style="zoom:80%;" align="left"/>
+  ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/dynamic_power_management.png)
 
 
 
