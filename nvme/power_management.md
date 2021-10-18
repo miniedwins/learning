@@ -103,5 +103,34 @@ nvme id-ctrl /dev/nvme0 | grep npss
 
 
 
+### 取得各個電源的狀態描述
+
+執行 : 發送 identify controller 命令， nvme-cli 會回傳整理好的資訊
+
+執行命令 :
+
+~~~shell
+nvme id-ctrl /dev/nvme0
+~~~
+
+執行結果 : 
+
+顯示目前控制器擁有五個電源狀態，每個狀態描述最大電源功耗 (MP)，以及進入或是退出的延遲 (Latency) 時間，以及其它等說明等。
+
+~~~shell
+ps    0 : mp:3.00W operational enlat:0 exlat:0 rrt:0 rrl:0
+          rwt:0 rwl:0 idle_power:- active_power:-
+ps    1 : mp:2.00W operational enlat:0 exlat:0 rrt:1 rrl:1
+          rwt:1 rwl:1 idle_power:- active_power:-
+ps    2 : mp:2.00W operational enlat:0 exlat:0 rrt:2 rrl:2
+          rwt:2 rwl:2 idle_power:- active_power:-
+ps    3 : mp:0.1000W non-operational enlat:1000 exlat:1000 rrt:3 rrl:3
+          rwt:3 rwl:3 idle_power:- active_power:-
+ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
+          rwt:4 rwl:4 idle_power:- active_power:-
+~~~
+
+
+
 
 
