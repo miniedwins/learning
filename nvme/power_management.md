@@ -2,7 +2,7 @@
 
 
 
-## 電源管理介紹
+## 電源管理說明
 
 主要功能是允許主機 (Host) 可以靜態或是動態管理 **NVM Subsystem Power**。
 
@@ -81,4 +81,27 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 注意 : 如果電源階段是在 **Non-Operational States (NOPS)**，這個時候控制器可能會去運行像是 **Device Self-Test (DST)** 操作，那就可能會超過控制器所宣告該電源階段的最大功耗值 (MP)，此時控制器不應該切換到 NOPS。
 
 *備註 : Controller idle means that there are no commands outstanding to any I/O Submission Queue*
+
+
+
+## 如何執行命令
+
+### 取得控制器支援的電源狀態
+
+說明 : 取得支援電源狀態的數量 
+
+注意 : 控制器最少要支援一個電源狀態 : PS0
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NPSS.png)
+
+執行命令 :
+
+~~~shell
+nvme id-ctrl /dev/nvme0 | grep npss
+# npss : 4
+~~~
+
+
+
+
 
