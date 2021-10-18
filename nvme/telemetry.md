@@ -12,7 +12,7 @@ Telemetry data 定義兩個資料結構，`Host-Initiated` 以及 `Controller-In
 
 下列範例圖示，也就是前面說提到的 `Phrease Area`， 每個 Data Area 有不同的 Block Number 範圍，這些都是由廠商所自訂，包含需要收集什麼資料也是由開發商所指定。Data Area 1, Data Area 2, Data Area 3 都有相同 Telemetry Data (Block 1 to Block 65 )，Data Area 2 and Data Area 3 都有相同 Telemetry Data (Block 65 to Block 1000 )，Data Area 3 則擁有所有完整的 Telemetry Data。
 
-![](..\..\res\Telemetry_Data_Areas.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/telemetry_data_areas.png)
 
 
 
