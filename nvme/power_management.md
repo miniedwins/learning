@@ -88,7 +88,7 @@
 
 ### 取得控制器支援的電源狀態
 
-說明 : 主要是取得控制器最大支援的電源階段數量
+說明 : 了解控制器最大可以支援的電源狀態
 
 注意 : 控制器最少要支援一個電源狀態 PS0
 
@@ -105,7 +105,7 @@ nvme id-ctrl /dev/nvme0 | grep npss
 
 ### 取得各個電源的狀態描述
 
-執行 : 發送 identify controller 命令， nvme-cli 會回傳整理好的資訊
+說明 : 發送 identify controller 命令， nvme-cli 會回傳整理好的資訊
 
 執行命令 :
 
