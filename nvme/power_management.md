@@ -88,9 +88,9 @@
 
 ### 取得控制器支援的電源狀態
 
-說明 : 了解控制器最大可以支援的電源狀態
+說明 : 發送 identify controller 命令， 取得控制器最大支援電源狀態數量。
 
-注意 : 控制器最少要支援一個電源狀態 PS0
+注意 : 控制器最少要支援一個電源狀態 PS0。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NPSS.png)
 
@@ -105,7 +105,7 @@ nvme id-ctrl /dev/nvme0 | grep npss
 
 ### 取得各個電源的狀態描述
 
-說明 : 發送 identify controller 命令， nvme-cli 會回傳整理好的資訊
+說明 : 發送 identify controller 命令， nvme-cli 會回傳整理好的資訊。
 
 執行命令 :
 
@@ -134,13 +134,13 @@ ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
 
 ### 如何設定電源狀態
 
-說明 : nvme-cli 指定參數 (Power States)，即可設定或是取得電源狀態
+說明 : nvme-cli 指定參數 (Power States)，即可設定或是取得電源狀態。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/power_management_id_02.png)
 
 **設定電源狀態**
 
-說明 : 給定一個 `value=0x04` 將目前的電源狀態切換到 `PS4`
+說明 : 給定一個 `value=0x04` 將目前的電源狀態切換到 `PS4`。
 
 ~~~shell
 nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
@@ -149,7 +149,7 @@ nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
 
 **取得目前電源狀態**
 
-說明 : 取得目前控制器運行在哪一個電源狀態，目前電源模式是在 `PS4`
+說明 : 取得目前控制器運行在哪一個電源狀態，目前電源模式是在 `PS4`。
 
 ~~~shell
 nvme get-feature /dev/nvme0 --feature-id=0x02
