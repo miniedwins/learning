@@ -215,7 +215,7 @@ get-feature:0xc (Autonomous Power State Transition), Current value:0x000001
 
 **啟用 APST**
 
-說明 : 給定一個 value=1 設定為啟用功能
+說明 : 給定一個 `value=1` 設定為啟用功能
 
 ~~~shell
 nvme set-feature -f 0x0c /dev/nvme0 -v 0x01
@@ -224,7 +224,7 @@ nvme set-feature -f 0x0c /dev/nvme0 -v 0x01
 
 **停用 APST**
 
-說明 : 給定一個 value=0 設定為停用該功能
+說明 : 給定一個 `value=0` 設定為停用該功能
 
 ~~~shell
 nvme set-feature -f 0x0c /dev/nvme0 -v 0x00
