@@ -52,9 +52,9 @@
 
 ## 非操作電源模式 (NOPS)
 
-Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命令需要處理，並且閒置了一段時間後，就會進入到非操作電源模式。因為是主機 (Host) 自動切換電源狀態，前提條件下必須要啟用 `APST Feature`。
+**Non-Operational Power States (NOPS) :** 定義是當控制器沒有任何 I/O 命令需要處理，並且閒置了一段時間後，就會進入到非操作電源模式。因為是主機 (Host) 自動切換電源狀態，前提條件下必須要啟用 `APST Feature`。
 
-從主機的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 `Set Features Cmd` 切換目前的 **power state to non-operational power state**，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
+從主機的角度來看，就是沒有任何 `Pending I/O` 提交到控制器，主機就會發送 **Set Features Command** 切換目前的 **power state to non-operational power state**，在這段命令還沒執行完畢前，是不會再提交任何的 I/O 命令。因為控制器是平行處理 (parallel) 各種不同的命令，若是同時執行 `Admin & IO` 命令 ，可能會導致切換到不可預期電源狀態。
 
 值得注意的一點，無論 `APST`是否有被啟用， 一旦電源狀態位在 `NOPS` 狀態下，當有任何的 I/O 命令被提交，控制器必須要切換到最近的 **operational power state**。
 
@@ -76,7 +76,7 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 ## 自動電源狀態切換 (APST)
 
-**Autonomous Power State Transitions (APST)** 提供主機一個電源狀態自動切換的機制，能讓主機可以切換電源階段 (a non-operational power state may autonomously transition to another non-operational power state)。它的進入的條件是當控制器連續閒置 (Idle) 一段時間，並且超過所指定的閒置時間，主機就會轉換電源狀態到 `NOPS`。
+**Autonomous Power State Transitions (APST) :** 提供主機一個電源狀態自動切換的機制，能讓主機可以切換電源階段 (a non-operational power state may autonomously transition to another non-operational power state)。它的進入的條件是當控制器連續閒置 (Idle) 一段時間，並且超過所指定的閒置時間，主機就會轉換電源狀態到 `NOPS`。
 
 注意 : 如果電源階段是在 **Non-Operational States (NOPS)**，這個時候控制器可能會去運行像是 **Device Self-Test (DST)** 操作，那就可能會超過控制器所宣告該電源階段的最大功耗值 (MP)，此時控制器不應該切換到 NOPS。
 
@@ -88,9 +88,9 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 ### 取得控制器支援的電源狀態
 
-說明 : 主要是取得控制器最大支援的 Power State
+說明 : 主要是取得控制器最大支援的電源階段數量
 
-注意 : 控制器最少要支援一個電源狀態 `PS0`
+注意 : 控制器最少要支援一個電源狀態 PS0
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NPSS.png)
 
