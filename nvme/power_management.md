@@ -132,5 +132,101 @@ ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
 
 
 
+### 如何設定電源狀態
+
+說明 : 指定參數 (Power States)，即可設定或是取得電源狀態
+
+執行 : 發送 Set-Feature and Get-Feature Power States
 
 
+
+#### 設定電源狀態
+
+執行命令 : 
+
+~~~shell
+nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
+# set-feature:02 (Power Management), value:0x000004
+~~~
+
+#### 取得目前電源狀態
+
+執行命令 : 
+
+~~~shell
+nvme get-feature /dev/nvme0 --feature-id=0x02
+# get-feature:0x2 (Power Management), Current value:0x000004
+~~~
+
+
+
+### 設定與查看 APST 屬性
+
+#### 顯示所有的資料格式 (RAW)
+
+說明 : 
+
+* 回傳值為 `value=0x01` 代表目前有被啟用 (Enable)，後面帶一連串的資料 (256 Bytes)，表示它們是 **APST Data Structure Entry**。
+* 每個電源狀態會有一個 Entry，總共 64 Bits (8 Bytes) ，因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/autonomous_power_state_transition_data_structure.png)
+
+執行命令 :
+
+~~~shell
+nvme get-feature -f 0x0c /dev/nvme0
+~~~
+
+執行結果 : 
+
+~~~shell
+# 執行結果
+get-feature:0xc (Autonomous Power State Transition), Current value:0x000001
+       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+0000: 18 64 00 00 00 00 00 00 18 64 00 00 00 00 00 00 ".d.......d......"
+0010: 18 64 00 00 00 00 00 00 20 b4 5f 00 00 00 00 00 ".d........_....."
+0020: 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+0090: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+00f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
+~~~
+
+
+
+#### 設定 APST 屬性
+
+說明 : nvme-cli set-feature and get-feature
+
+* `Set-Feature` : 取得 APST 屬性值
+* `Get-Feature` : 設定 APST 屬性值
+* `State` : 
+  * APSTE=1 (Enable) 
+  * APSTE=0 (Disable)
+
+##### 啟用 APST
+
+執行命令 : 
+
+~~~shell
+nvme set-feature -f 0x0c /dev/nvme0 -v 0x01
+# set-feature:0c (Autonomous Power State Transition), value:00000001
+~~~
+
+##### 停用 APST
+
+執行命令 : 
+
+~~~shell
+nvme set-feature -f 0x0c /dev/nvme0 -v 0x00
+# set-feature:0c (Autonomous Power State Transition), value:00000000
+~~~
