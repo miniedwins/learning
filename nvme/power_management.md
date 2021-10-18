@@ -166,6 +166,7 @@ nvme get-feature /dev/nvme0 --feature-id=0x02
 
 * 每個電源狀態會有一個 `Entry`，總共 64 Bits (8 Bytes)
 * 因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
+* 目前控制器只支援五種狀態，所以之後的值都會是 `0x00`
 
 **APST 狀態結構表**
 
