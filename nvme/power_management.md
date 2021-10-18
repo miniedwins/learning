@@ -134,11 +134,9 @@ ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
 
 ### 如何設定電源狀態
 
-說明 : 指定參數 (Power States)，即可設定或是取得電源狀態
+說明 : nvme-cli 指定參數 (Power States)，即可設定或是取得電源狀態
 
-執行 : 發送 Set-Feature and Get-Feature Power States
-
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/power_management_id_02.png)
 
 #### 設定電源狀態
 
