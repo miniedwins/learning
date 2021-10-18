@@ -140,12 +140,16 @@ ps    4 : mp:0.0050W non-operational enlat:400000 exlat:90000 rrt:4 rrl:4
 
 **設定電源狀態**
 
+說明 : 將目前的電源狀態切換到 `PS4`
+
 ~~~shell
 nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
 # set-feature:02 (Power Management), value:0x000004
 ~~~
 
 **取得目前電源狀態**
+
+說明 : 取得目前運行在哪一個電源狀態，目前電源模式是在 `PS4`
 
 ~~~shell
 nvme get-feature /dev/nvme0 --feature-id=0x02
