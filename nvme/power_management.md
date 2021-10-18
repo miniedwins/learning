@@ -88,9 +88,9 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 ### 取得控制器支援的電源狀態
 
-說明 : 取得支援電源狀態的數量 
+說明 : 主要是取得控制器最大支援的 Power State
 
-注意 : 控制器最少要支援一個電源狀態 : PS0
+注意 : 控制器最少要支援一個電源狀態 `PS0`
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_NPSS.png)
 
