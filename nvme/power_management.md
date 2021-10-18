@@ -28,7 +28,7 @@
 
 描述各個電源階段表格，說明每個階段有不同的最大電源消耗 (MP)，進入 (Enter) 或是離開 (Exit) 該電源階段的延遲時間，以及不同階段的 `I/O` 效能 (Performance) 與延遲 (Latency) 時間的處理能力。數字越小代表者效能越好，相對的功耗也會越大。
 
-下圖表格是描述電源階段的狀態說明 (參考表格)
+下圖表格是描述各個電源階段的功耗與效能 (參考表格並非真實數據)
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/power_state_descriptor_table.png)
 
@@ -56,17 +56,17 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 值得注意的一點，無論 `APST`是否有被啟用， 一旦電源狀態位在 `NOPS` 狀態下，當有任何的 I/O 命令被提交，控制器必須要切換到最近的 `operational power state`。
 
-例如 : 電源狀態位在 `PS4` 的時候，若是控制器有收到 I/O 命令，就可能會將目前的電源狀態切換到 `PS0` 或其它能夠運行 `I/O` 命令的電源狀態，因為`NOPS` 狀態是不允許處理 `I/O` 命令 。比較正確的說法，當有一個 I/O Submission Queue Tail Doorbell 暫存器的值被主機寫入，代表有 I/O 命令需要被控制器提取以及處理。
+例如 : 電源狀態位在 `PS4` 的時候，若是控制器有收到 I/O 命令，就可能會將目前的電源狀態切換到 `PS0` 或其它能夠運行 I/O 命令的電源狀態，因為`NOPS` 狀態是不允許處理 I/O 命令 。比較正確的說法，當有一個 I/O Submission Queue Tail Doorbell 暫存器的值被主機寫入，代表有 I/O 命令需要被控制器提取以及處理。
 
-當位在 `NOPS` 狀態，控制器還是可以運行其它非 `I/O` 命令，例如 : 閒置時候的背景操作，這個時候可能會超過控制器宣告該電源狀態的最大功耗(MP)，以下的操作是可以在 `NOPS` 狀態中運行 :
+當位在 NOPS 狀態，控制器還是可以運行其它非 I/O 命令，例如 : 閒置時候的背景操作，這個時候可能會超過控制器宣告該電源狀態的最大功耗(MP)，以下的操作是可以在 NOPS 狀態中運行 :
 
 - servicing a memory-mapped I/O (MMIO) 
 - configuration register access
 - processing a command submitted to the Admin Submission Queue 
 
-根據上述的結論，若是控制器有支援 `Non-Operational Power State Permissive Mode`，是可以允許控制器暫時超過該電源階段所宣告的最大功耗 (MP)。它的條件是在 `NOPS`狀態下，允許背景執行以上所說的非 `I/O` 操作。
+根據上述的結論，若是控制器有支援 `Non-Operational Power State Permissive Mode`，是可以允許控制器暫時超過該電源階段所宣告的最大功耗 (MP)。它的條件是在 NOPS 狀態下，允許背景執行以上所說的非 I/O 操作。
 
-<img src="../../res/Non-Operational Power State Config.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/non_operational_power_state_config.png)
 
 *備註 : Non-Operational Power State Permissive Mode Disable 暫時看不懂*
 
