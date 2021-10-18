@@ -163,6 +163,8 @@ nvme get-feature /dev/nvme0 --feature-id=0x02
 * 每個電源狀態會有一個 `Entry`，總共 64 Bits (8 Bytes)
 * 因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
 
+**APST 狀態結構表**
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/autonomous_power_state_transition_data_structure.png)
 
 執行命令 :
