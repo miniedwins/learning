@@ -32,11 +32,13 @@
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/power_state_descriptor_table.png)
 
-一個控制器最大可以支援 32 個電源狀態，可以發送命令 identify controller 取得 Number of Power States Supported (NPSS) 控制器支援數量。目前現階段的應用並不會使用這麼多，根據目前大廠所支援的狀態大多都是 `PS0 ~ PS4`。 `PS0`模式代表最大電源消耗，意思就是說處在這個電源模式下可以發揮工作最大效率，`PS3 & PS4` 模式表示低電源消耗，又稱為 Non-Operational Power States (NOPS) ，若是處在 `PS4` 電源狀態下，則該電源消耗是最低的。
+一個控制器最大可以支援 32 個電源狀態，可以發送命令 identify controller 取得 **Number of Power States Supported (NPSS)** 控制器支援數量。目前現階段的應用並不會使用這麼多，根據目前大廠所支援的狀態大多都是 `PS0 ~ PS4`。 `PS0`模式代表最大電源消耗，意思就是說處在這個電源模式下可以發揮工作最大效率，`PS3 & PS4` 模式表示低電源消耗，又稱為 Non-Operational Power States (NOPS) ，若是處在 `PS4` 電源狀態下，則該電源消耗是最低的。
 
 *備註 : 每個控制器最少都要支援一個電源狀態，那就是 PS0。*
 
-> 補充說明 : 有些廠商的控制器韌體只有支援 PS0，可能的原因那就是客戶不考慮耗電量的問題，希望在工作效率上能夠全速運行，並且能夠維持在相對的效能。
+> 補充 : 有些廠商的控制器韌體只有支援 PS0，可能的原因那就是客戶不考慮耗電量的問題，希望在工作效率上能夠全速運行，並且能夠維持在相對的效能。
+
+
 
 若是要了解控制器提供表格的內容，可以發送命令 identify controller 取得電源資訊內容，以下是部份電源表格結構 : 
 
@@ -78,5 +80,5 @@ Non-Oprtaional Power States (NOPS)，定義是當控制器沒有任何 I/O 命�
 
 注意 : 如果電源階段是在 **Non-Operational States (NOPS)**，這個時候控制器可能會去運行像是 **Device Self-Test (DST)** 操作，那就可能會超過控制器所宣告該電源階段的最大功耗值 (MP)，此時控制器不應該切換到 NOPS。
 
-*Controller Idle : There are no commands outstanding to any I/O Submission Queue*
+*備註 : Controller idle means that there are no commands outstanding to any I/O Submission Queue*
 
