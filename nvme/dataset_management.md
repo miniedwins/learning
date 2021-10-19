@@ -235,15 +235,22 @@ import array
 buf = array.array("B",[0x00] * 4096)
 
 # 根據偏移量的遞增，然後每次取資料的最低位元，寫入到 buffer size
-def setValue(buf, offset, num, value):
+def set_value(buf, offset, num, value):
     if num == 1:
         buf[offset] = value
     else:
+        # Example: logical blocks
+        # 0x00200000h = 2097152 Blocks 
+        # buf[4 + 0] = 0x00
+        # buf[4 + 1] = 0x00
+        # buf[4 + 2] = 0x20
+        # buf[4 + 3] = 0x00
         for i in xrange(num): 
-            buf[offset+i] = (value>>(8*i)) & 0xff
+            new_value = (value >> (8 * i)) & 0xff
+            buf[offset+i] = new_value
     return buf
 
-def writeBinaryFile(buf, filepath):
+def write_file(buf, filepath):
     with open(filepath, "wb") as f:
         buf.tofile(f)
 
@@ -254,13 +261,12 @@ value : 多少個邏輯區塊
 +-----------------------+
         
 # Length in logical blocks：offset=4 num=4 value=2097152 (Blocks)
-# Total Bytes : 2097152 * 512 = 1,073,741,824 Bytes
-buf = setValue(buf,4,4, 2097152)
+buf = set_value(buf,4,4, 2097152)
 
 # Staring LBA : offset=8 num=8 value=0 (Blocks)
-buf = setValue(buf,8,8, 0)
+buf = set_value(buf,8,8, 0)
 
-writeBinaryFile(buf, “trim.bin”)
+write_file(buf, “trim.bin”)
 ~~~
 
 查看 trim.bin 的結構內容，必須要符合 Range Definition Field，目前裡面的內容只有 `Range0`
