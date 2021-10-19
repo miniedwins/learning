@@ -70,7 +70,7 @@
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/non_operational_power_state_config.png)
 
-*備註 : Non-Operational Power State Permissive Mode Disable 暫時看不懂*
+*備註 : Non-Operational Power State Permissive Mode Disable (待續 ...)*
 
 
 
@@ -149,7 +149,7 @@ nvme set-feature /dev/nvme0 --feature-id=0x02 --value=0x04
 
 **取得目前電源狀態**
 
-說明 : 取得目前控制器運行在哪一個電源狀態，目前電源模式是在 `PS4`。
+說明 : 給定一個 `feature-id=0x02` 取得目前控制器運行在哪一個電源狀態，目前電源模式是在 `PS4`。
 
 ~~~shell
 nvme get-feature /dev/nvme0 --feature-id=0x02
@@ -162,7 +162,7 @@ nvme get-feature /dev/nvme0 --feature-id=0x02
 
 #### 取得目前狀態
 
-說明 : 這邊會將所有的資料顯示出來，不過可以從回傳值 `Current value:0x000001` 取得目前的狀態是被啟用的。
+說明 : nvme-cli 會將所有的資料顯示出來，不過可以從回傳值 Current value : `0x000001` 取得目前的狀態是被啟用的。
 
 * 每個電源狀態會有一個 `Entry`，總共 64 Bits (8 Bytes)
 * 因為控制器最大可以支援 `32` 個電源狀態，所以才會回傳 8*32=256 Bytes 
@@ -204,13 +204,12 @@ get-feature:0xc (Autonomous Power State Transition), Current value:0x000001
 
 
 
-#### 設定屬性值
+#### 設定啟用或停用功能
 
-說明 : nvme-cli set-feature and get-feature
+說明 : 發送命令 set-feature 設定 APST
 
-* `Set-Feature` : 取得 APST 屬性值
-* `Get-Feature` : 設定 APST 屬性值
-* `State` : 
+* `set-feature` : 取得 APST 屬性值
+* `value` : 
   * APSTE=1 (Enable) 
   * APSTE=0 (Disable)
 
