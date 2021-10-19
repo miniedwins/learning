@@ -38,10 +38,10 @@
   * (說明) 控制器若是不支援 Sanitize 命令，當收到命令後，控制器會回覆一個不是有效的命令
 * If any Persistent Memory Region (PMR) is enabled
   * (原文) Controller shall abort any Sanitize command with a status of Sanitize Prohibited.
-  * (說明) 當啟用 PMR 功能，Sanitize 操作會被禁止使用
+  * (說明) 當啟用 `PMR` 功能，Sanitize 操作會被禁止使用
 * If a firmware activation with reset is pending
   * (原文) then the controller shall abort any Sanitize command.
-  * (說明) 執行 F/W Commit 完成後，基本上需要執行 Controller Rest，若是狀態還沒有完成，不允許執行 Sanitize 命令
+  * (說明) 執行 `F/W Commit` 完成後，基本上需要執行 Controller Rest，若是狀態還沒有完成，不允許執行 Sanitize 命令
 * Activation of new firmware is prohibited during a sanitize operation
   * (說明) 若是先前有執行 `F/W Download`，禁止在操作期間內 `Active F/W`
 
