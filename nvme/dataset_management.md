@@ -254,11 +254,13 @@ def write_file(buf, filepath):
     with open(filepath, "wb") as f:
         buf.tofile(f)
 
+"""
 +-----------------------+
 offset : 從哪個偏移量開始
 num : 偏移的次數	 
 value : 多少個邏輯區塊
 +-----------------------+
+"""
         
 # Length in logical blocks：offset=4 num=4 value=2097152 (Blocks)
 buf = set_value(buf,4,4, 2097152)
