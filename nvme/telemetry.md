@@ -38,9 +38,9 @@ nvme id-ctrl | grep lpa
 
 ### 讀取 Initialed Header (Ctrl)
 
-說明 : 讀取標頭檔的訊息可以得知每個  Phrase 所指定儲存的 Block 範圍，可以通過指定的範圍將取得 log data 並儲存成檔案，提供原廠分析。因此我們可以透過 get-log 命令，先取得標頭檔內容，了解每個 Phrase Block size。
+說明 : 讀取標頭檔的訊息可以得知每個 `Phrase` 所指定儲存的 `Block` 範圍，可以通過指定的範圍將取得 log data 並儲存成檔案，提供原廠分析。因此我們可以透過 get-log 命令，先取得標頭檔內容，了解每個 Phrase Block size。
 
-我們以取得 Ctrl-Initialed log 標頭檔為範例說明 : 
+我們以取得 Ctrl-Initialed log 標頭檔為範例，說明如下 : 
 
 透過  get-log 命令取得 Ctrl-Initialed log 標頭檔，--lpo=0 代表開始位置，--log-len 取得長度為 512 Bytes
 
@@ -78,31 +78,30 @@ hexdump -C -n 512 telemetry_ctrl_header_log
 
 
 
-### 取得 Initialed  Log Page (Ctrl)
+### 如何取得 telemetry log page
 
-接下來我們以下載 Host-Initialed & Ctrl-Initialed : Data Area 3 log 為範例，有兩種下載方法，如下所述 :
+使用 nvme-cli 有兩種下載方法，如下所述 : 
 
-**下載 Host-Initialed  :**
+* telemetry-log : 只能下載 `Host-Initialed log`，無法下載 `Ctrl-Initialed log`
+* get-log : 需要自行調整偏移量以及下載大小才能夠將所有的資料取得
+
+接下來示範下載 Host-Initialed 以及 Ctrl-Initialed 並且取得 Data Area 3 log ，範例如下 :
+
+#### Host-Initialed 
 
 執行方式 : 使用 telemetry-log 命令指定 `data-area=3`  **(nvme-cli version >= 1.6)**
 
 說明 : nvme-cli 已經幫我們處理好偏移量以及下載大小的問題，所以很簡單就可以拿到
 
-注意 : 此方法僅使用在下載  `Host-Initialed log`，無法下載 `Ctrl-Initialed log`
-
 ~~~shell
 nvme telemetry-log /dev/nvme0 --data-area=3 --output-file=telemetry_log.bin
 ~~~
 
-
-
-**下載方法 2 :**
+#### Ctrl-Initialed
 
 執行方式 : 撰寫 Shell 腳本，並使用 get-log 命令取得 telemetry-log
 
 說明 : 透過 `get-log` 命令來執行，因此我們需要自己調整偏移量以及下載大小才能夠將所有的資料取得
-
-不同處 : 與前面的方法不一樣是因為，nvme-cli 並沒有實做 `Ctrl-Initialed log`，所以需要自行處理
 
 *備註 : 該方法可以下載 Host-Initialed & Ctrl-Initialed*
 
