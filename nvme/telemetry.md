@@ -80,18 +80,18 @@ hexdump -C -n 512 telemetry_ctrl_header_log
 
 ### 如何取得 telemetry log page
 
-使用 nvme-cli 有兩種下載方法，如下所述 : 
+使用 nvme-cli **(version >= 1.6)** 有兩種下載方法，如下所述 : 
 
-* telemetry-log : 只能下載 `Host-Initialed log`，無法下載 `Ctrl-Initialed log`
+* telemetry-log : 可以下載 `Host-Initialed log`，但是無法下載 `Ctrl-Initialed log`
 * get-log : 需要自行調整偏移量以及下載大小才能夠將所有的資料取得
 
 接下來示範下載 Host-Initialed 以及 Ctrl-Initialed 並且取得 Data Area 3 log ，範例如下 :
 
 #### Host-Initialed 
 
-執行方式 : 使用 telemetry-log 命令指定 `data-area=3`  **(nvme-cli version >= 1.6)**
+說明 : nvme-cli 已經幫我們處理好偏移量以及下載大小的問題，所以很簡單就可以拿到。
 
-說明 : nvme-cli 已經幫我們處理好偏移量以及下載大小的問題，所以很簡單就可以拿到
+執行方式 : 使用 telemetry-log 命令指定 `data-area=3`
 
 ~~~shell
 nvme telemetry-log /dev/nvme0 --data-area=3 --output-file=telemetry_log.bin
@@ -99,9 +99,9 @@ nvme telemetry-log /dev/nvme0 --data-area=3 --output-file=telemetry_log.bin
 
 #### Ctrl-Initialed
 
-執行方式 : 撰寫 Shell 腳本，並使用 get-log 命令取得 telemetry-log
+說明 : 讀取標頭檔案所描述的 data block 容量，在依據取得的容量給腳本執行。
 
-說明 : 讀取標頭檔案所描述的 data block 容量，在依據取得的容量給腳本執行
+執行方式 : 撰寫 Shell 腳本，並使用 get-log 命令取得 telemetry-log
 
 *備註 : 該方法可以下載 Host-Initialed & Ctrl-Initialed*
 
