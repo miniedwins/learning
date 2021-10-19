@@ -263,7 +263,11 @@ buf = setValue(buf,8,8, 0)
 writeBinaryFile(buf, “trim.bin”)
 ~~~
 
-查看 trim.bin 的結構內容，必須要符合 Range Definition Field
+查看 trim.bin 的結構內容，必須要符合 Range Definition Field，目前裡面的內容只有 `Range0`
+
+* Context Attributes (03:00) : 0x00
+* Length in logical blocks (07:04) : 0x00200000h = 2097152 Blocks = 1,073,741,824 Bytes = 1GB
+* Starting LBA (15:08) : 0x00
 
 ~~~shell
 edwin@edwin:~$ sudo hexdump -C -n 512 trim.bin 
