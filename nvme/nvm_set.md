@@ -12,9 +12,7 @@ Set是一組Flash LUN的集合，所以稱之為一個Set。比如說我們可�
 
 > 備註 : An NVM Set Identifier value of 0h is reserved and is not a valid NVM Set Identifier
 
-**NVM Sets and Associated Namespaces**
-
-![](https://github.com/miniedwins/learning/blob/main/nvme/pic/NVM_Sets_and_Associated_Namespaces.png)
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/nvm_sets_and_associated_namespaces.png)
 
 
 
