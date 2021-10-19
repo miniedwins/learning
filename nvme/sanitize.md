@@ -6,9 +6,13 @@
 
 主要的功能就是清除 NAND Flash 資料，支援三個操作類型 : `Block Erase`、`Overwrite`、`Crypto Erase`。所有的操作類型都在背景運行，我們可以在執行的途中或是完成後，透過 `Sanitize Status Log` 來檢查執行的進度或是狀態。
 
+**Sanitize 操作類型 :** 
+
 * `Block Erase` : 清除所有物理上 Block 資料，一旦被清除就無法再恢復資料
 * `Overwrite` : 使用特定資料格式去複寫現有已存在的資料
 * `Crypto Erase` : 通過刪除密鑰的方式讓資料無法再被識別，因為沒有金鑰就無法取得真正的資料內容
+
+
 
 **當命令 (Sanitize) 開始運作的時候，控制器需要有以下動作 :** 
 
@@ -24,6 +28,8 @@
 * 暫時停止 `APST Management`，避免執行過程中進入到省電模式
 * Shall release stream identifiers for any open streams. 
   * *備註 : 尚未了解 streams 定義*
+
+
 
 **控制器會中止任何一個 Sanitize command，如以下動作 :**
 
@@ -166,3 +172,4 @@ Estimated Time For Overwrite (No-Deallocate)   :  0
 Estimated Time For Block Erase (No-Deallocate) :  0
 Estimated Time For Crypto Erase (No-Deallocate):  0
 ~~~
+
