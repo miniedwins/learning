@@ -40,9 +40,9 @@ nvme id-ctrl | grep lpa
 
 說明 : 讀取標頭檔的訊息可以得知每個 `Phrase` 所指定儲存的 `Block` 範圍，可以通過指定的範圍將取得 log data 並儲存成檔案，提供原廠分析。因此我們可以透過 get-log 命令，先取得標頭檔內容，了解每個 Phrase Block size。
 
-我們以取得 Ctrl-Initialed log 標頭檔為範例，說明如下 : 
+我們以取得 `Ctrl-Initialed log` 標頭檔為範例，說明如下 : 
 
-透過  get-log 命令取得 Ctrl-Initialed log 標頭檔，--lpo=0 代表開始位置，--log-len 取得長度為 512 Bytes
+透過  get-log 命令取得 Ctrl-Initialed log 標頭檔，`--lpo=0` 代表開始位置，`--log-len` 取得長度為 512 Bytes
 
 ~~~shell
 nvme get-log /dev/nvme0 --log-id=0x08 --lpo=0 --log-len=512 -b > telemetry_ctrl_header_log
@@ -74,7 +74,7 @@ hexdump -C -n 512 telemetry_ctrl_header_log
 
 根據該資料結構來看 Log Identifier : 0x08，OUI Identifier : 0xec6f0b，Data Area 1, 2, 3 block size 皆為 0x339f。
 
-<img src="G:/My Drive/筆記/NVMe/res/GetLog_Telemetry_Controller_Initiated.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/log_page/log_page_telemetry_controller_initiated.png)
 
 
 
