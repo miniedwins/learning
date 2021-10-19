@@ -74,7 +74,7 @@ nvme id-ctrl /dev/nvme0 | grep oncs
 
 取得方法 : 
 
-* 查看 Namesapce Data Struct，並檢查 `DLFEAT` 該屬性質
+* 查看 Namesapce Data Structure，並檢查 DLFEAT 該屬性
 * nvme-cli 並沒有把 `DLFEAT` 顯示出來，因此需要發送 `admin-passthru` 命令取得 `Raw Data`
 * 長度可以設定 512 bytes 即可，目的只是要確認 `Bits 2:0`
 
