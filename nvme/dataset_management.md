@@ -29,19 +29,13 @@
 
 > 備註 : The operation of the Deallocate function is similar to the ATA DATA SET MANAGEMENT with Trim feature
 
-
-
 ### Error Recovery
 
-(原文) The controller shall fail **Read, Verify, or Compare** commands that include **deallocated or unwritten blocks** with a status of Deallocated or Unwritten Logical Block if that error has been enabled using the **DULBE bit** in the **Error Recovery feature**.
-
-(說明) 當控制器讀取或是驗證 deallocated or unwritten blocks
+(原文) The controller shall fail Read, Verify, or Compare commands that include deallocated or unwritten blocks with a status of Deallocated or Unwritten Logical Block if that error has been enabled using the DULBE bit in the Error Recovery feature.
 
 *備註 : Legacy software may not handle an error for this case.*
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/error_recovery_id_05.png)
-
-
 
 ###  DULBE
 
@@ -54,3 +48,64 @@
 * either 0x00h or 0xFFh
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_namesapce/Identify_Namespace_DLFEAT.png)
+
+
+
+## 如何執行命令
+
+### 檢查控制器是否支援
+
+說明 : 檢查控制器有沒有支援 **Dataset Management** 命令，沒有支援就沒有辦法做 **Trim**
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_ONCS_Bit2.png)
+
+執行命令 : 
+
+~~~shell
+nvme id-ctrl /dev/nvme0 | grep oncs
+# oncs: 0x1e
+~~~
+
+
+
+### 確認是否支援 Deallocate
+
+說明 : 檢查控制器有沒有支援 Deallocated or Unwritten Logical Block error for this namespace
+
+取得方法 : 
+
+* 查看 Namesapce Data Struct，並檢查 `DLFEAT` 該屬性質
+* nvme-cli 並沒有把 `DLFEAT` 顯示出來，因此需要發送 `admin-passthru` 命令取得 `Raw Data`
+* 長度可以設定 512 bytes 即可，目的只是要確認 `Bits 2:0`
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_namesapce/Identify_Namespace_NSFEAT.png)
+
+執行命令 : 
+
+~~~shell
+nvme admin-passthru /dev/nvme0 --namespace-id=1 --opcode=0x06 --cdw10=0x00 --data-len=512 --read
+~~~
+
+執行結果 : 
+
+~~~shell
+NVMe command result:00000000
+       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+0000: b0 44 f2 1b 00 00 00 00 b0 44 f2 1b 00 00 00 00 ".D.......D......"
+0010: b0 44 f2 1b 00 00 00 00 00 01 00 00 00 00 00 00 ".D.............."
+0020: 00 00 ff 00 00 00 00 00 ff 00 00 00 00 00 00 00 "................"
+~~~
+
+
+
+### 檢查啟用或停用 DUBLE 
+
+說明 : 檢查目前的控制器是否有啟用或是停用 **DUBLE**
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/feature/error_recovery_id_05.png)
+
+~~~shell
+nvme get-feature --feature-id=0x05 /dev/nvme0n1 
+# get-feature:0x5 (Error Recovery), Current value:00000000
+~~~
+
