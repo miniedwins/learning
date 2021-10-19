@@ -2,7 +2,7 @@
 
 
 
-## Telemetry log
+## Telemetry 介紹
 
 Telemetry log 主要讓開發商收集內部資料去改善產品功能與穩定性。Telemetry 資料的收集方式可以透過兩種方法取得 initiated by the host or by the controller，資料會存放在 `Telemetry Host-Initiated` and `Telemetry Controller-Initiated` log page，因此我們可以透過 `get-log` 命令方式取得 telemetry 資料。由於要收集資料的方法與內容是由開發商所指定，所以無法得知資料內容的格式。
 
@@ -101,11 +101,12 @@ nvme telemetry-log /dev/nvme0 --data-area=3 --output-file=telemetry_log.bin
 
 執行方式 : 撰寫 Shell 腳本，並使用 get-log 命令取得 telemetry-log
 
-說明 : 透過 `get-log` 命令來執行，因此我們需要自己調整偏移量以及下載大小才能夠將所有的資料取得
+說明 : 讀取標頭檔案所描述的 data block 容量，在依據取得的容量給腳本執行
 
 *備註 : 該方法可以下載 Host-Initialed & Ctrl-Initialed*
 
 ~~~shell
+# Host-Initialed 標頭檔內容
 00000000  08 00 00 00 00 0b 6f ec  9f 33 9f 33 9f 33 00 00  |......o..3.3.3..|
 00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 *
