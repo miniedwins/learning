@@ -46,9 +46,9 @@
 
 回覆下列其中一種數值 : 
 
-* `000b` : 0x00h
-* `001b` : 0xFFh
-* `010b` : either 0x00h or 0xFFh
+* `000b` : Not Reported
+* `001b` : 0x00h
+* `010b` : 0xFFh
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_namesapce/Identify_Namespace_DLFEAT.png)
 
