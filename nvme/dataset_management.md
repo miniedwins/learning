@@ -25,7 +25,7 @@
 * 從未被寫過的邏輯區塊 (unwritten logical lock)，對主機而言就是一個乾淨的邏輯區塊
 * 該邏輯區塊 (logical block) 已經有執行過 dsm with deallocated 
 * (原文) Write Zeroes Command or Sanitize command is called deallocated or unwritten logical block
-  * (說明) 執行上述這兩個命令，基本上會讓邏輯區塊清除為零，可以稱為 deallocated or unwritten logical block
+  * (說明) 執行上述這兩個命令，基本上可以稱為 deallocated or unwritten logical block
 
 > 備註 : The operation of the Deallocate function is similar to the ATA DATA SET MANAGEMENT with Trim feature
 
@@ -41,15 +41,8 @@
 
 ###  DULBE
 
-(原文翻譯) 當主機讀取 deallocated or unwritten block，控制器根據 Deallocate Logical Block Features (Bits 2:0) 設定，參考 Identify Namespace Data Structure (DLFEAT)，當讀取到 deallocated or unwritten block，控制器應該需要回傳那一種數值。
-
-(說明) 主要是說若是主機去讀取一個 deallocated or unwritten block，控制器會根據 DLFEAT 設定，然後回傳一個固定的值
-
-回覆下列其中一種數值 : 
-
-* 0x00h
-* 0xFFh
-* either 0x00h or 0xFFh
+* (原文翻譯) 當主機讀取 deallocated or unwritten block，控制器根據 Deallocate Logical Block Features (Bits 2:0) 設定，當讀取到 deallocated or unwritten block，控制器應該需要回傳那一種數值，這個設定可以由 Identify Namesapce Data Structure 取得。
+* (說明) 主要是說若是主機去讀取一個 deallocated or unwritten block，控制器會根據 DLFEAT 設定，然後回傳一個固定的值
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_namesapce/Identify_Namespace_DLFEAT.png)
 
