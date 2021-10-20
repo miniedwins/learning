@@ -161,7 +161,7 @@ unvmcap : 960998932480
 
 
 
-#### Create Namespace
+#### (1) Create Namespace
 
 透過 `IDMA` 計算要建立的容量大小，我們建立兩個空間大小 500GB and 460GB，並且指定每個空間的 Block size : `512 Bytes`
 
@@ -182,7 +182,7 @@ sudo nvme create-ns /dev/nvme0 -s 898633008 -c 898633008 -f 0 -d 0 -m 0
 
 
 
-#### Attach Namespace
+#### (2) Attach Namespace
 
 此時建立完成後還無法使用該空間，需要控制器掛載該空間才可以被作業系統使用
 
@@ -203,7 +203,7 @@ sudo nvme list /dev/nvme0
 
 
 
-#### Detach Namespace
+#### (3) Detach Namespace
 
 移除控制器所掛載的空間，被移除的空間就不會被作業系統所使用
 
@@ -226,7 +226,7 @@ sudo nvme list /dev/nvme0
 
 
 
-#### Delete Namespace
+#### (4) Delete Namespace
 
 將建立的空間刪除，此時該空間的資料會被清除
 
@@ -253,20 +253,32 @@ unvmcap : 960998932480
 
 
 
-## IDEMA 公式計算
+## IDEMA 
 
-**Example : 960GB**
+以下公式可以選擇 Block Size 大小換算，這裡分別為 512 Bytes 以及 4096 Bytes。
+
+### 公式計算
+
+#### 512 Bytes
+
+LBA counts :  (97,696,368) + (1,953,504 * (GBytes – 50))
+
+#### 4096 Bytes
+
+LBA counts :  (12,212,046) + (244,188 * (GBytes – 50))
+
+
+
+### 範例教學
 
 Total Bytes : 960,998,932,480 (960GB)
 
-**Block Size : 512 Bytes**
+**512 Bytes** 
 
-* LBA counts :  (97,696,368) + (1,953,504 * (GBytes – 50))
 * 500GB : 97,696,368 + (1,953,504 * (500 – 50)) = 976,773,168
 * 460GB : 97,696,368 + (1,953,504 * (460 – 50)) = 898,633,008
 
-**Block Size : 4096 Bytes**
+**4096 Bytes**
 
-* LBA counts = (12,212,046) + (244,188 * (GBytes – 50))
 * 500GB : 12,212,046 + (244,188 * (500 – 50)) = 122,096,646
 * 460GB : 1,2212,046 + (244,188 * (460 – 50)) = 112,329,126
