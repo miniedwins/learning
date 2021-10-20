@@ -24,7 +24,7 @@
 
 **Invalid NSIDs**
 
-* 而無效範圍是 `NSID=0` 以及 `NN+1`
+* 無效範圍是 `NSID=0` 以及 `NN+1`
 * `FFFFFFFFh` 表示 `broadcast` 可以由該值來指定所有的 Namespace。
 
 
@@ -53,11 +53,11 @@
 
 ### 確認控制器 ID
 
-目的 : 確認目前的控制器的 `ID 編號`，才能針對哪個控制器執行命令 (假設有兩個以上的控制器)。
+目的 : 確認目前的控制器的 ID 編號，才能針對哪個控制器執行命令 (假設有兩個以上的控制器)。
 
-說明 : 若是有多控制器支援共用同一個 `Namesapce` 關係，所以需要指定 Controller Id 才可以掛載或是卸載 Namesapce。
+說明 : 若是有多控制器支援共用同一個 Namesapce 關係，所以需要指定 Controller Id 才可以掛載或是卸載 Namesapce。
 
-執行 : 發送 `identify-ctrl` 命令，取得 `cntlid` 資訊
+執行 : 發送 Identify Ctroller 命令，取得 `cntlid` 資訊
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_controller/Identify_Controller_CNTLID.png)
 
@@ -70,9 +70,9 @@ nvme id-ctrl /dev/nvme0 | grep cntlid
 
 ###  檢查控制器是否支援
 
-說明 : 檢查 Controller 是否有支援 `Namespace Management`
+說明 : 檢查 Controller 是否有支援 Namespace Management
 
-執行 : 發送 `identify controller` 找到， 取得 `Optional Admin Command Support (OACS)`
+執行 : 發送 Identify Controller 命令， 取得 `Optional Admin Command Support (OACS)`
 
 - Controller Attributes (CTRATT) :
   - 257:256 Bytes : Optional Admin Command Support (OACS)
@@ -95,7 +95,7 @@ nvme id-ctrl /dev/nvme0 | grep oacs
 
 目的 : 需要先取得該硬碟空間大小，確定目前使用容量使用狀況，才可以正確的建立 Namsespace。
 
-執行 : 發送 `identify controller` 命令， 取得 `tnvmcap & unvmcap` 資訊
+執行 : 發送 Identify Controller 命令， 取得 `tnvmcap & unvmcap` 資訊
 
 下列參數描述建立 `Namespace` 可使用空間與未配置空間大小
 
@@ -194,7 +194,7 @@ sudo nvme attach-ns /dev/nvme0 -n 1 -c 1
 sudo nvme attach-ns /dev/nvme0 -n 2 -c 1
 ~~~
 
- 可以使用 `nvme list` 命令，確認目前掛載的 `Namespaces ID`
+ 可以使用 `nvme list` 命令，確認目前掛載的 Namespaces ID
 
 ~~~shell
 # List All Attached NSID
@@ -217,7 +217,7 @@ sudo nvme detach-ns -n 1 -c 1 /dev/nvme0
 sudo nvme detach-ns -n 2 -c 1 /dev/nvme0
 ~~~
 
-`Namespaces ID` 不會被顯示出來
+Namespaces ID 不會被顯示出來
 
 ~~~shell
 # List All Attached NSID
@@ -238,7 +238,7 @@ sudo nvme delete-ns -n 1 -c 1 /dev/nvme0
 sudo nvme delete-ns -n 2 -c 1 /dev/nvme0
 ~~~
 
-這個時候可以發送 `identify controller ` 確認 `tnvmcap & unvmcap`
+這個時候可以發送 Identify Controller  確認 `tnvmcap & unvmcap`
 
 ~~~shell
 nvme id-ctrl /dev/nvme0
