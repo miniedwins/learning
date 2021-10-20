@@ -44,6 +44,12 @@
 * (原文翻譯) 當主機讀取 deallocated or unwritten block，控制器根據 Deallocate Logical Block Features (Bits 2:0) 設定，當讀取到 deallocated or unwritten block，控制器應該需要回傳那一種數值，這個設定可以由 Identify Namesapce Data Structure 取得。
 * (說明) 主要是說若是主機去讀取一個 deallocated or unwritten block，控制器會根據 DLFEAT 設定，然後回傳一個固定的值
 
+回覆下列其中一種數值 : 
+
+* `000b` : 0x00h
+* `001b` : 0xFFh
+* `010b` : either 0x00h or 0xFFh
+
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/identify_namesapce/Identify_Namespace_DLFEAT.png)
 
 
