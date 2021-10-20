@@ -56,8 +56,7 @@
 * shall be aborted when **a sanitize operation is started**
   * 已經開始執行 Sanitize 操作
 * shall be aborted if a Device Self-test command with the **Self-Test Code field set to Fh** is processed
-  * 發送 device self-test 命令，需要設定 **STC** 欄位參數，它是用來設定哪個測試類型 (e.g., short, extended, and stop)
-  * 若是被設定成 `0xFh`，代表是停止自檢測試
+  * 發送 device self-test 命令，設定 STC : `0xFh` 欄位參數，代表是停止自檢測試
 * may be aborted if the specified **namespace is removed** from the namespace inventory.
   * 若是指定的 Namespace 已經被控制器移除
 
