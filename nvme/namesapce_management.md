@@ -18,7 +18,9 @@
 
 每個 namespace 都擁有自己唯一的 NSID。有效的範圍 : `1~NN`，要注意的是，起始空間都是由 `NSID=1` 開始，最大支援空間數量是由控制器決定，可由 `Identify Ctrl Data` 取得。
 
-<img src="../../res/Namespace_Management_NN.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/namespace_management_nn.png)
+
+
 
 **Invalid NSIDs**
 
@@ -43,7 +45,7 @@
 
 **下圖表示：Namespace Id Types:** 
 
-
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/namespace_management_nsid_type.png)
 
 
 
@@ -84,11 +86,6 @@ nvme id-ctrl /dev/nvme0 | grep cntlid
 
 ~~~Shell
 nvme id-ctrl /dev/nvme0 | grep oacs
-~~~
-
-執行結果 : 
-
-~~~shell
 # oacs : 0xf
 ~~~
 
@@ -143,7 +140,7 @@ unvmcap : 960998932480
 
 下圖表格 `Namesapce Management` 設定，詳細說明需要參考SPEC，以下為基本參數說明 : 
 
-<img src="G:\My Drive\筆記\NVMe\res\Namespace_Management_Host_Software_Specified_Fields.png" style="zoom:80%;" align="left"/>
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/namespace_management_host_software_specified_fields.png)
 
 **參數說明 :** 
 
@@ -170,10 +167,10 @@ unvmcap : 960998932480
 
 不啟用端對端資料保護 (dps=0)，以及不共享這個空間給其它控制器使用 (nmic=0)。
 
->*備註 : 不同的空間的 `block size` 可以設定不同，例如 :* 
+>*備註 : 不同的空間的 block size 可以設定不同，例如 :* 
 >
->1. *`Namaspace 1` : 512 Bytes*
->2. *`Namesapce 2`: 4096 Bytes*
+>1. *Namaspace 1 : 512 Bytes*
+>2. *Namesapce 2: 4096 Bytes*
 
 ~~~shell
 # Create a Namespace 500GB
@@ -273,12 +270,3 @@ Total Bytes : 960,998,932,480 (960GB)
 * LBA counts = (12,212,046) + (244,188 * (GBytes – 50))
 * 500GB : 12,212,046 + (244,188 * (500 – 50)) = 122,096,646
 * 460GB : 1,2212,046 + (244,188 * (460 – 50)) = 112,329,126
-
-
-
-
-
-
-
-
-
