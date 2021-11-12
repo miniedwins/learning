@@ -40,19 +40,17 @@ Zone Characteristics
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_characteristics.png)
 
+---
 
+(未完成)
 
 ## Zone State Machine
 
 The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly Opened, ZSEO:Explicitly Opened, ZSC:Closed, ZSF:Full, ZSRO:Read Only, and ZSO:Offline.
 
-**Zone State Machine**
-
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_state_machine.png)
 
-
-
-### Empty state (ZSE)
+### Empty state (ZSE) 
 
 儲存空間沒有任何資料
 
@@ -82,7 +80,7 @@ The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly O
 
 ### Explicitly Opened (ZSEO) 
 
-
+---
 
 以下狀態 (zone state)，控制器會中止寫入命令 :
 
@@ -93,17 +91,43 @@ The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly O
   * a) if an Address-Specific Write Command specifies a Starting LBA field that is not equal to the write pointer for that zone, then the controller shall abort that command with a status code of Zone Invalid Write;
   * b) if a Zone Append command specifies a ZSLBA that is not the lowest logical block address in that zone, then the controller shall abort that command with a status code of Invalid Field in Command.
 
+---
 
+## Zone Resources
+
+*  Rsource
+  * Active : 表示最大有可以使用多少 Active Zones
+  * Open : 表示最大可以打開 (Implicitly & Explicitly) 多少個 Active Zones
+
+如果控制器處理一個命令，需要將 zone 轉態到 ZSIO、ZSEO、ZSC，如果 Resource 已經沒有可使用空間，若是打開超過 Active 或是 Opend 的最大限制，則控制器會終止命令，並且回傳錯誤的狀態碼 (例如：Too Many Active Zones or Too Many Open Zones)
+
+若是 zoned namespace 轉變成寫入保護 (write protected) 的狀態， 則在活動區所有的 Zones 都會轉態成 ZSF。
+
+如果打開的區域數量達到最大值，並且它們都是顯式打開的，那麼任何打開新區域的嘗試都將失敗。但是，如果其中一些區域只是隱式打開的，那麼嘗試打開一個新區域將導致SSD關閉其中一個隱式打開的區域。
 
 ---
 
+## Zone Transition
+
 (未完成)
 
-Zone State Machine (狀態轉換)
+### ZSE:Empty state
 
-ZSE : 可以轉變到到任何的狀態
+### ZSIO:Implicitly Opened state
 
-ZSO : 無法在從這個狀態下轉到其它的 zone state
+### ZSEO:Explicitly Opened state
+
+### ZSC:Closed state
+
+### ZSF:Full state
+
+### ZSRO:Read Only state
+
+### ZSO:Offline state
+
+* 沒有任何狀態可以從 `ZSO` 轉到其它的 `zone state`
+
+> 備註 : ZSE 可以轉變到到任何的 zone state。不過，一個命令被控制器處理也會造成不同狀態轉換，例如 : 處理一個寫入命令後，會從 ZSC:ZSIO，然後再從 ZSIO:ZSF (可以參考 Zone State Machine)。
 
 (需要修改內容)
 
@@ -111,11 +135,25 @@ ZSO : 無法在從這個狀態下轉到其它的 zone state
 
 * zone namespace 在可以有效地轉換到各個狀態之前，前提需要有被執行 formatted 或是 created by NS managemnt 才可以轉換到各個狀態
 
+---
 
+## Zone Management Send command
 
-一個命令的處理可能會造成不同狀態轉換，例如 : 處理一個寫入命令後，會從 `ZSC:ZSIO`，然後再從 `ZSIO:ZSF`。
+(說明) Host 可以透過 `Zone Management Send` 控制 Zone State 切換到不同的狀態。
 
+(用途) 
 
+(尚未完成 ...)
+
+### Zone Send Actions
+
+#### Close Zone
+
+說明 : 
+
+* Select All Bit 
+  * 1 : 
+  * 0 : 
 
 
 
