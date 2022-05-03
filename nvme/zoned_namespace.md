@@ -1,50 +1,60 @@
+---
+tags: nvme
+---
+
 # Zoned Namesapce
 
+## 名詞定義
 
+### Zone
 
-## 基本介紹
+由連續的邏輯位址 (logic block address) 所組成，這些位址會被作業系統視為一個單位所使用，稱之為 Zone。
 
-Active Zone
+### Zone Size
 
-* ZSIO:Implicitly Opened state,
-* ZSEO:Explicitly Opened state
-* ZSC:Closed state
+代表一個 Zone 的總容量大小。
 
-zone : A contiguous range of logical block addresses that are managed as a single unit.
+### Zone Capacity
 
-Zone Capacity : A zone capacity is an additional per-zone attribute that indicates the number of usable logical blocks within each zone, starting from the first logical block of each zone.
+代表每一個 Zone 可以使用的邏輯區塊，該空間通常是小於或是等於 Zone Size。
 
-Zone Size : A zone capacity is always smaller or equal to the zone size.
+### Zone Namespace
 
----
+由多個 Zone 所組成，稱為 Zone Namespaces。
 
-Zone Descriptor : The data structure that contains information about a zone.
+### Zone Descriptor
 
-(說明) 每一個 zone 都會有一個 Descriptor，描述該 zone 的狀態
+每一個 Zone 都會有一個 Descriptor，描述該 Zone 的相關狀態或是屬性值。例如 : 目前的 Zone 是在位在哪一個狀態 (Zone State)，容量大小或是起始位置 (ZSLBA) 等之類的屬性值。
 
-Each zone has an associated **Zone Descriptor** that contains a set of attributes. **A Zone Management Receive command** may be used to retrieve one or more Zone Descriptors
+> Host 可以透過發送 `Zone Management Receive` 命令，取得一個或是多個 Zone Descriptor。
 
-(說明) 使用 Zone Management Receive 命令 取得 一個或是多個 Zone Descriptor 
+### Zone Characteristics
 
-The host may use the **Zone Management Receive** command to determine the current write pointer for a zone.
+首先說明 `Write Pointer (WP)` 屬性，它是定義在 Zone Descriptor，表示 Zone 下一個可以寫入資料的邏輯地址，若是該 Zone 處在不可寫入的狀態，控制器則會回報錯誤。Zone Namespace 會對於每一個 Zone 區域維護 WP，所以當有資料寫入到，Zone會從當前所記錄的 WP 位址開始寫入。
 
-(說明) Host 發送 Zone Management Receive 可以取得目前的 write pointer (a zone) 位置
+> Host 可以使用 `Zone Management Receive` 命令取獲得目前的 WP 位址。
 
-The write pointer for a zone in the ZSE:Empty state, the ZSIO:Implicitly Opened state, the ZSEO:Explicitly Opened state, or the ZSC:Closed state shall be increased by the number of logical blocks written on successful completion of a write operation.
+每次寫入操作都會增加 WP 屬性的值，因此在這幾個狀態 (ZSE, ZSIO, ZSEO, ZSC) 一但資料成功寫入後，都會增加 WP。若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 ***(待確認)***
 
-(說明) 在這幾個狀態下若是寫入操作成功，write pointer 會增加
-
----
-
-Zone Characteristics 
+下圖說明當前的 Zone State 的狀態下，WP 在那些狀態是有效以及無效。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_characteristics.png)
 
----
+可以先看到 ZSE (Empty State)，標示是有效的 WP，但是為什麼 Active & Open Resources 都是無效 ? 因為還在 ZSE 狀態下，尚未有任何資料寫入，因此 Active & Resource 都是無效的 WP。而當資料已經有被寫入到 Zone，這個時候的 Zone State，會轉狀態到 Active OR Open，這個時候 WP 才會有是有效。
 
-(未完成)
+ZSF, ZSRO, ZSO 這幾種狀態它們的 WP 都不是有效的，因為這些狀態下它們都無法在寫入任何資料，WP 自然就會是無效。所以當在這幾個狀態下，如果發送出寫入命令，該命令會被控制器忽略(Abort) 並且回覆無效的 Status Code。
 
-## Zone State Machine
+若是 Zone's WP 已經指向達最大可以寫入的位址 (LBA)，可以發送`Zone Management Send command`，設定參數 Zone Send Action 04h，表示要 Reset Zone，命令執行成功後，可以從 Zone Descriptor 觀察 WP 是否被設定成 ZSLBA。
+
+Zone 寫入命令的注意事項 : 
+
+* 寫入命令 (Address-Specific Write) 的開始邏輯位址，沒有等於 WP 所指定的位置
+* 寫入的命令 (Zone Append) 並且指定 ZSLBA，但是 ZSLBA 並不是 Zone 的最低起始位址
+
+以上這兩點都會造成控制器忽略該命令，並且回覆無效的 Status Code。
+
+
+## 狀態機制
 
 The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly Opened, ZSEO:Explicitly Opened, ZSC:Closed, ZSF:Full, ZSRO:Read Only, and ZSO:Offline.
 
@@ -63,7 +73,7 @@ The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly O
 
 ### Full state (ZSF) 
 
-儲存空間已滿
+持續寫入區塊 (blocks) 的數量達到一個 Zone Capacity 的上限之後，就會進入 Full 狀態。
 
 ### Read Only state (ZSRO)
 
@@ -78,7 +88,22 @@ The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly O
 
 ### Implicitly Opened (ZSIO)  
 
+隱式
+
 ### Explicitly Opened (ZSEO) 
+
+顯式
+
+
+### Active Zones
+
+根據 (Zone State Machine) 表示，位在該區域的 Zone 狀態為下列三種 : 
+
+* ZSIO : Implicitly Opened state (隱式打開)
+* ZSEO : Explicitly Opened state (顯式打開)
+* ZSC  : Closed state (關閉)
+
+在這裡活動的 Zone 是可以隨時被系統隱式打開或是關閉。
 
 ---
 
@@ -107,7 +132,7 @@ The state machine consists of the following states: ZSE:Empty, ZSIO:Implicitly O
 
 ---
 
-## Zone Transition
+## 狀態轉換
 
 (未完成)
 
