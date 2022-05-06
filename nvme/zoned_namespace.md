@@ -30,12 +30,14 @@ tags: nvme
 
 ### Zone Characteristics
 
-首先說明 `Write Pointer (WP)` 屬性，它是定義在 Zone Descriptor，表示 Zone 下一個可以寫入資料的邏輯地址，若是該 Zone 處在不可寫入的狀態，控制器則會回報錯誤。Zone Namespace 會對於每一個 Zone 區域維護 WP，所以當有資料寫入到，Zone會從當前所記錄的 WP 位址開始寫入。
+首先說明 `Write Pointer (WP)` 屬性，它是定義在 Zone Descriptor，表示 Zone 下一個可以寫入資料的 LBA，若是該 Zone 處在不可寫入的狀態，控制器則會回報錯誤。Zone Namespace 會對於每一個 Zone 區域維護 WP，所以當有資料寫入到，Zone會從當前所記錄的 WP 位址開始寫入。
 
 > Host 可以使用 `Zone Management Receive` 命令取獲得目前的 WP 位址。
 
+每次寫入操作都會增加 WP 屬性的值，因此在這幾個狀態 (ZSE, ZSIO, ZSEO, ZSC) 一但資料成功寫入後，都會增加 WP。主要原因是，寫入資料需要轉態到 OPend 區域。
+
 ***(待確認行為是否為真)***
-每次寫入操作都會增加 WP 屬性的值，因此在這幾個狀態 (ZSE, ZSIO, ZSEO, ZSC) 一但資料成功寫入後，都會增加 WP。若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 
+若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 
 
 下圖說明當前的 Zone State 的狀態下，WP 在那些狀態是有效以及無效。
 
@@ -51,19 +53,25 @@ ZSF, ZSRO, ZSO 這幾種狀態它們的 WP 都不是有效的，因為這些狀�
 
 **寫入命令**
 
-* 寫入命令 (Address-Specific Write) 的開始邏輯位址，沒有等於 WP 所指定的位置
+* 寫入命令 (Address-Specific Write) 的開始的 LBA，沒有等於 WP 所指向的位置
 * 寫入命令 (Zone Append) 並且指定 ZSLBA，但是 ZSLBA 並不是 Zone 的最低起始位址
 
 以上這兩點都會造成控制器忽略該命令，並且回傳無效的狀態碼。
 
 **讀取命令**
 
-* 如果在 ZSO (Zone offline) 發送讀取命令，則控制器會回傳狀態碼 (Zone offline)
-* 如果 Across Zone Boundaries 設定為 "1"，則讀取的邏輯位置，可以讀取超過該 Zone 的邏輯位址。代表可以讀取的範圍可以超過該 Zone 的範圍，因此可以讀取更多的資料 ***(尚未確定功能是否可行)***
+* 如果目前在 ZSO 區域內發送讀取命令，離線狀態是不能夠執行任何讀寫，則控制器會回傳狀態碼 (Zone offline)
+* 如果 Across Zone Boundaries 設定為 "1"，則讀取的邏輯位址，可以讀取超過該 Zone 的邏輯位址，代表讀取的範圍可以超過該 Zone 的範圍，因此可以讀取更多的資料。***(尚未確定功能是否可行)***
+
+查詢資料結構 Identify Namespace (Zone Namespace)，可以找到相關參數設定 Optional Zoned Command Support (OZCS)。
+
+* Bit 0: Across Zone Boundaries
+    * "1" : 允許讀取的LBA範圍，超過該 Zone's LBA
+    * "0" : 不允許讀取命令的LBA範圍，超過該 Zone's LBA
 
 ## 狀態機制
 
-這是 Zone 的狀態機制圖，每一個 Zone 都一定會處在其中一個狀態，而系統會藉由不同狀態的切換來管理資源。所以在同一時間內資源是有限的，並且有部份的 Zones 可能會處在不可以寫入的狀態下，不過它是可以讀取的。
+這是 Zone 的狀態圖，每一個 Zone 都一定會處在其中一個狀態，而系統會藉由不同狀態的切換來管理資源。所以在同一時間內資源是有限的，並且有部份的 Zones 可能會處在 ZSC 的狀態下，不過它是可以讀取的。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_state_machine.png)
 
@@ -80,19 +88,22 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 
 ### Full state (ZSF) 
 
-可寫入的邏輯位址 (LBA) 已經達到 Zone 的容量上限，就會進入 Full 狀態。
+可寫入的 (LBA) 已經達到 Zone 的容量上限，就會自動進入 Full 狀態。
+
+若是 Zoned Namespace 轉變成寫入保護 (write protected) 的狀態， 則在活動區所有的 Zones 都會轉態成 ZSF。
 
 ### Read Only state (ZSRO)
 
-在這個狀態下，無法寫入只可以讀取資料。
+***(待確認是否能夠切換)***
+此狀態僅能夠讀取，但沒有說明是不是能夠切換到其它狀態。
 
 ### Offline state (ZSO)
 
-處在離線的狀態，無法讀寫任何資料。
+此狀態無法再轉換到其它區域，代表該 Zone 生命週期結束。
 
 ### Implicitly Opened (ZSIO) 
 
-當系統直接發送寫入命令，當前 Zone 會自動進入到 ZSIO，關閉的方式也會是自動。這麼做的原因是控制器可以隨時關閉此區，有效的管理資源，避免資源使用不足。
+當系統直接發送寫入命令，當前 Zone 會自動進入到 ZSIO 區域，關閉的方式也會是自動。這麼做的原因是控制器可以隨時關閉此區，有效的管理資源，避免資源使用不足。
 
 ### Explicitly Opened (ZSEO) 
 
@@ -105,48 +116,78 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 
 ## 資源管理
 
+定義可以使用 Zones 的最大數量，以及最大可以開啟多少個 Zones 資源。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_resource.png)
+
 * Active : 表示最大有多少個 Zones 的資源可以使用
 * Opend : 表示最大可以打開多少個 ZSIO & ZSEO 數量
 * Maximum : (Opend Zones + Closed Zones) <= Active Zones
 
-![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_resource.png)
+整體的資源管理，主要的概念區分 Active 以及 Opend Zone，只要是進入到這兩個區域，使用的資源就會增加，離開 Active 或是 Opend Zone 以外的區域，使用的資源就會減少。Active 代表整體總共可以使用的資源，Opend 則是在這整個資源中，有多少可以打開的資源。
 
-例如 : 如果控制器處理一個命令，需要將 Zone 轉態到 ZSIO、ZSEO、ZSC，如果 Resource 已經沒有可使用空間，若是打開超過 Active 或是 Opend 的最大限制，則控制器會終止命令，並且回傳錯誤的狀態碼 (e.g.：Too Many Active Zones or Too Many Open Zones)
+例如 : 如果控制器處理一個命令，需要將 Zone 轉態到 ZSIO、ZSEO、ZSC，如果已經沒有可使用空間，若是打開超過 Active 或是 Opend 的最大限制，則控制器會終止命令，並且回傳錯誤的狀態碼 (e.g.：Too Many Active Zones or Too Many Open Zones)。
 
-若是 Zoned namespace 轉變成寫入保護 (write protected) 的狀態， 則在活動區所有的 Zones 都會轉態成 ZSF。
-
+控制器管理資源的目的，就是將那些在 ZSIO 區域的 Zone 轉態到 ZSC 區域，藉由這個方式來釋放資源，能夠讓其它需要的使用的 Zone 進入到 ZSIO 區域。ZSEO 是屬於透過管理命令方式打開，並非由控制器自動打開(ZSIO)，ZSEO 區域是無法自動的關閉，因此需要使用管理命令將其關閉。
 
 ## 狀態轉換
 
-ZSE:Empty state
+每個 Zone 區域可以轉換到不同的區域，但是並不是每個區域都可以允許轉換，像是 ZSO 就無法轉換到其他的區域。而在每個 Zone 區域，若是要轉換到其它的區域就有需要透過管理命令 (Zone Management Send command) 的方式執行轉換，而有些則是控制器自動轉換。
 
-ZSIO:Implicitly Opened state
+另外要轉態到 Active 或是 Opend，都會檢查這兩個區域內的 Resouces 是不是有足夠的資源可以轉態過去，若是沒有可用資源則是回傳狀態碼 (Too Many Active or Opend Zones)。
 
-ZSEO:Explicitly Opened state
+> 轉換原則 : 
+> 1. 無法由控制器自動轉換的，就是需要透過管理命令轉換
+> 2. 某一些條件達成後，會自動轉換狀態
 
-ZSC:Closed state
+### ZSE
 
-ZSF:Full state
+* ZSE -> ZSIO : Controller Transition (write operation)
+* ZSE -> ZSEO : Zone Send Action of Open Zone
+* ZSE -> ZSC  : Set Zone Descriptor Extension
+* ZSE -> ZSF  : Zone Send Action of Finish Zone
 
-ZSRO:Read Only state
+***ZSE -> ZSEO (暫時未了解)***
 
-ZSO:Offline state
+### ZSIO
 
-* 沒有任何狀態可以從 `ZSO` 轉到其它的 `zone state`
+* ZSIO -> ZSE  : Zone Send Action of Reset Zone
+* ZSIO -> ZSEO : Zone Send Action of Open Zone
+* ZSIO -> ZSC  : 
+    * Zone Send Action of Close Zone
+    * Controller Transition (Managing resources)
+* ZSIO -> ZSF  : 
+    * Zone Send Action of Finish Zone
+    * Zone already reach its writeable zone capacity
+    * Zoned namespace becomes write protected
 
-> 備註 : ZSE 可以轉變到到任何的 zone state。不過，一個命令被控制器處理也會造成不同狀態轉換，例如 : 處理一個寫入命令後，會從 ZSC:ZSIO，然後再從 ZSIO:ZSF (可以參考 Zone State Machine)。
+### ZSEO
+* ZSEO -> ZSE : Zone Send Action of Reset Zone
+* ZSEO -> ZSC : Zone Send Action of Close Zone
+* ZSEO -> ZSF :
+    * Zone Send Action of Finish Zone
+    * Zone Active Excursion
+    * Zoned namespace becomes write protected
 
-(需要修改內容)
+### ZSC
+* ZSC -> ZSE  : Zone Send Action of Reset Zone
+* ZSC -> ZSIO : 
+* ZSC -> ZSEO : Zone Send Action of Open Zone
+* ZSC -> ZSF  : 
+    * Zone Send Action of Finish Zone
+    * Zone Active Excursion
+    * Zoned namespace becomes write protected
 
-* 如果一個 `zoned namespace` 被兩個其中一個命令所執行(Format NVM 或是 NS Management)，zone namespace 初始化後，就會進入到 ZSO 或是 ZSE 其中一個狀態 
+### ZSF
+* ZSF -> ZSE : Zone Send Action of Reset Zone
 
-* zone namespace 在可以有效地轉換到各個狀態之前，前提需要有被執行 formatted 或是 created by NS managemnt 才可以轉換到各個狀態
+### ZSRO
+* ZSRO -> ZSO : Zone Send Action of offline Zone
 
----
+### ZSO
+* There are no transitions from the ZSO:Offline state to any other zone state.
 
-## Zone Management Send command
-
----
+## 管理命令
 
 A ZNS SSD may impose a limit on the maximum number of zones that can be active. This limit is always equal or larger than the limit on the maximum number of open zones.
 
@@ -158,12 +199,8 @@ Similar to the limit on the maximum number of open zones, a limit on the maximum
 
 (說明) 最大 active zones 數量的限制，並不會影響讀取操作。無論目前是 open and active zones 數量是多少，任何一個 zone 只要不是在 offline 狀態下，都可以讀取資料。
 
----
-
 ## 疑問待了解 
 
-* 若是成立，每個 NS's Zone 編號都依順序編號 ?
-  * NS1 : zone 1, 2, 3, 4, 5
-  * NS2 : zone 1, 2, 3, 4, 5
-* Implicitly and Explicitly Opend 是不是只有 Implicitly Opend 可以寫入資料 ?
+1. 每個 NS's Zone 編號都依順序編號 ? 
+2. 為什麼 ZSRO 只能轉到 ZSO，不能轉態到其它區域 ?
 
