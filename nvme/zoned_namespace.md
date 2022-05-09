@@ -12,9 +12,10 @@ tags: nvme
 
 ### Zone Size and Capacity
 
-Zone Size 為總空間大小，而可使用空間的容量 (Capacity) 大小，通常會小於等於 Zone Size。
+* Zone Size : 總空間大小
+* Zone Capacity : 可使用空間大小，通常會小於等於 Zone Size
 
-Unusable 為不可使用的空間 (官方網站定義)，SEPC 上並沒有說明這個空間用途說明，不過官方網站提到它不會映射到任何邏輯空間，若是寫入或是讀取到這個空間都會發生錯誤。
+Unusable Blocks 為不可使用的空間 (官方網站定義)，不過 SEPC 上並沒有說明該空間的作用。網站提到它不會映射到任何邏輯空間，若是寫入或是讀取到這個空間都會發生錯誤。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_size%20and%20zone_capacity.png)
 
