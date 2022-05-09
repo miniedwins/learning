@@ -10,13 +10,13 @@ tags: nvme
 
 由連續的邏輯位址 (logic block address) 所組成，這些位址會被作業系統視為一個單位所使用，稱之為 Zone。
 
-### Zone Size
+### Zone Size and Capacity
 
-代表一個 Zone 的總容量大小。
+Zone Size 為總空間大小，而可使用空間的容量 (Capacity) 大小，通常會小於等於 Zone Size。
 
-### Zone Capacity
+Unusable 為不可使用的空間 (官方網站定義)，SEPC 上並沒有說明這個空間用途說明，不過官方網站提到它不會映射到任何邏輯空間，若是寫入或是讀取到這個空間都會發生錯誤。
 
-代表每一個 Zone 可以使用的邏輯區塊，該空間通常是小於或是等於 Zone Size。
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_size%20and%20zone_capacity.png)
 
 ### Zone Namespace
 
@@ -32,22 +32,23 @@ tags: nvme
 
 首先說明 `Write Pointer (WP)` 屬性，它是定義在 Zone Descriptor，表示 Zone 下一個可以寫入資料的 LBA，若是該 Zone 處在不可寫入的狀態，控制器則會回報錯誤。Zone Namespace 會對於每一個 Zone 區域維護 WP，所以當有資料寫入到，Zone會從當前所記錄的 WP 位址開始寫入。
 
+下圖則是說明，若是開始為 ZSE 的狀態，WP 的位置則會是指向 ZSLBA，也就是該 Zone 的起始位置。而若是寫入資料完成後，則會是指向下一個寫入的 LBA 位置。
+
+![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_write_pointer.png)
+
 > Host 可以使用 `Zone Management Receive` 命令取獲得目前的 WP 位址。
 
 每次寫入操作都會增加 WP 屬性的值，因此在這幾個狀態 (ZSE, ZSIO, ZSEO, ZSC) 一但資料成功寫入後，都會增加 WP。主要原因是，寫入資料需要轉態到 OPend 區域。
-
-***(待確認行為是否為真)***
-若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 
 
 下圖說明當前的 Zone State 的狀態下，WP 在那些狀態是有效以及無效。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_characteristics.png)
 
-可以先看到 ZSE (Empty State)，標示是有效的 WP，但是為什麼 Active & Open Resources 都是無效 ? 因為還在 ZSE 狀態下，尚未有任何資料寫入，因此 Active & Resource 都是無效的 WP。而當資料已經有被寫入到 Zone，這個時候的 Zone State，會轉狀態到 Active OR Open，這個時候 WP 才會有是有效。
+可以先看到 ZSE (Empty State)，標示是有效的 WP，但是為什麼 Active & Open Resources 都是無效 ? 因為 ZSE 狀態下，尚未有任何資料寫入，並不會進入到 Active 或是 Opend 區域，所以這兩個區域都會顯示無效的 WP。而當資料已經有被寫入到 Zone，這個時候的 ZSE 會轉狀態到 Active 或是 Opend 區域，這個時候 WP 才會有是有效。
 
 ZSF, ZSRO, ZSO 這幾種狀態它們的 WP 都不是有效的，因為這些狀態下它們都無法在寫入任何資料，WP 自然就會是無效。所以當在這幾個狀態下，如果發送出寫入命令，該命令會被控制器忽略(Abort) 並且回傳無效的狀態碼。
 
-若是 Zone's WP 已經指向達最大可以寫入的位址 (LBA)，可以發送`Zone Management Send command`，設定參數 Zone Send Action 04h，表示要 Reset Zone，命令執行成功後，可以從 Zone Descriptor 觀察 WP 是否被設定成 ZSLBA。
+若是 Zone's WP 已經指向達最大可以寫入的位址 (LBA)，可以發送`Zone Management Send command`，設定參數 Zone Send Action 04h，表示要 Reset Zone。命令執行成功後，可以從 Zone Descriptor 觀察 WP 是否被設定成 ZSLBA。
 
 ***Zone 寫入與讀取命令的注意事項 :***
 
@@ -88,7 +89,7 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 
 ### Full state (ZSF) 
 
-可寫入的 (LBA) 已經達到 Zone 的容量上限，就會自動進入 Full 狀態。
+寫入的 (LBAs) 已經達到 Zone 的容量上限，就會自動進入 Full 狀態。
 
 若是 Zoned Namespace 轉變成寫入保護 (write protected) 的狀態， 則在活動區所有的 Zones 都會轉態成 ZSF。
 
@@ -116,7 +117,7 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 
 ## 資源管理
 
-定義可以使用 Zones 的最大數量，以及最大可以開啟多少個 Zones 資源。
+它的定義在於可以使用 Zones 的最大數量，以及最大可以開啟多少個 Zones 資源。根據 Zone 狀態圖表示，並非可以無限地打開資源，因此會管理與限制資源的使用。
 
 ![](https://github.com/miniedwins/learning/blob/main/nvme/pic/zone/zone_resource.png)
 
@@ -166,12 +167,12 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 * ZSEO -> ZSC : Zone Send Action of Close Zone
 * ZSEO -> ZSF :
     * Zone Send Action of Finish Zone
-    * Zone Active Excursion
+    * Zone already reach its writeable zone capacity
     * Zoned namespace becomes write protected
 
 ### ZSC
 * ZSC -> ZSE  : Zone Send Action of Reset Zone
-* ZSC -> ZSIO : 
+* ZSC -> ZSIO : Controller Transition (write operation)
 * ZSC -> ZSEO : Zone Send Action of Open Zone
 * ZSC -> ZSF  : 
     * Zone Send Action of Finish Zone
@@ -204,3 +205,6 @@ Similar to the limit on the maximum number of open zones, a limit on the maximum
 1. 每個 NS's Zone 編號都依順序編號 ? 
 2. 為什麼 ZSRO 只能轉到 ZSO，不能轉態到其它區域 ?
 
+## 待確認行為是否為真
+
+1. 若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 
