@@ -76,10 +76,11 @@ Across Zone Boundaries 參數，查詢 Identify Namespace(Zone Namespace) 可以
 
 ## Zone Descriptor Extension
 
+待續 ...
 
 ## Zone Active Excursions
 
-它是一個由廠商所定義的 Specific Action，可以讓 ZSIO、ZSEO、ZSC，在任何一個時間點轉態到 ZSF。如果控制器執行轉態的動作，Zone Attributes (ZA) 會被設定 Finish Zone Recommended (FZR=1)，並且產生一個 Zone Descriptor 事件的改變。
+待續 ...
 
 ## 狀態機制
 
@@ -201,12 +202,4 @@ Zone 可以有效地轉換到各個狀態之前，前提需要格式化 (Format 
 
 ## 管理命令
 
-
-## 疑問待了解 
-
-1. 每個 NS's Zone 編號都依順序編號 ? 
-2. 為什麼 ZSRO 只能轉到 ZSO，不能轉態到其它區域 ?
-
-## 待確認行為是否為真
-
-1. 若是當前寫入的資料，已達該 Zone 最大的邏輯位址，就無法再繼續寫入資料，並且該狀態會轉變成 Read Only state (ZSRO)。 
+待續 ...
