@@ -41,7 +41,7 @@ sudo nvme admin-passthru --opcode=0x0c /dev/nvme0
 sudo nvme admin-passthru --opcode=0x14 --cdw10=0x01 /dev/nvme0
 
 ======================================================================
-# Show HMB Info
+# get-feature (HMB)
 $ nvme get-feature -f 0x0d /dev/nvme0 -l 64
 get-feature:0x0d (Host Memory Buffer), Current value:0x00000001
        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
@@ -50,11 +50,12 @@ get-feature:0x0d (Host Memory Buffer), Current value:0x00000001
 0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
 0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "................"
 
-# Disable HMB
-root@edwin-ubuntu:/home/edwin# nvme set-feature -f 0x0d --value=0x00 /dev/nvme0
+# Disable (HMB)
+$ nvme set-feature -f 0x0d --value=0x00 /dev/nvme0
 set-feature:0x0d (Host Memory Buffer), value:00000000, cdw12:00000000, save:0
 
-# Enable HMB
+# Enable (HMB)
 $ nvme admin-passthru --opcode=0x09 --cdw10=0x0d --cdw11=0x01 --cdw12=0x00004000 --cdw13=0x12887000 --cdw14=0x00000001 --cdw15=0x10 /dev/nvme0
 Admin Command Set Features is Success and result: 0x00000000
+
 
