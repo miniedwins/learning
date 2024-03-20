@@ -9,14 +9,16 @@
   - DIF :
 
 - 端到端資料格式 (Protection Information Format)
-  - Guard Field
-    - 存放計算邏輯區塊資料的校驗值 CRC)
-  - Application Tag
-    - 屬於主機端的應用
-  - Reference Tag
-    - 存放邏輯區塊位址 (Logic block Address)    
+  - Guard Field (2Bytes)
+    - 基於邏輯區塊資料計算得出的 `CRC-16` 校驗資訊。
+  - Application Tag (2Bytes)
+    - 由主機端應用指定，無需 `NVM` 控製器處理。
+  - Reference Tag (4Bytes)
+    - 應用在寫入邏輯區塊資料與地址相關聯，例如：寫入資料的邏輯位址是 `0x1234`
+      則該欄位 (Reference Tag) 就會存放邏輯位址 `0x1234`。
+    - 防止資料被誤用或傳輸亂序情況發生。
 
-- 協議規定 PI 存放的位置
+- 協議規定 PI 所存放的位置
   - PI 位於 Metadata 開頭 (First of Metadata)
   - PI 位於 Metadata 結尾 (Last of Metadata)    
 
