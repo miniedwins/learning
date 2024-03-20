@@ -8,19 +8,26 @@
   - DIX : 
   - DIF :
 
-- PI 保護資訊指定存放的位置
-  - PI位於中繼資料 (Metadata) 開頭
-    - 如果 `Metadata` 和PI大小相等，則只需要提供邏輯塊資料的保護即可；
-  - PI位於中繼資料 (Metadata) 結尾
+- 端到端資料格式 (Protection Information Format)
+  - Guard Field
+    - 存放計算邏輯區塊資料的校驗值 CRC)
+  - Application Tag
+    - 屬於主機端的應用
+  - Reference Tag
+    - 存放邏輯區塊位址 (Logic block Address)    
 
-Metadata == PI
-- 如果中繼資料和PI大小相等，則只需要提供邏輯塊資料的保護即可；
+- 協議規定 PI 存放的位置
+  - PI 位於 Metadata 開頭 (First of Metadata)
+  - PI 位於 Metadata 結尾 (Last of Metadata)    
 
-Metadata > PI
-- PI位於中繼資料開頭，只需要提供邏輯塊資料的保護；
-- PI位於中繼資料結尾，需要提供邏輯塊資料，以及PI前面所有中繼資料的保護。
+根據上述 PI 所存放的位置，對於資料保護的範圍會有所不同，也就是計算校驗資訊 (CRC)
+- 若是 PI 位於 Metadata 開頭
+  - Medata == PI，則校驗資訊只需要計算 (邏輯區塊資料) 即可。
+- 若是 PI 位於 Metadata 結尾
+  - Medata > PI，則校驗資訊則是需要計算 (邏輯區塊資料 + 元資料) 但是不包含 PI 資訊。  
+> 備註 : 為什麼需要校驗資訊 ? PI 資料格式其中一個欄位（Guard) 即是存放經過計算邏輯區塊資料的校驗值
 
-## 如何驗證資料保護功能
+# 如何驗證資料保護功能
 
 - 測試方法分為兩種
   - 經由控制器收到 `Data` 並且產生 PI 然後將資料以及PI寫入到  
