@@ -53,17 +53,17 @@ LBA Format  4 : Metadata Size: 64  bytes - Data Size: 4096 bytes - Relative Perf
 dd if=/dev/urandom of=512B.bin bs=512 count=1
 ```
 
-PRACT（了PI資訊產生的機制）
-= 1 (控制器生成PI並將其寫入NAND)
-= 0 (控制器取得上層應用下發的PI訊息，將檢查PI資訊並寫入NAND)
+- PRACT（了PI資訊產生的機制）
+  - value = 1 (控制器生成PI並將其寫入NAND)
+  - value = 0 (控制器取得上層應用下發的PI訊息，將檢查PI資訊並寫入NAND)
 
 ```
 $ nvme write /dev/nvme0n1 -s 0x12 -z 512 -d 512B.bin --prinfo=0xf --ref-tag=0x12
 ```
 
-PRACT（讀取資料時控制器是否回傳PI資訊）
-= 1 (控制器不向 host 傳回 PI 資訊；只回傳 data block)
-= 0 (控制器檢查 PI 資訊, 向 host 傳回 PI 資訊以及 data block)
+- PRACT（讀取資料時控制器是否回傳PI資訊）
+  - value = 1 (控制器不向 host 傳回 PI 資訊；只回傳 data block)
+  - value = 0 (控制器檢查 PI 資訊, 向 host 傳回 PI 資訊以及 data block)
 
 ```
 $ nvme read /dev/nvme0n1 -s 0x12 -z 520 -d data_read_520B.bin --prinfo=0x7 --ref-tag=0x12
