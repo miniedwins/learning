@@ -53,24 +53,37 @@ LBA Format  4 : Metadata Size: 64  bytes - Data Size: 4096 bytes - Relative Perf
 dd if=/dev/urandom of=512B.bin bs=512 count=1
 ```
 
-- PRACT（了PI資訊產生的機制）
-  - value = 1 (控制器生成PI並將其寫入NAND)
-  - value = 0 (控制器取得上層應用下發的PI訊息，將檢查PI資訊並寫入NAND)
+- PRACT（PI資訊產生的機制）
+  - Bit3=1 (控制器生成PI並將其寫入NAND)
+  - Bit3=0 (控制器取得上層應用下發的PI訊息，將檢查PI資訊並寫入NAND)
+
+- PRCHK（控制器收到包時檢查的PI資訊）
+  - Bit2=1，控制器收到packet時，檢查 CRC
+  - Bit1=1，控制器在收到packet時，檢查 App Tag
+  - Bit0=1，控制器在收到packet時，檢查 Reference Tagca
 
 ```
 $ nvme write /dev/nvme0n1 -s 0x12 -z 512 -d 512B.bin --prinfo=0xf --ref-tag=0x12
 ```
 
 - PRACT（讀取資料時控制器是否回傳PI資訊）
-  - value = 1 (控制器不向 host 傳回 PI 資訊；只回傳 data block)
-  - value = 0 (控制器檢查 PI 資訊, 向 host 傳回 PI 資訊以及 data block)
+  - Bit3=1 (控制器不向 host 傳回 PI 資訊；只回傳 data block)
+  - Bit3=0 (控制器檢查 PI 資訊, 向 host 傳回 PI 資訊以及 data block)
+    
+- PRCHK（控制器收到包時檢查的PI資訊）
+  - Bit2=1，控制器收到packet時，檢查 CRC
+  - Bit1=1，控制器在收到packet時，檢查 App Tag
+  - Bit0=1，控制器在收到packet時，檢查 Reference Tagca
+
+PI = 8 Bytes
+Logic Block Data = 512 Bytes
+Data = (Logic Block Data) + (PI) = 512 + 8 = 520
 
 ```
 $ nvme read /dev/nvme0n1 -s 0x12 -z 520 -d data_read_520B.bin --prinfo=0x7 --ref-tag=0x12
 ```
 
-PI = 8Byte
-Data with PI = Logic Block Data + PI Information = 512 + 8 = 520
+// TODO
 
 ```
 $ xxd -l 520 read_data_with_pi.bin
