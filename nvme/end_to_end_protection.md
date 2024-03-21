@@ -8,33 +8,49 @@
   - DIX : 
   - DIF :
 
-- 端到端資料格式 (Protection Information Format)
-  - Guard Field (2Bytes)
-    - 基於邏輯區塊資料計算得出的 `CRC-16` 校驗資訊。
-  - Application Tag (2Bytes)
-    - 由主機端應用指定，無需 `NVM` 控製器處理。
-  - Reference Tag (4Bytes)
-    - 應用在寫入 `邏輯區塊資料` 與 `邏輯位址` 相關聯，例如：寫入資料的邏輯位址是 `0x1234`
-      則該欄位 (Reference Tag) 就會存放寫入資料的邏輯位址 `0x1234`。
-    - 防止資料被誤用或傳輸亂序情況發生。
-
 - 協議規定 PI 所存放的位置
   - PI 位於 Metadata 開頭 (First of Metadata)
   - PI 位於 Metadata 結尾 (Last of Metadata)    
+
+- 端到端資料格式 (Protection Information Format)
+  - Guard Field
+    - 基於邏輯區塊資料計算得出的 `CRC` 校驗資訊。
+  - Application Tag
+    - 由主機端應用指定，無需 `NVM` 控製器處理。
+  - Reference Tag
+    - 應用在寫入 `邏輯區塊資料` 與 `邏輯位址` 相關聯，例如：寫入資料的邏輯位址是 `0x1234`
+      則該欄位 (Reference Tag) 就會存放寫入資料的邏輯位址 `0x1234`。
+    - 防止資料被誤用或傳輸亂序情況發生。
 
 根據上述 PI 所存放的位置，對於資料保護的範圍會有所不同，也就是計算校驗資訊 (CRC)
 - 若是 PI 位於 Metadata 開頭
   - Medata == PI，則校驗資訊只需要計算 (邏輯區塊資料) 即可。
 - 若是 PI 位於 Metadata 結尾
   - Medata > PI，則校驗資訊則是需要計算 (邏輯區塊資料 + 元資料) 但是不包含 PI 資訊。  
-> 備註 : 為什麼需要校驗資訊 ? PI 資料格式其中一個欄位（Guard) 即是存放經過計算邏輯區塊資料的校驗值
 
-# 如何驗證資料保護功能
+# 如何驗證端對端資料保護功能
+
+## 
+
+首先使用 Identify Namespace 命令，與端到端資料保護有關的結果摘選如下：
+
+nvme format /dev/nvme0n1 -n 1 -l 2 -i 1 -m 1 -p 1 
+
+```
+mc      : 0x3
+  [1:1] : 0x1	Metadata Pointer Supported
+  [0:0] : 0x1	Metadata as Part of Extended Data LBA Supported
+
+dpc     : 0x1b
+  [4:4] : 0x1	Protection Information Transferred as Last Bytes of Metadata Supported
+  [3:3] : 0x1	Protection Information Transferred as First Bytes of Metadata Supported
+  [2:2] : 0	Protection Information Type 3 Not Supported
+  [1:1] : 0x1	Protection Information Type 2 Supported
+  [0:0] : 0x1	Protection Information Type 1 Supported
+```
 
 - 測試方法分為兩種
   - 經由控制器收到 `Data` 並且產生 PI 然後將資料以及PI寫入到  
-
-$ nvme format /dev/nvme0n1 -n 1 -l 1 -i 1 -m 1 -p 1 -f
 
 PRACT（指明了PI信息生成的机制）
 =1时， controller生成PI并将其写入NAND
