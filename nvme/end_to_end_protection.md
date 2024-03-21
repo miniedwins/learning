@@ -28,60 +28,64 @@
 - 若是 PI 位於 Metadata 結尾
   - Medata > PI，則校驗資訊則是需要計算 (邏輯區塊資料 + 元資料) 但是不包含 PI 資訊。  
 
+
 # 如何驗證端對端資料保護功能
 
-## 
-
-首先使用 Identify Namespace 命令，與端到端資料保護有關的結果摘選如下：
-
-nvme format /dev/nvme0n1 -n 1 -l 2 -i 1 -m 1 -p 1 
-
-```
-mc      : 0x3
-  [1:1] : 0x1	Metadata Pointer Supported
-  [0:0] : 0x1	Metadata as Part of Extended Data LBA Supported
-
-dpc     : 0x1b
-  [4:4] : 0x1	Protection Information Transferred as Last Bytes of Metadata Supported
-  [3:3] : 0x1	Protection Information Transferred as First Bytes of Metadata Supported
-  [2:2] : 0	Protection Information Type 3 Not Supported
-  [1:1] : 0x1	Protection Information Type 2 Supported
-  [0:0] : 0x1	Protection Information Type 1 Supported
-```
-
 - 測試方法分為兩種
-  - 經由控制器收到 `Data` 並且產生 PI 然後將資料以及PI寫入到  
+  - 經由控制器收到 `Data` 並且產生 PI 然後將資料以及PI寫入到
+  - 控制器取得上層應用下發的PI訊息，將檢查PI訊息並寫入NAND
 
-PRACT（指明了PI信息生成的机制）
-=1时， controller生成PI并将其写入NAND
-=0时， controller获取上层应用下发的PI信息，将检查PI信息并写入NAND
+## Create PI By Controller
+
+Format NS 
+$ nvme format /dev/nvme0n1 -n 1 -l 2 -i 1 -m 1 -p 1 
+
+```
+$ nvme id-ns /dev/nvme0n1 -H
+LBA Format  0 : Metadata Size: 0   bytes - Data Size: 512 bytes - Relative Performance: 0 Best 
+LBA Format  1 : Metadata Size: 8   bytes - Data Size: 512 bytes - Relative Performance: 0 Best (in use)
+LBA Format  2 : Metadata Size: 0   bytes - Data Size: 4096 bytes - Relative Performance: 0 Best 
+LBA Format  3 : Metadata Size: 8   bytes - Data Size: 4096 bytes - Relative Performance: 0 Best 
+LBA Format  4 : Metadata Size: 64  bytes - Data Size: 4096 bytes - Relative Performance: 0 Best
+```
+
+```
+dd if=/dev/urandom of=512B.bin bs=512 count=1
+```
+
+PRACT（了PI資訊產生的機制）
+= 1 (控制器生成PI並將其寫入NAND)
+= 0 (控制器取得上層應用下發的PI訊息，將檢查PI資訊並寫入NAND)
+
+```
 $ nvme write /dev/nvme0n1 -s 0x12 -z 512 -d 512B.bin --prinfo=0xf --ref-tag=0x12
+```
 
-PRACT（指明读数据时控制器是否返回PI信息）
-=1时， SSD controller不向host返回PI信息；只返回data block
-=0时， SSD controller；检查PI信息, 向host返回PI信息以及data block
+PRACT（讀取資料時控制器是否回傳PI資訊）
+= 1 (控制器不向 host 傳回 PI 資訊；只回傳 data block)
+= 0 (控制器檢查 PI 資訊, 向 host 傳回 PI 資訊以及 data block)
 
-PI=8Byte
+```
+$ nvme read /dev/nvme0n1 -s 0x12 -z 520 -d data_read_520B.bin --prinfo=0x7 --ref-tag=0x12
+```
+
+PI = 8Byte
 Data with PI = Logic Block Data + PI Information = 512 + 8 = 520
 
-$ nvme read /dev/nvme0n1 -s 0x12 -z 520 -d read_data_with_pi.bin --prinfo=0x7 --ref-tag=0x12 
-
-$ xxd -l 520 read_512B.bin
+```
+$ xxd -l 520 read_data_with_pi.bin
 00000000: 050e 3304 6ba0 fdd2 4914 6ca9 d871 c843  ..3.k...I.l..q.C
 00000010: 15cd 4af1 b7be 14a3 124a c58c 8129 1799  ..J......J...)..
 ...
 000001e0: 231d 00a9 3802 f120 ccb7 a9e0 3ee3 f9ad  #...8.. ....>...
 000001f0: 5ef3 7c75 7308 4acf cfc8 b1d3 925c c81e  ^.|us.J......\..
 00000200: 3593 0000 0000 0012                      5.......
+```
+
+$ nvme write /dev/nvme0n1 -s 0x12 -z 520 -y 8 -d data_with_pi.bin --prinfo=0x7 --ref-tag=0x12
 
 =================================================
-
-$ nvme write /dev/nvme0n1 -s 0x12 -z 520 -y 8 -d data_with_pi.bin --prinfo=0x7 --ref-tag=0x12  
-
-$ nvme read /dev/nvme0n1 -s 0x12 -z 520 -d read_data_with_pi.bin --prinfo=0x7 --ref-tag=0x12                                                         
-
-
-
+     
 nlbaf   : 4
 flbas   : 0x11
   [6:5] : 0	Most significant 2 bits of Current LBA Format Selected
@@ -119,6 +123,9 @@ LBA Format  4 : Metadata Size: 64  bytes - Data Size: 4096 bytes - Relative Perf
 
 # PI first byte of Metadata
 
+LBA Format = 4k
+Metadata Size = 64Bytes
+PI = 8Bytes (f15f 0000 0000 0012)
 
 ```
 00000000: 8338 2be5 4476 9f4b c7d6 0f94 cec5 2348  .8+.Dv.K......#H
@@ -131,6 +138,11 @@ LBA Format  4 : Metadata Size: 64  bytes - Data Size: 4096 bytes - Relative Perf
 ```
 
 # PI last byte of Metadata
+
+LBA Format = 4k
+Metadata Size = 64Bytes
+Fist PI = 8Bytes (f15f 0000 0000 0012)
+Last PI = 8Bytes (1bb7 0000 0000 0012)
 
 ```
 00000000: 8338 2be5 4476 9f4b c7d6 0f94 cec5 2348  .8+.Dv.K......#H
