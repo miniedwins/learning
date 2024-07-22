@@ -40,6 +40,10 @@ sudo nvme admin-passthru --opcode=0x0c /dev/nvme0
 # self-test (short-test)
 sudo nvme admin-passthru --opcode=0x14 --cdw10=0x01 /dev/nvme0
 
+# show actvie ns
+sudo nvme admin-passthru --opcode=0x06 --cdw10=0x02 /dev/nvme0 --data-len=64 --read
+
+
 ======================================================================
 # get-feature (HMB)
 $ nvme get-feature -f 0x0d /dev/nvme0 -l 64
