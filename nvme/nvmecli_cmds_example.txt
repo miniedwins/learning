@@ -43,6 +43,8 @@ sudo nvme admin-passthru --opcode=0x14 --cdw10=0x01 /dev/nvme0
 # show actvie ns
 sudo nvme admin-passthru --opcode=0x06 --cdw10=0x02 /dev/nvme0 --data-len=64 --read
 
+# show allocated ns
+sudo nvme admin-passthru --opcode=0x06 --cdw10=0x10 /dev/nvme0 --data-len=64 --read
 
 ======================================================================
 # get-feature (HMB)
